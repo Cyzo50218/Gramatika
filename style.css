@@ -1,0 +1,712 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+ font-family: 'Dosis';
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* custom scroll bar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+ .hidden{
+   display: none;
+ }
+ .resultdes{
+   display: none;
+ }
+/* all similar content styling codes */
+section {
+  padding:30px 0;
+}
+.containerWrapper {
+    display: flex;
+    flex-direction: column; /* Align items vertically in a row */
+    gap: 10px; /* Gap between flex items */
+}
+
+.newContainer {
+    display: inline-block; /* Display as flex container */
+    flex-direction: column; /* Align items vertically */
+    align-items: flex-start; /* Align items from the start left */
+    width: 50%;
+    height: 70px;
+    padding-top: 10px;
+    padding-left: 10px;
+    margin: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out; /* Optional: add transition for smooth effect */
+}
+
+.newContainer:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Optional: increase shadow on hover */
+}
+
+
+.circle {
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.topContainer {
+    display: flex;
+    align-items: center; /* Align items vertically center */
+    justify-content: flex-start; /* Align items from the start left */
+    margin-bottom: 10px;
+    margin-top: 10px;
+  
+}
+
+.rotate {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+.rotateBack {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.topContainer p {
+  font-size: 18px;
+}
+.dropdownButton {
+    margin-left: 30px;
+    background-color: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items from the start left */
+}
+
+.dropdownButton i {
+    height: 30px;
+    width: 30px;
+    color: #000; /* Icon color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdownContainer {
+    display: none; /* inline flex here*/
+    align-items: center;
+    justify-content: center;
+    
+}
+.suggestions{
+  font-size: 20px;
+  color: #1D233C;
+}
+
+.container {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      margin-top: 10px; /* Margin from the top */
+    }
+    
+    .highlight {
+            background-color: #FC5858;
+            opacity: 0.40;
+        }
+        .container4 {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+       width: 100%;
+    }
+    .correctorcontainer {
+      display: relative;
+      justify-content: center;
+      text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 100%;
+    margin: 10px 10px;
+}
+
+.max-width2{
+    display: inline;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.editText {
+    width: 100%;
+            height: 100%;
+            font-size: 10px;
+            border: none;
+            outline: none;
+            background: none;
+            position: relative;
+            opacity: 1;
+            color: black;
+            resize: none;
+            box-sizing: border-box;
+            padding: 10px;
+            
+}
+
+.editText::placeholder {
+    text-align: start; /* Ensures placeholder text starts at the top */
+}
+
+.editText:focus {
+    outline: none; /* Removes default outline */
+    border: 1px solid transparent; /* Keeps the border transparent on focus */
+}
+
+.editText.opacity{
+  opacity: 0;
+}
+
+.editTextContainer{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 10px;
+    border: 1px solid darkblue;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
+    overflow: hidden;
+}
+.resultBox {
+    width: 100%;
+            height: 100%;
+            font-size: 10px;
+            border: none;
+            outline: none;
+            background: none;
+            position: relative;
+            
+            color: black;
+            resize: none;
+            box-sizing: border-box;
+            padding: 10px;
+            
+}
+
+.resultBox::placeholder {
+    text-align: start; /* Ensures placeholder text starts at the top */
+}
+
+.resultBox:focus {
+    outline: none; /* Removes default outline */
+    border: 1px solid transparent; /* Keeps the border transparent on focus */
+}
+
+.editTextContainer2{
+   
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 10px;
+    border: 1px solid darkblue;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
+    overflow: hidden;
+}
+.text-enlarge{
+  font-size: 15px;
+  color: #1E213E;
+}
+.textBackground {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+ padding-bottom: 5px;
+ margin: 3px;
+  background-color: #7C88FF;
+  color: white;
+  border-radius: 25px; /* Rounded corners */
+  text-align: center;
+  min-width: 50px;
+  font-size: 12px; /* Smaller text */
+  vertical-align: middle; /* Aligns text vertically */
+}
+
+.definitions{
+  
+  padding-top:10px;
+  font-size: 15px;
+  text-align: center;
+  vertical-align: middle; /* Aligns text vertically */
+}
+
+
+.checkContainer{
+    display: block;
+    position: inline-flex;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+   
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    font-size: 10px;
+    margin-bottom: 3px;
+    
+    padding-left: 11px;
+    padding-top: 10px;
+    color: transparent;
+    box-sizing: border-box;
+    text-align: left; /* Ensure text starts from the left */
+    transition: 0.5s fade-in;
+   
+}
+
+.overlay.fade-in {
+    opacity: 1; /* Show overlay */
+}
+
+.dropdown {
+    width: 40%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    background-color: transparent;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.30);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    .max-width {
+      max-width: 1100px;
+      padding: 0 80px;
+      font-size: 30px;
+    }
+    
+   .navbar.expanded {
+     
+    height: 350px; /* Adjusted height for the expanded navbar */
+    
+}
+.logo.hidden {
+    display: none;
+}
+.text-1 span {
+      position: relative;
+color: #101646;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+.text-2 {
+      position: relative;
+      font-size: 23px;
+      font-weight: normal;
+      display: inline-block;
+    }
+    .correctButton, .refreshButton {
+    width: auto; /* Allow buttons to take the necessary width */
+    margin-left: 10px; /* Add space between buttons */
+}
+
+
+    .text-1 span::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      top: 1x;
+      background: deepskyblue;
+      z-index: -1;
+      opacity: 0.3;
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        opacity: 0.3;
+        box-shadow: 0 0 5px deepskyblue;
+      }
+      50% {
+        opacity: 0.4;
+        box-shadow: 0 0 10px deepskyblue;
+      }
+    }
+      .navbar {
+      width: 100%;
+      height: 80px;
+      background-color: cornflowerblue;
+      overflow: hidden;
+    }
+
+    .max-width {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 80px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      text-decoration: none;
+      color: #EEF3FF;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #133058;
+    }
+
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 15px;
+      display: flex;
+    }
+
+    .menu li {
+     
+      padding: 0 20px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #fff;
+      padding: 15px 0;
+      display: block;
+    }
+
+ .menu-btn {
+      display: none;
+      cursor: pointer;
+    }
+    
+    .menu-btn i {
+      font-size: 24px;
+      color: #fff;
+    }
+    
+    .dropdown:focus {
+    outline: none; /* Removes default outline */
+    border: 1px solid transparent; /* Keeps the border transparent on focus */
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.30);
+}
+
+    @media (max-width: 768px) {
+      .max-width {
+        padding: 0 20px;
+        margin-top: 20px;
+      }
+      
+      .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    font-size: 12px;
+    margin-bottom: 3px;
+    
+    padding-left: 7px;
+    padding-top: 7px;
+    color: transparent;
+    box-sizing: border-box;
+    text-align: left; /* Ensure text starts from the left */
+    transition: 0.5s fade-in;
+   
+}
+      
+        .resultdes{
+          display: none;
+        }
+      .max-width2 {
+        display: inline;
+      }
+
+    .text-1 span {
+      font-size: 23px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .text-1 span::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      top: 18px;
+      background: deepskyblue;
+      z-index: -1;
+      opacity: 0.3;
+      animation: glow 2s infinite;
+    }
+    
+    @keyframes glow {
+      0%, 100% {
+        opacity: 0.3;
+        box-shadow: 0 0 5px deepskyblue;
+      }
+      50% {
+        opacity: 0.4;
+        box-shadow: 0 0 10px deepskyblue;
+      }
+    }
+.menu {
+    display: none;
+    width: 100%;
+    
+    font-size: 20px; /* Smaller font size for the menu items */
+   
+    justify-content: center;
+    align-items: flex-start; /* Align items at the top */
+    flex-direction: column; /* Display items in a column */
+    text-align: center;
+}
+
+.correctorcontainer {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+
+    .editText,
+    .dropdown,
+    button {
+        padding: 8px;
+        font-size: 14px;
+    }
+    
+    
+    
+    .menu li {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .menu.active {
+        display: flex;
+    }
+    
+    .menu-bg {
+        background-color: cornflowerblue; /* New background color when menu is active */
+    }
+
+.navbar{
+  width: 100%;
+  height: 80px;
+  background-color:cornflowerblue;
+}
+
+.text-2 {
+      position: relative;
+      font-size: 18px;
+      font-weight: normal;
+      display: inline-block;
+    }
+
+
+      .menu li {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .menu.active {
+        display: flex;
+      }
+      
+      
+.functionscontainer {
+    display: inline-flex; /* Enable flexbox properties */
+    justify-content: center; /* Center horizontally */
+    
+    
+}
+
+.container2{
+display: inline-flex; /* Enable flexbox properties */
+    
+    flex-direction: row; /* Stack items vertically */
+    
+}
+.functionscontainer2 {
+    display: inline-flex; /* Enable flexbox properties */
+    width: 150px;
+    flex-direction: column; /* Stack items vertically */
+}
+.functionscontainer3 {
+    display: inline-flex; /* Enable flexbox properties */
+
+}
+
+
+    .dropdown {
+      width: 120px;
+        height: 40px;
+    }
+
+    .correctButton, .refreshButton {
+        width: 500px;
+        height: 30px;
+        margin: 10px;
+    }
+    
+    .editText {
+      border: 1px solid transparent;
+      width: 100%;
+      height: 100%;
+      font-size: 20px;
+    }
+    
+    .editTextContainer2{
+      margin-left: 0px;
+      margin-top: 10px;
+     
+    }
+    
+    .max-width2{
+      display: inline;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    .container4{
+      justify-content: center;
+    align-items: center;
+    }
+    
+    .resultdes{
+      font-size: 14px;
+      color: darkblue;
+    }
+    
+       .editTextContainer2{
+     display: block;
+    }
+    }
+    
+    
+    
+    @media (max-width: 480px) {
+          .correctorcontainer {
+        max-width: 95%;
+        padding: 10px;
+        
+    }
+     .editTextContainer2{
+      margin-left: 0px;
+      margin-top: 10px;
+    }
+    
+    .max-width2{
+      display: relative;
+    }
+    
+    
+    .functionscontainer {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .dropdown {
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+
+    .correctButton, .refreshButton {
+        width: auto;
+        margin-bottom: 0;
+    }
+
+    .editText,
+    .dropdown,
+    button {
+        padding: 6px;
+        font-size: 12px;
+    }
+    
+      .text-1 {
+        font-size: 20px; /* Even smaller font size for smaller screens */
+      }
+
+      .text-1::before {
+        height: 40%; /* Adjust height for smaller screens */
+      }
+    }
+    
+
+  
