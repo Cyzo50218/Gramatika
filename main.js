@@ -2,15 +2,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuBtn = document.getElementById('menu-btn');
     const menu = document.getElementById('menu');
 
-    // Function to toggle menu visibility and icon on menuBtn click
-    menuBtn.addEventListener('click', function() {
-        menu.classList.toggle('active');
-        document.querySelector('.navbar').classList.toggle('expanded');
-      
-        this.querySelector('i').classList.toggle('fa-bars');
-        this.querySelector('i').classList.toggle('fa-times');
-    });
+const logo = document.querySelector('.logo');
+const logoSpan = logo.querySelector('span');
+const navbarbg = document.querySelector('.navbar');
 
+menuBtn.addEventListener('click', function() {
+  menu.classList.toggle('active');
+  navbarbg.classList.toggle('expanded');
+
+  this.querySelector('i').classList.toggle('fa-bars');
+  this.querySelector('i').classList.toggle('fa-times');
+
+  if (navbarbg.classList.contains('expanded')) {
+    navbarbg.style.transition = 'background-color 0.5s ease-in-out';
+    navbarbg.style.backgroundColor = '#191970'; // Midnight blue color
+    logoSpan.style.transition = 'color 0.5s ease-in-out';
+    logoSpan.style.color = '#6495ED'; // Cornflower blue color
+  } else {
+    navbarbg.style.transition = 'background-color 0.5s ease-in-out';
+    navbarbg.style.backgroundColor = '#6495ED'; // Cornflower blue color
+    logoSpan.style.transition = 'color 0.5s ease-in-out';
+    logoSpan.style.color = '#133058'; // Original color
+  }
+});
     // Function to close menu on window resize if window width > 768px
     window.addEventListener('resize', function() {
         if (window.innerWidth > 768) {
@@ -630,4 +644,108 @@ textarea.addEventListener('input', function() {
     // Directly check for the presence of highlights
   const hasHighlights = highlightedWords.includes('<span class="highlight">');
 
-  if
+  if (hasHighlights) {
+    checkContainer.style.display = 'block'; // Show checkContainer if there are highlights
+    maxwidth2.style.display = 'flex'; // Show maxwidth2 if there are highlights
+  } else {
+    checkContainer.style.display = 'none'; // Hide checkContainer if no highlights
+    maxwidth2.style.display = 'inline'; // Show maxwidth2 inline if no highlights
+  }
+  
+});
+
+
+
+
+
+function showDefinition(event) {
+  const word = event.target.innerText;
+  definitions.style.display = 'block';
+  // Fetch and display the definition
+  fetchDefinition(word)
+    .then(definition => {
+      definitions.innerHTML = `<h3>${word}</h3><p>${definition}</p>`;
+    })
+    .catch(error => {
+      definitions.innerHTML = `<h3>${word}</h3><p>Definition not found.</p>`;
+    });
+  // Position the definitions element near the word
+  const rect = event.target.getBoundingClientRect();
+  definitions.style.top = `${rect.bottom + window.scrollY}px`;
+  definitions.style.left = `${rect.left + window.scrollX}px`;
+}
+
+function hideDefinition() {
+  definitions.style.display = 'none';
+  definitions.innerHTML = ''; // Clear the content of the definitions element
+}
+
+async function fetchDefinition(word) {
+  try {
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+    if (!response.ok) {
+      throw new Error('Word not found');
+    }
+    const data = await response.json();
+    // Extract the first definition
+    const definition = data[0].meanings[0].definitions[0].definition;
+    return definition;
+  } catch (error) {
+    console.error('Error fetching definition:', error);
+    return 'Definition not found';
+  }
+}
+
+
+
+
+  
+
+    document.querySelector('.correctButton').addEventListener('click', function() {
+        maxwidth2.style.display = 'flex';
+     textresultcontainer.style.display = 'block';
+     let text = document.getElementById('text').value;
+        const language = document.getElementById('languageSelector').value;
+        
+        if(text.trim() === ''){
+  
+}else{
+  highlightText(text)
+  overlay.style.opacity = '1';
+    overlay.classList.add('fade-in');
+       
+  if (detected) {
+    console.log('Changes detected');
+    
+    maxwidth2.style.display = 'flex';
+    checkContainer.style.visibility = 'block';
+    textresultcontainer.style.display = 'none';
+  }
+}
+
+            makeNonEditable();
+            
+    });
+
+    // Synchronize the textarea scrolling with the overlay
+    textarea.addEventListener('scroll', function() {
+        overlay.scrollTop = textarea.scrollTop;
+        overlay.scrollLeft = textarea.scrollLeft;
+    });
+
+    // Adjust the overlay text when the user types
+    
+    const textresulttext = document.getElementById('textresult');
+
+    // Method to make textarea non-editable but copyable
+    function makeNonEditable() {
+        textresult.setAttribute('readonly', true); // Makes the textarea non-editable
+        textresult.addEventListener('focus', () => {
+            textresult.select(); // Select the text on focus for copying
+        });
+    }
+
+    // Call the method to make it non-editable
+});
+
+
