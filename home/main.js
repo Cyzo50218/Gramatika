@@ -704,7 +704,7 @@ document.querySelector('.correctButton').addEventListener('click', async functio
 
 
 
-const endpoint = 'https://api.languagetool.org/v2/check';
+const endpointer = 'https://api.languagetool.org/v2/check';
 
 const textToCheck = 'Ito ay isang halimbawa ng teksto na may mali. paDavao, pagPhophotcopy';
 
@@ -719,7 +719,7 @@ const requestOptions = {
   })
 };
 
-fetch(endpoint, requestOptions)
+fetch(endpointer, requestOptions)
   .then(response => response.json())
   .then(data => {
     const suggestions = data.matches.map(match => {
