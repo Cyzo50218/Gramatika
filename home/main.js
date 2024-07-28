@@ -653,4 +653,87 @@ document.querySelector('.correctButton').addEventListener('click', async functio
 
       clonedNewContainer.addEventListener('click', function() {
         const clonedDropdownContainer = this.querySelector('.dropdownContainer');
-        const clonedDownDrop
+        const clonedDownDropdown = this.querySelector('.dropdownButton');
+        if (!clonedDropdownContainer || !clonedDownDropdown) return;
+
+        clonedDownDropdown.style.transition = 'transform 0.3s ease';
+
+        if (clonedDropdownContainer.style.display === 'block') {
+          clonedDropdownContainer.style.display = 'none';
+          clonedDownDropdown.style.transform = 'rotate(0deg)';
+          this.style.height = 'auto';
+          this.style.paddingBottom = '0';
+          this.style.width = '80%';
+        } else {
+          clonedDropdownContainer.style.display = 'block';
+          clonedDownDropdown.style.transform = 'rotate(180deg)';
+          this.style.width = '80%';
+          this.style.height = 'auto';
+          this.style.paddingBottom = '20px';
+          this.style.paddingRight = '10px';
+        }
+      });
+
+      clonedNewContainer.querySelectorAll('.textBackground').forEach(tokenElement => {
+        tokenElement.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const selectedToken = event.target.innerText;
+          const originalWord = clonedNewContainer.querySelector('.errorText').innerText;
+
+          const updatedText = textarea.value.replace(new RegExp(`\\b${originalWord}\\b`, 'g'), selectedToken);
+          textarea.value = updatedText;
+
+          clonedNewContainer.remove();
+        });
+      });
+
+      checkContainer.appendChild(clonedNewContainer);
+      checkContainer.style.display = 'block';
+      return `<span class="highlight">${word}</span>`;
+    } else {
+      return word;
+    }
+  }).join(' ');
+
+  overlay.innerHTML = highlightedWords.replace(/\n/g, '<br>');
+
+  const hasHighlights = highlightedWords.includes('<span class="highlight">');
+  checkContainer.style.display = hasHighlights ? 'block' : 'none';
+  maxwidth2.style.display = hasHighlights ? 'flex' : 'inline';
+});
+
+
+
+const endpoint = 'https://api.languagetool.org/v2/check';
+
+const textToCheck = 'Ito ay isang halimbawa ng teksto na may mali. paDavao, pagPhophotcopy';
+
+const requestOptions = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: new URLSearchParams({
+    text: textToCheck,
+    language: 'tl', // Specify the language as Tagalog
+  })
+};
+
+fetch(endpoint, requestOptions)
+  .then(response => response.json())
+  .then(data => {
+    const suggestions = data.matches.map(match => {
+      const context = match.context.text;
+      const offset = match.context.offset;
+      const length = match.context.length;
+      const errorText = context.substr(offset, length);
+      return `Error: "${errorText}" at position ${offset}. Suggestions: ${match.replacements.map(rep => rep.value).join(', ')}`;
+    });
+    
+    console.log('Suggestions:', suggestions);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+  
+});
