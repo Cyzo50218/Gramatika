@@ -1,10 +1,15 @@
-const fetch = require('node-fetch'); // Ensure you have node-fetch installed
+const path = require('path');
+const fs = require('fs');
 
 module.exports = async (req, res) => {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  const filePath = path.resolve(__dirname, '../api/corrections.json');
+  
   try {
-    const response = await ('/api/corrections.json');
-    if (!response.ok) throw new Error('Network response was not ok.');
-    const corrections = await response.json();
+    const corrections = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     res.status(200).json(corrections);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch corrections', details: error.message });
