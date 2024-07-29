@@ -565,11 +565,11 @@ let rules = [];
 
 async function fetchData() {
   try {
-    const correctionsResponse = await fetch('/api/getCorrections');
+    const correctionsResponse = await fetch('/api/getCorrections.js');
     if (!correctionsResponse.ok) throw new Error('Corrections file not found');
     customCorrections = await correctionsResponse.json();
 
-    const rulesResponse = await fetch('/api/getRules');
+    const rulesResponse = await fetch('/api/getRules.js');
     if (!rulesResponse.ok) throw new Error('Rules file not found');
     rules = await rulesResponse.json();
   } catch (error) {
