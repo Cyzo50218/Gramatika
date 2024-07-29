@@ -568,10 +568,7 @@ async function fetchData() {
     const correctionsResponse = await fetch('/api/getCorrections.js');
     if (!correctionsResponse.ok) throw new Error('Corrections file not found');
     customCorrections = await correctionsResponse.json();
-
-    const rulesResponse = await fetch('/api/getRules.js');
-    if (!rulesResponse.ok) throw new Error('Rules file not found');
-    rules = await rulesResponse.json();
+      console.log('text exist: ', customCorrections);
   } catch (error) {
     console.warn('Error fetching data:', error);
   }
@@ -580,7 +577,7 @@ async function fetchData() {
 fetchData();
 
 document.querySelector('.correctButton').addEventListener('click', async function() {
-  
+  console.log('check pressed!');
   const words = textarea.value.split(/\s+/);
 
   checkContainer.innerHTML = '';
