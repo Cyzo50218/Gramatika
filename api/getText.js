@@ -1,18 +1,26 @@
-const fs = require('fs');
 const { google } = require('googleapis');
 
-const credentials = JSON.parse(fs.readFileSync('credentials.json', 'utf8'));
+const credentials = {
+  installed: {
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    project_id: process.env.GOOGLE_PROJECT_ID,
+    auth_uri: process.env.GOOGLE_AUTH_URI,
+    token_uri: process.env.GOOGLE_TOKEN_URI,
+    auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
+    client_secret: process.env.GOOGLE_CLIENT_SECRET,
+  }
+};
+
+const token = JSON.parse(process.env.GOOGLE_TOKEN); // Ensure you set this as an environment variable too
 
 async function getTextFromDoc() {
-  const { client_secret, client_id, redirect_uris } = credentials.installed;
-  const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+  const { client_secret, client_id, auth_uri, token_uri } = credentials.installed;
+  const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, auth_uri);
 
-  // Load the token
-  const token = JSON.parse(fs.readFileSync('token.json', 'utf8'));
   oAuth2Client.setCredentials(token);
 
   const docs = google.docs({ version: 'v1', auth: oAuth2Client });
-  const documentId = '1_s3AAawCYD4D9atRaU7yM4CmNp6_kZZ37FAKor0YJec'; // Your Google Doc ID
+  const documentId = '1_s3AAawCYD4D9atRaU7yM4CmNp6_kZZ37FAKor0YJec'; 
 
   try {
     const res = await docs.documents.get({ documentId });
@@ -43,6 +51,10 @@ function extractRules(content) {
 }
 
 module.exports = async (req, res) => {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
   try {
     const rules = await getTextFromDoc();
     res.status(200).json(rules);
@@ -50,4 +62,3 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch text from Google Docs', details: error.message });
   }
 };
-    
