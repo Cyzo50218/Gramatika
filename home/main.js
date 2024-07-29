@@ -580,13 +580,8 @@ async function fetchData() {
 fetchData();
 
 document.querySelector('.correctButton').addEventListener('click', async function() {
-  const textarea = document.querySelector('#textarea');
-  const checkContainer = document.querySelector('#checkContainer');
-  const maxwidth2 = document.querySelector('#maxwidth2');
-  const overlay = document.querySelector('#overlay');
-
-  const text = textarea.value;
-  const words = text.split(/\s+/);
+  
+  const words = textarea.split(/\s+/);
 
   checkContainer.innerHTML = '';
 
