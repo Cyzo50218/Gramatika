@@ -581,7 +581,7 @@ fetchData();
 
 document.querySelector('.correctButton').addEventListener('click', async function() {
   
-  const words = textarea.split(/\s+/);
+  const words = textarea.value.split(/\s+/);
 
   checkContainer.innerHTML = '';
 
