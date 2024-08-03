@@ -40,6 +40,7 @@ menuBtn.addEventListener('click', function() {
     logoSpan.style.transition = 'color 0.5s ease-in-out';
     logoSpan.style.color = '#6495ED'; // Cornflower blue color
   } else {
+    
     navbarbg.style.transition = 'background-color 0.5s ease-in-out';
     navbarbg.style.backgroundColor = '#6495ED'; // Cornflower blue color
     logoSpan.style.transition = 'color 0.5s ease-in-out';
@@ -66,14 +67,7 @@ menuBtn.addEventListener('click', function() {
     });
 
     const maxwidth2 = document.querySelector('.max-width2'); 
-    function adjustFontSize() {
-  const width = window.innerWidth;
-if (width >= 1024) {
-  maxwidth2.style.display = 'flex';
-} else if (width >= 768) {
-  maxwidth2.style.display = 'inline';
-}
-}
+    
     const container4 = document.querySelector('.container4'); 
     const textresult = document.getElementById('result'); 
     const textresultlayouts = document.querySelector('.resultdes'); 
@@ -89,9 +83,22 @@ if (width >= 1024) {
 const checkContainer = document.querySelector('.checkContainer');
 
 let clear = false;
+const loading = document.querySelector('.loader');
+const correctButton = document.querySelector('.correctButton');
+const refreshButton = document.querySelector('.refreshButton');
+const functioncontainer3 = document.querySelector('.dropdown');
+
+loading.style.display = 'none';
+loading.style.visibility = 'hidden';
+
     document.querySelector('.refreshButton').addEventListener('click', function() {
         document.querySelector('.editText').value = '';
         overlay.style.opacity = '0';
+        correctButton.style.visibility = 'visible';
+refreshButton.style.visibility = 'visible';
+functioncontainer3.style.visibility = 'visible';
+functioncontainer3.style.display = 'block';
+functioncontainer3.style.display = 'inline';
         overlay.classList.remove('fade-in');
         checkContainer.style.display = 'none';
         clear = true;
@@ -210,62 +217,116 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
       return { errorText, suggestions, ruleDescription };
     });
   } catch (error) {
+    checkContainer.style.display = 'none';
+loading.style.display = 'none';
+correctButton.style.visibility = 'hidden';
+refreshButton.style.visibility = 'visible';
+functioncontainer3.style.visibility = 'hidden';
+functioncontainer3.style.display = 'none';
     console.error('Error in getSuggestionsFromAPI:', error);
     return [];
+    
   }
 };
 document.querySelector('.correctButton').addEventListener('click', async function() {
-  const words = textarea.value.split(/(\s+)/);
-  checkContainer.innerHTML = 'Checking...'; // Loading indicator
-
   
-  window.addEventListener('resize', adjustFontSize); // Adjust font size on window resize
 
-  try {
-    const suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
-    corrections = {};
-    suggestionsFromAPI.forEach(suggestion => {
-      corrections[suggestion.errorText.toLowerCase()] = suggestion;
-    });
-    console.log('Corrections:', corrections);
+if (textarea.value.trim() === "") {
+ 
+  alert("Pakiusap, maglagay ng teksto para masuri.");
+  
+}else{
+  loading.style.display = 'block';
+loading.style.visibility = 'visible';
+correctButton.style.visibility = 'hidden';
+refreshButton.style.visibility = 'hidden';
+functioncontainer3.style.visibility = 'hidden';
+  const words = textarea.value.split(/(\s+)/);
+checkContainer.innerHTML = 'Checking...'; // Loading indicator
 
-    // Highlight words with corrections
-    const highlightedWords = words.map(word => {
-      const correctionData = corrections[word.toLowerCase()];
-      if (correctionData) {
-        const clonedNewContainer = document.createElement('div');
-        clonedNewContainer.classList.add('clonedContainer');
 
-        const suggestions = Array.isArray(correctionData.suggestions) ? correctionData.suggestions.map(token => `<span class="textBackground">${token}</span>`).join(' ') : '';
-        const ruleDescription = correctionData.ruleDescription || '';
+window.addEventListener('resize', adjustFontSize); // Adjust font size on window resize
 
-        clonedNewContainer.innerHTML = `
+try {
+  const suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
+  corrections = {};
+  suggestionsFromAPI.forEach(suggestion => {
+    corrections[suggestion.errorText.toLowerCase()] = suggestion;
+  });
+  console.log('Corrections:', corrections);
+
+  // Highlight words with corrections
+  const highlightedWords = words.map(word => {
+    const correctionData = corrections[word.toLowerCase()];
+    if (correctionData) {
+      const clonedNewContainer = document.createElement('div');
+      clonedNewContainer.classList.add('clonedContainer');
+
+      const suggestions = Array.isArray(correctionData.suggestions) ? correctionData.suggestions.map(token => `<span class="textBackground">${token}</span>`).join(' ') : '';
+      const ruleDescription = correctionData.ruleDescription || '';
+
+      clonedNewContainer.innerHTML = `
           <div class="errorText">${word.replace(/\n/g, '<br>')}</div>
           <div class="suggestions">${suggestions}</div>
           <div class="ruleDescription">${ruleDescription}</div>
         `;
-        clonedNewContainer.style.width = '80%';
+      clonedNewContainer.style.width = '80%';
 
-        checkContainer.appendChild(clonedNewContainer);
-        return `<span class="highlight">${word}</span>`;
-      } else {
-        return word;
-      }
-    }).join(' ');
-
-    overlay.innerHTML = highlightedWords.replace(/\n/g, '<br>');
-
-    const hasHighlights = highlightedWords.includes('<span class="highlight">');
-    checkContainer.style.display = hasHighlights ? 'block' : 'none';
-    maxwidth2.style.display = hasHighlights ? 'inline' : 'flex';
-
-    if (!hasHighlights) {
-      checkContainer.innerHTML = 'No corrections needed.';
+      checkContainer.appendChild(clonedNewContainer);
+      return `<span class="highlight">${word}</span>`;
+    } else {
+      return word;
     }
-  } catch (error) {
-    console.error('Error processing corrections:', error);
-    checkContainer.innerHTML = 'An error occurred while checking the text.';
+  }).join(' ');
+
+  overlay.innerHTML = highlightedWords.replace(/\n/g, '<br>');
+
+  const hasHighlights = highlightedWords.includes('<span class="highlight">');
+  checkContainer.style.display = 'block';
+  if (window.innerWidth <= 768) {
+  maxwidth2.style.display = 'inline';
+} else if (window.innerWidth <= 1024) {
+  maxwidth2.style.display = 'flex';
+}
+
+
+loading.style.display = 'none';
+correctButton.style.visibility = 'hidden';
+refreshButton.style.visibility = 'visible';
+functioncontainer3.style.visibility = 'hidden';
+functioncontainer3.style.display = 'none';
+
+  if (!hasHighlights) {
+    if (window.innerWidth <= 768) {
+  maxwidth2.style.display = 'inline';
+} else if (window.innerWidth <= 1024) {
+  maxwidth2.style.display = 'flex';
+}
+    checkContainer.innerHTML = 'No error found.';
+    loading.style.display = 'none';
+    checkContainer.style.display = 'none';
+correctButton.style.visibility = 'hidden';
+refreshButton.style.visibility = 'visible';
+functioncontainer3.style.visibility = 'hidden';
+functioncontainer3.style.display = 'none';
   }
+} catch (error) {
+  if (window.innerWidth <= 768) {
+  maxwidth2.style.display = 'inline';
+} else if (window.innerWidth <= 1024) {
+  maxwidth2.style.display = 'flex';
+}
+  console.error('Error processing corrections:', error);
+  checkContainer.innerHTML = 'An error occurred while checking the text.';
+  checkContainer.style.display = 'none';
+  loading.style.display = 'none';
+correctButton.style.visibility = 'hidden';
+refreshButton.style.visibility = 'visible';
+functioncontainer3.style.visibility = 'hidden';
+functioncontainer3.style.display = 'none';
+}
+}
+  
 });
 
 
@@ -291,5 +352,4 @@ document.querySelector('.correctButton').addEventListener('click', async functio
 
     // Call the method to make it non-editable
 });
-
 
