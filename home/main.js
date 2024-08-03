@@ -102,448 +102,6 @@ let clear = false;
 let textdetector = document.getElementById('text');
 let detected = false;
 
-
-  const corrections = {
-  // Phrase corrections
-  'kung araw ng Sabado': 'kapag araw ng Sabado',
-  'kung nagmamaneho ka': 'kapag nagmamaneho ka',
-  'walang imik kung matulog': 'walang kakibu-kibo kung matulog',
-  'huwag ninyong imikin': 'huwag ninyong kibuin',
-  'dahil sa sumakit ang ulo': 'dahil sumakit ang ulo',
-  'samantalang nabubuhay': 'habang nabubuhay',
-  'habang wala pa akong trabaho': 'samantalang wala pa akong trabaho',
-  'ibayad mo ako sa sine': 'ipagbabayad mo ako sa sine',
-  'ibinayad ko siya sa bus': 'ipinagbayad ko siya sa bus',
-  'mayroon anay sa dingding': 'may anay sa dingding',
-  'may kaming binabalak': 'mayroon kaming binabalak',
-  'may iyang malaking suliranin': 'mayroon iyang malaking suliranin',
-  'pahirin mo ng sukang iloko': 'pahiran mo ng sukang iloko',
-  'pahiran mo ang pawis': 'pahirin mo ang pawis',
-  'familia': 'pamilya',
-  'berdeberde': 'berdeng-berde',
-  'anoano': 'ano-ano',
-  'kortehan': 'kortihan',
-  'babai': 'babae',
-  'makaDiyos': 'maka-Diyos',
-  'makaIngles': 'maka-Ingles',
-  'paDavao': 'pa-Davao',
-  'magfoFord': 'magfo-Ford',
-  'magviVios': 'magvi-Vios',
-  'magjoJohnson': 'magjo-Johnson',
-  'magjujuice': 'magju-juice',
-  'magjijeep': 'magji-jeep',
-  'magjuduty': 'magju-duty',
-  'magpophotocopy': 'magpo-photocopy',
-  'peprendahin': 'pe-pren-da-hin',
-  'kaklaruhin': 'ka-kla-ru-hin',
-  'dadramaahan': 'da-dra-ma-han',
-  'paplanohin': 'pa-pla-nu-hin',
-
-
-  'magboblowout': 'magbo-blow-out',
-  'magdodrawing': 'magdo-drawing',
-  'maggargle': 'magga-gar-gle',
-
-
-  'painting': 'mga painting',
-  'opisyal': 'mga opisyal',
-  'computer': 'mga computer',
-
-
-  'mga paintings': 'paintings',
-  'mga opisyales': 'opisyales',
-  'mga computers': 'computer',
-
-
-  'mga kalalakihan': 'kalalakihan',
-  'limang kalalakihan': 'kalalakihan',
-  'mga kababaihan': 'kababaihan',
-  'anim na kababaihan': 'kababaihan',
-  'mga kaguruan': 'kaguruan',
-  'tatlong kaguruan': 'kaguruan',
-  'mga kabataan': 'kabataan',
-  'sampung kabataan': 'kabataan',
-
-
-  'pang-akademiko': 'pang-akademya',
-  'pangkultural': 'pangkultura',
-  'panlingguwistik': 'panlingguwistika',
-  'kumusta na ka': 'kamusta ka na',
-  'baait': 'bait',
-  'pusa ng gala': 'pusang gala',
-  'maraming salamat': 'maraming salamat po',
-  'paalam': 'paalam na po',
-    // Common Phrases Sa Tagalog
-  'kumusta na ka': 'kamusta ka na',
-  'baait': 'bait',
-  'pusa ng gala': 'pusang gala',
-  'maraming salamat': 'maraming salamat po',
-  'paalam': 'paalam na po',
-  'sa wakas': 'sa bandang huli',
-  'mabuti nman': 'mabuti naman',
-  'sige na': 'sige na nga',
-  'ano ba yan': 'ano ba iyan',
-  'walang anuman': 'walang ano man',
-
-  // Nouns (Pangngalan)
-  'peso': 'piso',
-  'pisa': 'pusa',
-  'aso': 'aso-asuhan',
-  'bahay': 'tahanan',
-  'trabaho': 'gawain',
-  'bata': 'paslit',
-  'araw': 'araw-araw',
-  'gabi': 'gabing-gabi',
-  'umaga': 'umagang-umaga',
-  'ina': 'inaas',
-  'ama': 'amaas',
-  'anak': 'anak-anakan',
-  'loloan': 'lolo',
-  'tata': 'tatay',
-  'kaibigan': 'katoto',
-  'katotohanan': 'katuwiran',
-  'kasinungalingan': 'di-katotohanan',
-  'pangarap': 'pangarapin',
-  'pag-ibig': 'pagmamahal',
-  'pagkain': 'pagkainin',
-  'sakit': 'karamdaman',
-  'kaliwa': 'kaliwaan',
-  'kanan': 'kananin',
-  'ulol': 'ulo',
-  'paat': 'paahan',
-  'kamay': 'kamayin',
-  'dila': 'dilaan',
-  'ngiti': 'ngitian',
-  'iyak': 'iyak-iyakan',
-  'kanta': 'awitin',
-  'dinig': 'dinigan',
-  'tanong': 'tanongin',
-  'sagot': 'sagutin',
-  'ligaya': 'kaligayahan',
-  'lungkot': 'kalungkutan',
-  'bilis': 'kabilis',
-  'bagal': 'kabagalan',
-  'tubig': 'tubigan',
-  'lupa': 'lupain',
-  'hangin': 'hanging',
-  'apoy': 'apuyan',
-  'bundok': 'kabundukan',
-  'dagat': 'karagatan',
-  'ilog': 'ilugan',
-  'puno': 'punuan',
-  'bulaklak': 'bulaklakan',
-  'bayan': 'sambayanan',
-
-  // Pronouns (Panghalip)
-  'sya': 'siya',
-  'ako': "ako'y",
-  'tayo': "tayo'y",
-  'kayo': "kayo'y",
-  'kami': "kami'y",
-  'ikaw': "ikaw'y",
-  'nila': 'kanila',
-  'namin': 'amin',
-  'atin': 'sa atin',
-  'akin': 'sa akin',
-  'inyo': 'sa inyo',
-  'kanya': 'sa kanya',
-
-  // Verbs (Pandiwa)
-  'kumakain': 'kumakaing',
-  'natutulog': 'natutulog ng',
-  'sasakay': 'sasakyan',
-  'pupunta': 'paroroon',
-  'bumili': 'binili',
-  'magkita': 'magkita-kita',
-  'magusap': 'mag-usap-usap',
-  'magluto': 'magluluto',
-  'maglinis': 'maglilinisan',
-  'magsulat': 'magsusulat',
-  'magbasa': 'magbabasa',
-  'maglakad': 'maglalakad',
-  'tumakbo': 'tatakbo',
-  'umiyak': 'iiyak',
-  'tumawa': 'tatawa',
-
-  // Adverbs (Pang-abay)
-  'dun': 'doon',
-  'san': 'saan',
-  'dito': 'rito',
-  'dyan': 'diyaan',
-  'kaninang': 'kani-kanina',
-  'maraming': 'marami',
-  'mabilis': 'mabilis-bilis',
-  'madalas': 'madalas-dalas',
-  'minsan': 'paminsan-minsan',
-  'agad': 'kaagad',
-
-  // Adjectives (Pang-uri)
-  'maganda': 'marikit',
-  'pangit': 'di-kagandahan',
-  'tama': 'husto',
-  'mali': 'sala',
-  'mabuti': 'mahusay',
-  'mabilis': 'mabilis-bilis',
-  'mabagal': 'mabagal-bagal',
-  'malaki': 'malakas',
-  'maliit': 'munti',
-  'mataba': 'matatabain',
-  'payat': 'payatin',
-  'matangkad': 'mataas',
-  'maikli': 'maliit',
-
-  // Prepositions (Pang-ukol)
-  'galing sa': 'buhat sa',
-  'mula sa': 'galing sa',
-  'para sa': 'ukol sa',
-  'tungkol sa': 'hinggil sa',
-  'ayon sa': 'batay sa',
-
-  // Conjunctions (Pangatnig)
-  'at': 'at saka',
-  'ngunit': 'datapwat',
-  'o': 'o kaya',
-  'kasi': 'dahil',
-  'pero': 'ngunit',
-  'kung': 'kapag',
-  'kahit': 'kahit na',
-  'bago': 'bago pa',
-  'sapagkat': "sapagka't",
-  'dahilan': 'dahil sa',
-  'kaya': "'kaya't",
-  'upang': 'upang sa',
-  'bagamat': "bagama't",
-  'gayunman': 'gayunpaman',
-  'samantala': 'samantalang',
-  'yamang': 'yayamang',
-  'palibhasa': "palibhasa'y",
-  'subalit': "subali't",
-  'gayon': 'gayundin',
-  'maliban': 'maliban sa',
-  'tulad': 'tulad ng',
-  'gaya': 'gaya ng',
-  'para': 'para sa',
-  'dahil': 'dahilan sa',
-  'tuwing': 'sa tuwing',
-
-  // Ligatures (Pang-angkop)
-  'na': 'ng',
-  'ng': 'na',
-  '-g': '-ng',
-  '-ng': '-g',
-  'nang': 'na ang',
-  'kung': 'kapag',
-  'kaysa': 'kaysa sa',
-  'pagka': "pagka't",
-  'hangga': "hangga't",
-  'lalo': 'lalo na',
-  'mula': 'mula sa',
-  'hangang': 'hanggang',
-  'bagamat': "bagama't",
-  'sapagkat': "sapagka't",
-  'tuloy': 'kaya tuloy',
-
-  // Particles
-  'nga': 'na',
-  'ba': "ba'y",
-  'daw': 'raw',
-  'din': 'rin',
-  'naman': 'man',
-  'lang': 'lamang',
-  'po': 'ho',
-  'na': 'pa',
-  'pala': 'sana',
-  'kaya': 'kasi',
-  'diba': 'hindi ba',
-  'eh': 'ay',
-  'kasi': 'dahil',
-  'talaga': 'tunay',
-  'yata': "yata'y",
-  'muna': "muna'y",
-  'sana': "sana'y",
-  'wala': 'wala ng',
-  'teka': 'sandali',
-  'uy': 'hoy',
-  'ano': 'ano ba',
-  'ganun': 'ganoon',
-  'siguro': 'marahil',
-  'halos': 'halos na',
-  'kahit': 'kahit na',
-  'pa': 'pa rin',
-  'naman': 'naman kasi',
-  'kasi': 'kasi naman',
-  'nga': 'nga naman',
-  'ata': "ata'y",
-  'kuwan': 'ano',
-  'di': 'hindi',
-};
-
-// Extract words from phrases and individual words
-function extractWordCorrections(corrections) {
-  const wordCorrections = {};
-  for (const [incorrect, correct] of Object.entries(corrections)) {
-    const incorrectWords = incorrect.split(/\s+/);
-    const correctWords = correct.split(/\s+/);
-    
-    for (let i = 0; i < incorrectWords.length; i++) {
-      if (incorrectWords[i] !== correctWords[i]) {
-        if (!wordCorrections[incorrectWords[i]]) {
-          wordCorrections[incorrectWords[i]] = [];
-        }
-        if (!wordCorrections[incorrectWords[i]].includes(correctWords[i])) {
-          wordCorrections[incorrectWords[i]].push(correctWords[i]);
-        }
-      }
-    }
-    
-
-    for (let i = 0; i < incorrectWords.length; i++) {
-      if (!wordCorrections[incorrectWords[i]]) {
-        wordCorrections[incorrectWords[i]] = [];
-      }
-      if (!wordCorrections[incorrectWords[i]].includes(incorrectWords[i])) {
-        wordCorrections[incorrectWords[i]].push(incorrectWords[i]);
-      }
-    }
-    for (let i = 0; i < correctWords.length; i++) {
-      if (!wordCorrections[correctWords[i]]) {
-        wordCorrections[correctWords[i]] = [];
-      }
-      if (!wordCorrections[correctWords[i]].includes(correctWords[i])) {
-        wordCorrections[correctWords[i]].push(correctWords[i]);
-      }
-    }
-  }
-  return wordCorrections;
-}
-
-const wordCorrections = extractWordCorrections(corrections);
-
-// Levenshtein Distance function
-function levenshteinDistance(a, b) {
-  const matrix = [];
-  if (typeof a !== 'string' || typeof b !== 'string') {
-    throw new TypeError('Arguments must be strings');
-  }
-  for (let i = 0; i <= b.length; i++) {
-    matrix[i] = [i];
-  }
-  for (let j = 0; j <= a.length; j++) {
-    matrix[0][j] = j;
-  }
-  for (let i = 1; i <= b.length; i++) {
-    for (let j = 1; j <= a.length; j++) {
-      const cost = a[j - 1] === b[i - 1] ? 0 : 1;
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1, // Deletion
-        matrix[i][j - 1] + 1, // Insertion
-        matrix[i - 1][j - 1] + cost // Substitution
-      );
-    }
-  }
-  return matrix[b.length][a.length];
-}
-
-// Jaro-Winkler Distance function
-function jaroWinklerDistance(s1, s2) {
-  const m = s1.length;
-  const n = s2.length;
-  if (m === 0) return n === 0 ? 1 : 0;
-
-  const matchThreshold = Math.max(m, n) / 2 - 1;
-  const matchDistance = Math.floor(matchThreshold);
-  let matches = 0;
-  let transpositions = 0;
-  const s1Matches = Array(m).fill(false);
-  const s2Matches = Array(n).fill(false);
-
-  for (let i = 0; i < m; i++) {
-    const start = Math.max(0, i - matchDistance);
-    const end = Math.min(n, i + matchDistance + 1);
-    for (let j = start; j < end; j++) {
-      if (s2Matches[j]) continue;
-      if (s1[i] !== s2[j]) continue;
-      s1Matches[i] = true;
-      s2Matches[j] = true;
-      matches++;
-      break;
-    }
-  }
-  if (matches === 0) return 0;
-
-  let k = 0;
-  for (let i = 0; i < m; i++) {
-    if (!s1Matches[i]) continue;
-    while (!s2Matches[k]) k++;
-    if (s1[i] !== s2[k]) transpositions++;
-    k++;
-  }
-  const jaro = (matches / m + matches / n + (matches - transpositions / 2) / matches) / 3;
-  const prefixLength = Math.min(4, Math.min(s1.length, s2.length));
-  const prefixScale = 0.1;
-  const jaroWinkler = jaro + prefixLength * prefixScale * (1 - jaro);
-
-  return jaroWinkler;
-}
-
-// Function to get similarity score using both methods
-function getSimilarityScore(a, b) {
-  const levDistance = levenshteinDistance(a, b);
-  const jaroWinkler = jaroWinklerDistance(a, b);
-  
-  // Combine the scores: Inverse Levenshtein Distance + Jaro-Winkler score
-  return 1 / (1 + levDistance) + jaroWinkler;
-}
-
-// Improved getSuggestions function with case-insensitivity
-// Improved getSuggestions function with case-insensitivity and error handling
-function getSuggestions(word, wordCorrections) {
-  if (typeof word !== 'string') {
-    throw new TypeError('Input word must be a string');
-  }
-
-  const lowerCaseWord = word.toLowerCase();
-  const firstLetter = lowerCaseWord[0];
-  const suggestions = [];
-
-  for (const [incorrect, correctList] of Object.entries(wordCorrections)) {
-    if (typeof incorrect !== 'string') {
-      continue; // Skip non-string keys
-    }
-
-    const lowerCaseIncorrect = incorrect.toLowerCase();
-    
-    if (lowerCaseIncorrect.startsWith(firstLetter)) {
-      const similarityScore = getSimilarityScore(lowerCaseWord, lowerCaseIncorrect);
-      
-      for (const correct of correctList) {
-        if (typeof correct !== 'string') {
-          continue; // Skip non-string values in the Set
-        }
-        
-        const lowerCaseCorrect = correct.toLowerCase();
-        if (lowerCaseCorrect !== lowerCaseWord) { // Avoid suggesting the same word
-          suggestions.push({ word: lowerCaseCorrect, score: similarityScore });
-        }
-      }
-    }
-  }
-
-  // Sort suggestions by similarity score (higher is better)
-  suggestions.sort((a, b) => b.score - a.score);
-
-  // Return a number of suggestions but don't exceed the number of suggestions available
-  const maxSuggestions = Math.min(suggestions.length, 5);
-  return suggestions.slice(0, maxSuggestions).map(s => s.word);
-}
-
-
-
-
-
-
-
-
   const newContainer = document.querySelector('.newContainer');
     const dropdownButton  = document.getElementById('dropdownButton');
 const errorText  = document.querySelector('.errorText');
@@ -559,173 +117,171 @@ dropdownContainer.style.display = 'none';
 let highlightedWords = ''; // Initialize highlightedWords
 
 
-    const endpoint = 'https://api.languagetool.org/v2/check';
-let customCorrections = {};
-let rules = [];
 
-async function fetchData() {
+
+
+
+function showDefinition(event) {
+  const word = event.target.innerText;
+  definitions.style.display = 'block';
+  // Fetch and display the definition
+  fetchDefinition(word)
+    .then(definition => {
+      definitions.innerHTML = `<h3>${word}</h3><p>${definition}</p>`;
+    })
+    .catch(error => {
+      definitions.innerHTML = `<h3>${word}</h3><p>Definition not found.</p>`;
+    });
+  // Position the definitions element near the word
+  const rect = event.target.getBoundingClientRect();
+  definitions.style.top = `${rect.bottom + window.scrollY}px`;
+  definitions.style.left = `${rect.left + window.scrollX}px`;
+}
+
+function hideDefinition() {
+  definitions.style.display = 'none';
+  definitions.innerHTML = ''; // Clear the content of the definitions element
+}
+
+async function fetchDefinition(word) {
   try {
-    const correctionsResponse = await fetch('/api/getCorrections.js');
-    if (!correctionsResponse.ok) throw new Error('Corrections file not found');
-    customCorrections = await correctionsResponse.json();
-      console.log('text exist: ', customCorrections);
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+    if (!response.ok) {
+      throw new Error('Word not found');
+    }
+    const data = await response.json();
+    // Extract the first definition
+    const definition = data[0].meanings[0].definitions[0].definition;
+    return definition;
   } catch (error) {
-    console.warn('Error fetching data:', error);
+    console.error('Error fetching definition:', error);
+    return 'Definition not found';
   }
 }
 
-fetchData();
 
-document.querySelector('.correctButton').addEventListener('click', async function() {
-  console.log('check pressed!');
-  const words = textarea.value.split(/\s+/);
 
-  checkContainer.innerHTML = '';
 
-  const getSuggestionsFromAPI = async (text) => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ text: text, language: 'tl' })
-    };
 
-    try {
-      const response = await fetch(endpoint, requestOptions);
-      if (!response.ok) throw new Error('API response not OK');
+const endpoint = 'https://lt-ruletagalog.vercel.app/api/v2/check';
 
-      const data = await response.json();
-      return data.matches.map(match => {
-        const context = match.context.text;
-        const offset = match.context.offset;
-        const length = match.context.length;
-        const errorText = context.substr(offset, length);
-        const ruleDescription = match.rule.description;
-        return { errorText, suggestions: match.replacements.map(rep => rep.value), ruleDescription };
-      });
-    } catch (error) {
-      console.error('Error:', error);
-      return [];
-    }
+let corrections = {};
+
+const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
+  console.log('getSuggestionsFromAPI called with text:', text);
+  console.log('Language:', language);
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      text: text,
+      language: language
+    })
   };
 
-  const corrections = { ...customCorrections };
+  try {
+    const response = await fetch(endpoint, requestOptions);
+    console.log('Response status:', response.status);
 
-  // Incorporate rules into corrections
-  rules.forEach(rule => {
-    const [errorText, ...suggestions] = rule.split('\n');
-    if (errorText) {
-      corrections[errorText.toLowerCase()] = {
-        errorText,
-        suggestions,
-        ruleDescription: 'Custom rule from rules.json'
-      };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  });
 
-  if (Object.keys(corrections).length === 0) {
-    const suggestionsFromAPI = await getSuggestionsFromAPI(text);
-    suggestionsFromAPI.forEach(suggestion => {
-      corrections[suggestion.errorText.toLowerCase()] = suggestion;
-    });
-  }
+    const data = await response.json();
+    console.log('Data from API:', data);
 
-  const highlightedWords = words.map(word => {
-    const correctionData = corrections[word.toLowerCase()];
-    if (correctionData) {
-      maxwidth2.style.display = 'flex';
-      const clonedNewContainer = document.createElement('div');
-      clonedNewContainer.classList.add('clonedContainer');
-
-      clonedNewContainer.innerHTML = `
-        <div class="errorText">${word.replace(/\n/g, '<br>')}</div>
-        <div class="suggestions">${correctionData.suggestions.map(token => `<span class="textBackground">${token}</span>`).join(' ')}</div>
-        <div class="ruleDescription">${correctionData.ruleDescription}</div>
-      `;
-      clonedNewContainer.style.width = '80%';
-
-      clonedNewContainer.addEventListener('click', function() {
-        const clonedDropdownContainer = this.querySelector('.dropdownContainer');
-        const clonedDownDropdown = this.querySelector('.dropdownButton');
-        if (!clonedDropdownContainer || !clonedDownDropdown) return;
-
-        clonedDownDropdown.style.transition = 'transform 0.3s ease';
-
-        if (clonedDropdownContainer.style.display === 'block') {
-          clonedDropdownContainer.style.display = 'none';
-          clonedDownDropdown.style.transform = 'rotate(0deg)';
-          this.style.height = 'auto';
-          this.style.paddingBottom = '0';
-          this.style.width = '80%';
-        } else {
-          clonedDropdownContainer.style.display = 'block';
-          clonedDownDropdown.style.transform = 'rotate(180deg)';
-          this.style.width = '80%';
-          this.style.height = 'auto';
-          this.style.paddingBottom = '20px';
-          this.style.paddingRight = '10px';
-        }
-      });
-
-      clonedNewContainer.querySelectorAll('.textBackground').forEach(tokenElement => {
-        tokenElement.addEventListener('click', (event) => {
-          event.stopPropagation();
-          const selectedToken = event.target.innerText;
-          const originalWord = clonedNewContainer.querySelector('.errorText').innerText;
-
-          const updatedText = textarea.value.replace(new RegExp(`\\b${originalWord}\\b`, 'g'), selectedToken);
-          textarea.value = updatedText;
-
-          clonedNewContainer.remove();
-        });
-      });
-
-      checkContainer.appendChild(clonedNewContainer);
-      checkContainer.style.display = 'block';
-      return `<span class="highlight">${word}</span>`;
-    } else {
-      return word;
-    }
-  }).join(' ');
-
-  overlay.innerHTML = highlightedWords.replace(/\n/g, '<br>');
-
-  const hasHighlights = highlightedWords.includes('<span class="highlight">');
-  checkContainer.style.display = hasHighlights ? 'block' : 'none';
-  maxwidth2.style.display = hasHighlights ? 'flex' : 'inline';
-});
-
-
-
-const endpointer = 'https://api.languagetool.org/v2/check';
-
-const textToCheck = 'Ito ay isang halimbawa ng teksto na may mali. paDavao, pagPhophotcopy';
-
-const requestOptions = {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-  body: new URLSearchParams({
-    text: textToCheck,
-    language: 'tl', // Specify the language as Tagalog
-  })
-};
-
-fetch(endpointer, requestOptions)
-  .then(response => response.json())
-  .then(data => {
-    const suggestions = data.matches.map(match => {
+    return data.matches.map(match => {
       const context = match.context.text;
       const offset = match.context.offset;
       const length = match.context.length;
       const errorText = context.substr(offset, length);
-      return `Error: "${errorText}" at position ${offset}. Suggestions: ${match.replacements.map(rep => rep.value).join(', ')}`;
+      const ruleDescription = match.rule.description;
+      const suggestions = match.replacements;
+      return { errorText, suggestions, ruleDescription };
     });
-    
-    console.log('Suggestions:', suggestions);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-  
+  } catch (error) {
+    console.error('Error in getSuggestionsFromAPI:', error);
+    return [];
+  }
+};
+
+document.querySelector('.correctButton').addEventListener('click', async function() {
+  const words = textarea.value.split(/(\s+)/);
+  checkContainer.innerHTML = 'Checking...'; // Loading indicator
+  maxwidth2.style.display = 'flex';
+
+  try {
+    const suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
+    corrections = {};
+    suggestionsFromAPI.forEach(suggestion => {
+      corrections[suggestion.errorText.toLowerCase()] = suggestion;
+    });
+    console.log('Corrections:', corrections);
+
+    // Highlight words with corrections
+    const highlightedWords = words.map(word => {
+      const correctionData = corrections[word.toLowerCase()];
+      if (correctionData) {
+        const clonedNewContainer = document.createElement('div');
+        clonedNewContainer.classList.add('clonedContainer');
+
+        const suggestions = Array.isArray(correctionData.suggestions) ? correctionData.suggestions.map(token => `<span class="textBackground">${token}</span>`).join(' ') : '';
+        const ruleDescription = correctionData.ruleDescription || '';
+
+        clonedNewContainer.innerHTML = `
+          <div class="errorText">${word.replace(/\n/g, '<br>')}</div>
+          <div class="suggestions">${suggestions}</div>
+          <div class="ruleDescription">${ruleDescription}</div>
+        `;
+        clonedNewContainer.style.width = '80%';
+
+        checkContainer.appendChild(clonedNewContainer);
+        return `<span class="highlight">${word}</span>`;
+      } else {
+        return word;
+      }
+    }).join(' ');
+
+    overlay.innerHTML = highlightedWords.replace(/\n/g, '<br>');
+
+    const hasHighlights = highlightedWords.includes('<span class="highlight">');
+    checkContainer.style.display = hasHighlights ? 'block' : 'none';
+    maxwidth2.style.display = hasHighlights ? 'flex' : 'inline';
+
+    if (!hasHighlights) {
+      checkContainer.innerHTML = 'No corrections needed.';
+    }
+  } catch (error) {
+    console.error('Error processing corrections:', error);
+    checkContainer.innerHTML = 'An error occurred while checking the text.';
+  }
 });
+
+
+// The rest of the code remains the same
+    // Synchronize the textarea scrolling with the overlay
+    textarea.addEventListener('scroll', function() {
+        overlay.scrollTop = textarea.scrollTop;
+        overlay.scrollLeft = textarea.scrollLeft;
+    });
+
+    // Adjust the overlay text when the user types
+    
+    const textresulttext = document.getElementById('textresult');
+
+    // Method to make textarea non-editable but copyable
+    function makeNonEditable() {
+        textresult.setAttribute('readonly', true); // Makes the textarea non-editable
+        textresult.addEventListener('focus', () => {
+            textresult.select(); // Select the text on focus for copying
+        });
+    }
+
+    // Call the method to make it non-editable
+});
+
+
