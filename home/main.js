@@ -66,8 +66,14 @@ menuBtn.addEventListener('click', function() {
     });
 
     const maxwidth2 = document.querySelector('.max-width2'); 
-    maxwidth2.style.display = 'inline';
-
+    function adjustFontSize() {
+  const width = window.innerWidth;
+if (width >= 1024) {
+  maxwidth2.style.display = 'flex';
+} else if (width >= 768) {
+  maxwidth2.style.display = 'inline';
+}
+}
     const container4 = document.querySelector('.container4'); 
     const textresult = document.getElementById('result'); 
     const textresultlayouts = document.querySelector('.resultdes'); 
@@ -208,11 +214,12 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
     return [];
   }
 };
-
 document.querySelector('.correctButton').addEventListener('click', async function() {
   const words = textarea.value.split(/(\s+)/);
   checkContainer.innerHTML = 'Checking...'; // Loading indicator
-  maxwidth2.style.display = 'flex';
+
+  
+  window.addEventListener('resize', adjustFontSize); // Adjust font size on window resize
 
   try {
     const suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
@@ -250,7 +257,7 @@ document.querySelector('.correctButton').addEventListener('click', async functio
 
     const hasHighlights = highlightedWords.includes('<span class="highlight">');
     checkContainer.style.display = hasHighlights ? 'block' : 'none';
-    maxwidth2.style.display = hasHighlights ? 'flex' : 'inline';
+    maxwidth2.style.display = hasHighlights ? 'inline' : 'flex';
 
     if (!hasHighlights) {
       checkContainer.innerHTML = 'No corrections needed.';
@@ -260,6 +267,7 @@ document.querySelector('.correctButton').addEventListener('click', async functio
     checkContainer.innerHTML = 'An error occurred while checking the text.';
   }
 });
+
 
 
 // The rest of the code remains the same
