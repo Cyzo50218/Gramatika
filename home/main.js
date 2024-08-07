@@ -44,7 +44,7 @@ menuBtn.addEventListener('click', function() {
     navbarbg.style.transition = 'background-color 0.5s ease-in-out';
     navbarbg.style.backgroundColor = '#6495ED'; // Cornflower blue color
     logoSpan.style.transition = 'color 0.5s ease-in-out';
-    logoSpan.style.color = '#133058'; // Original color
+    logoSpan.style.color = '#FFFFFF'; // Original color
   }
 });
     // Function to close menu on window resize if window width > 768px
@@ -96,9 +96,7 @@ loading.style.visibility = 'hidden';
         overlay.style.opacity = '0';
         correctButton.style.visibility = 'visible';
 refreshButton.style.visibility = 'visible';
-functioncontainer3.style.visibility = 'visible';
-functioncontainer3.style.display = 'block';
-functioncontainer3.style.display = 'inline';
+
         overlay.classList.remove('fade-in');
         checkContainer.style.display = 'none';
         clear = true;
@@ -221,112 +219,104 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
 loading.style.display = 'none';
 correctButton.style.visibility = 'hidden';
 refreshButton.style.visibility = 'visible';
-functioncontainer3.style.visibility = 'hidden';
-functioncontainer3.style.display = 'none';
+
     console.error('Error in getSuggestionsFromAPI:', error);
     return [];
     
   }
 };
 document.querySelector('.correctButton').addEventListener('click', async function() {
-  
+  if (textarea.value.trim() === "") {
+    alert("Pakiusap, maglagay ng teksto para masuri.");
+  } else {
+    loading.style.display = 'block';
+    loading.style.visibility = 'visible';
+    correctButton.style.visibility = 'hidden';
+    refreshButton.style.visibility = 'hidden';
 
-if (textarea.value.trim() === "") {
- 
-  alert("Pakiusap, maglagay ng teksto para masuri.");
-  
-}else{
-  loading.style.display = 'block';
-loading.style.visibility = 'visible';
-correctButton.style.visibility = 'hidden';
-refreshButton.style.visibility = 'hidden';
-functioncontainer3.style.visibility = 'hidden';
-  const words = textarea.value.split(/(\s+)/);
-checkContainer.innerHTML = 'Checking...'; // Loading indicator
+    checkContainer.innerHTML = 'Munkahing Pagtatama'; // Loading indicator
 
+    window.addEventListener('resize', adjustFontSize); // Adjust font size on window resize
 
-window.addEventListener('resize', adjustFontSize); // Adjust font size on window resize
+    try {
+      const suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
+      corrections = {};
+      suggestionsFromAPI.forEach(suggestion => {
+        corrections[suggestion.errorText.toLowerCase()] = suggestion;
+      });
+      console.log('Corrections:', corrections);
 
-try {
-  const suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
-  corrections = {};
-  suggestionsFromAPI.forEach(suggestion => {
-    corrections[suggestion.errorText.toLowerCase()] = suggestion;
-  });
-  console.log('Corrections:', corrections);
+      // Function to update highlights
+      const updateHighlights = () => {
+        // Clear old highlights and cloned containers
+        checkContainer.innerHTML = '';
 
-  // Highlight words with corrections
-  const highlightedWords = words.map(word => {
-    const correctionData = corrections[word.toLowerCase()];
-    if (correctionData) {
-      const clonedNewContainer = document.createElement('div');
-      clonedNewContainer.classList.add('clonedContainer');
+        const words = textarea.value.split(/(\s+)/);
+        const highlightedWords = words.map(word => {
+          const correctionData = corrections[word.toLowerCase()];
+          if (correctionData) {
+            const clonedNewContainer = document.createElement('div');
+            clonedNewContainer.classList.add('clonedContainer');
 
-      const suggestions = Array.isArray(correctionData.suggestions) ? correctionData.suggestions.map(token => `<span class="textBackground">${token}</span>`).join(' ') : '';
-      const ruleDescription = correctionData.ruleDescription || '';
+            const suggestions = Array.isArray(correctionData.suggestions) ? correctionData.suggestions.map(token => `<span class="suggestion">${token}</span>`).join(' ') : '';
+            const ruleDescription = correctionData.ruleDescription || '';
 
-      clonedNewContainer.innerHTML = `
-          <div class="errorText">${word.replace(/\n/g, '<br>')}</div>
-          <div class="suggestions">${suggestions}</div>
-          <div class="ruleDescription">${ruleDescription}</div>
-        `;
-      clonedNewContainer.style.width = '80%';
+            clonedNewContainer.innerHTML = `
+              <div class="errorText">${word.replace(/\n/g, '<br>')}</div>
+              <div class="suggestions">${suggestions}</div>
+              <div class="ruleDescription">${ruleDescription}</div>
+            `;
+            clonedNewContainer.style.width = '80%';
 
-      checkContainer.appendChild(clonedNewContainer);
-      return `<span class="highlight">${word}</span>`;
-    } else {
-      return word;
+            checkContainer.appendChild(clonedNewContainer);
+
+            // Add event listeners to suggestions
+            clonedNewContainer.querySelectorAll('.suggestion').forEach(suggestionElem => {
+              suggestionElem.addEventListener('click', function() {
+                const selectedSuggestion = this.textContent;
+
+                // Update the textarea value
+                textarea.value = textarea.value.replace(word, selectedSuggestion);
+
+                // Update highlights and overlay
+                updateHighlights();
+              });
+            });
+
+            return `<span class="highlight">${word}</span>`;
+          } else {
+            return word;
+          }
+        }).join(' ');
+
+        overlay.innerHTML = highlightedWords.replace(/\n/g, '<br>');
+
+        // Check if there are any highlights
+        const hasHighlights = highlightedWords.includes('<span class="highlight">');
+        if (!hasHighlights) {
+          checkContainer.innerHTML = 'No error found.';
+          checkContainer.style.display = 'none';
+        } else {
+          checkContainer.style.display = 'block';
+        }
+
+        loading.style.display = 'none';
+        correctButton.style.visibility = 'hidden';
+        refreshButton.style.visibility = 'visible';
+      };
+
+      // Initial call to update highlights
+      updateHighlights();
+
+    } catch (error) {
+      console.error('Error processing corrections:', error);
+      checkContainer.innerHTML = 'An error occurred while checking the text.';
+      checkContainer.style.display = 'none';
+      loading.style.display = 'none';
+      correctButton.style.visibility = 'hidden';
+      refreshButton.style.visibility = 'visible';
     }
-  }).join(' ');
-
-  overlay.innerHTML = highlightedWords.replace(/\n/g, '<br>');
-
-  const hasHighlights = highlightedWords.includes('<span class="highlight">');
-  checkContainer.style.display = 'block';
-  if (window.innerWidth <= 768) {
-  maxwidth2.style.display = 'inline';
-} else if (window.innerWidth <= 1024) {
-  maxwidth2.style.display = 'flex';
-}
-
-
-loading.style.display = 'none';
-correctButton.style.visibility = 'hidden';
-refreshButton.style.visibility = 'visible';
-functioncontainer3.style.visibility = 'hidden';
-functioncontainer3.style.display = 'none';
-
-  if (!hasHighlights) {
-    if (window.innerWidth <= 768) {
-  maxwidth2.style.display = 'inline';
-} else if (window.innerWidth <= 1024) {
-  maxwidth2.style.display = 'flex';
-}
-    checkContainer.innerHTML = 'No error found.';
-    loading.style.display = 'none';
-    checkContainer.style.display = 'none';
-correctButton.style.visibility = 'hidden';
-refreshButton.style.visibility = 'visible';
-functioncontainer3.style.visibility = 'hidden';
-functioncontainer3.style.display = 'none';
   }
-} catch (error) {
-  if (window.innerWidth <= 768) {
-  maxwidth2.style.display = 'inline';
-} else if (window.innerWidth <= 1024) {
-  maxwidth2.style.display = 'flex';
-}
-  console.error('Error processing corrections:', error);
-  checkContainer.innerHTML = 'An error occurred while checking the text.';
-  checkContainer.style.display = 'none';
-  loading.style.display = 'none';
-correctButton.style.visibility = 'hidden';
-refreshButton.style.visibility = 'visible';
-functioncontainer3.style.visibility = 'hidden';
-functioncontainer3.style.display = 'none';
-}
-}
-  
 });
 
 
