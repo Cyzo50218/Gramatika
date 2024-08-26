@@ -142,7 +142,48 @@ html {
     margin: 10px auto; /* Center horizontally */
     max-width: 600px; /* Optional: Limit the maximum width */
 }
+.logotitle{
+  display: none;
+}
 
+.textsee{
+  display: none;
+  text-align: right;
+  margin-right: 10px;
+  color: #1A507C;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+
+.texthide{
+  text-align: right;
+  margin-right: 10px;
+  color: #1A507C;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+
+.hint-label {
+    display: block;
+    font-size: 14px;
+    color: #aaa; /* Match the placeholder color */
+    margin-top: -47px;
+    text-align: left;
+    margin-left: 8px;
+}
+.logotitle1{
+  color: #E7C755;
+}
+.logotitle2{
+  color: #D6D6D6;
+}
+.imagelogo{
+  margin-top: -80px;
+  margin-bottom: -73px;
+  margin-left: -20px;
+}
     
  .hidden{
    display: none;
@@ -235,9 +276,32 @@ section {
     justify-content: center;
     
 }
-.suggestions{
-  font-size: 20px;
+.suggestions {
+  
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap; /* Allows suggestions to wrap if they exceed container width */
+  gap: 5px; /* Space between suggestions */
+  justify-content: center; /* Center-align suggestions horizontally */
+}
+.suggestion {
+  font-size: 18px;
+  min-height: 48px;
   color: #1D233C;
+  border: 2px solid #007bff;
+  border-radius: 12px 15px;
+  padding-top: 10px;
+   
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: transparent;
+  text-align: center;
+  display: inline-block;
+  transition: border-color 0.3s;
+  vertical-align: middle;
+}
+.suggestion:hover {
+  border-color: #0056b3; /* Darker blue border on hover */
 }
 
 .container {
@@ -251,6 +315,11 @@ section {
             background-color: #FC5858;
             opacity: 0.40;
         }
+          .highlightCorrected {
+    background-color: #6AEC82;
+    color: transparent;
+    opacity: 0.40;
+  }
         .container4 {
       display: flex;
       justify-content: center;
@@ -278,7 +347,41 @@ section {
     align-items: center;
    
 }
+.editText3{
+  width: 100%;
+height: 100%;
+font-size: 10px;
+border: none;
+outline: none;
+background: none;
+position: relative;
+display: none;
+opacity: 1;
+color: black;
+resize: none;
+box-sizing: border-box;
+padding: 10px;
+font-size: 14px;
+text-align: start; /* Ensures placeholder text starts at the top */
+}
 
+.editText2{
+  width: 100%;
+height: 100%;
+font-size: 10px;
+border: none;
+outline: none;
+background: none;
+position: relative;
+display: none;
+opacity: 1;
+color: black;
+resize: none;
+box-sizing: border-box;
+padding: 10px;
+font-size: 14px;
+text-align: start; /* Ensures placeholder text starts at the top */
+}
 .editText {
     width: 100%;
             height: 100%;
@@ -412,14 +515,11 @@ section {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: hidden;
-    font-size: 10px;
-    margin-bottom: 3px;
+    
+   
     font-size: 14px;
-    padding-left: 11px;
-    padding-top: 10px;
+    padding-left: 10px;
+    padding-top: 11px;
     color: transparent;
     box-sizing: border-box;
     text-align: left; /* Ensure text starts from the left */
@@ -427,6 +527,24 @@ section {
    
 }
 
+.overlayCorrected {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+   
+    font-size: 14px;
+    padding-left: 10px;
+    padding-top: 11px;
+    color: transparent;
+    box-sizing: border-box;
+    text-align: left; /* Ensure text starts from the left */
+    transition: 0.5s fade-in;
+   
+}
 .overlay.fade-in {
     opacity: 1; /* Show overlay */
 }
@@ -523,9 +641,19 @@ button:hover {
       .navbar {
       width: 100%;
       height: 80px;
-      background-color: cornflowerblue;
+      background-color: #214C9E;
       overflow: hidden;
     }
+    
+    #toolbar {
+  width: 100%;
+  height: 50px;
+  background-color: #214C9E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #214C9E;
+}
 
     .max-width {
       max-width: 1100px;
@@ -587,27 +715,7 @@ button:hover {
 }
 /* Styles for desktops (min-width: 1024px) */
 @media screen and (min-width: 1024px) {
-     .overlay {
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   pointer-events: none;
-   white-space: pre-wrap;
-   word-wrap: break-word;
-   overflow: hidden;
-   font-size: 14px;
-   
-   padding-left: 10px;
-   padding-top: 15px;
-   color: transparent;
-   box-sizing: border-box;
-   text-align: left;
-   /* Ensure text starts from the left */
-   transition: 0.5s fade-in;
 
- }
 .editText {
     width: 100%;
             height: 100%;
@@ -625,6 +733,23 @@ button:hover {
             font-size: 14px;
 }
 
+.editText2{
+  width: 100%;
+height: 100%;
+font-size: 10px;
+border: none;
+outline: none;
+background: none;
+position: relative;
+opacity: 1;
+color: black;
+
+resize: none;
+box-sizing: border-box;
+padding: 10px;
+font-size: 14px;
+text-align: start; /* Ensures placeholder text starts at the top */
+}
 .editText::placeholder {
     text-align: start; /* Ensures placeholder text starts at the top */
 }
@@ -681,26 +806,20 @@ button:hover {
     
 }
 
-      .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: hidden;
-    font-size: 12px;
-    margin-bottom: 3px;
-    
-    padding-left: 7px;
-    padding-top: 7px;
-    color: transparent;
-    box-sizing: border-box;
-    text-align: left; /* Ensure text starts from the left */
-    transition: 0.5s fade-in;
-   
+.editText2{
+  width: 100%;
+height: 100%;
+border: none;
+outline: none;
+background: none;
+position: relative;
+opacity: 1;
+color: black;
+resize: none;
+box-sizing: border-box;
+padding-left: 3px;
+font-size: 10px;
+text-align: start; /* Ensures placeholder text starts at the top */
 }
 .editText {
     width: 100%;
@@ -716,6 +835,22 @@ button:hover {
             box-sizing: border-box;
             padding: 10px;
             font-size: 12px;
+}
+
+.editText3{
+  width: 100%;
+height: 100%;
+font-size: 10px;
+border: none;
+outline: none;
+background: none;
+position: relative;
+opacity: 1;
+color: black;
+resize: none;
+box-sizing: border-box;
+padding: 10px;
+font-size: 12px;
 }
 
 .editText::placeholder {
@@ -793,19 +928,29 @@ button:hover {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: hidden;
-    font-size: 12px;
-    margin-bottom: 3px;
-    
+    font-size: 14px;
     padding-left: 7px;
-    padding-top: 7px;
+    padding-top: 8px;
     color: transparent;
     box-sizing: border-box;
     text-align: left; /* Ensure text starts from the left */
-    transition: 0.5s fade-in;
-   
+    transition: 0.50s fade-in;
+}
+
+.overlayCorrected {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    font-size: 14px;
+    padding-left: 7px;
+    padding-top: 8px;
+    color: transparent;
+    box-sizing: border-box;
+    text-align: left; /* Ensure text starts from the left */
+    transition: 0.50s fade-in;
 }
       
         .resultdes{
@@ -877,7 +1022,7 @@ button:hover {
 .navbar{
   width: 100%;
   height: 80px;
-  background-color:cornflowerblue;
+  background-color:#214C9E;
 }
 
 .text-2 {
@@ -944,6 +1089,22 @@ display: inline-flex; /* Enable flexbox properties */
       height: 100%;
       font-size: 14px;
     }
+    .editText2{
+  border: 1px solid transparent;
+  width: 100%;
+  height: 100%;
+    text-align: left;
+  padding-left: 5px;
+  font-size: 13px;
+}
+.editText3{
+  
+  width: 100%;
+  text-align: left;
+  padding-left: 7px;
+  height: 100%;
+  font-size: 14px;
+}
     
     .editTextContainer2{
       margin-left: 0px;
