@@ -166,12 +166,25 @@ html {
 
 
 .hint-label {
-    display: block;
+    position: absolute;
+    top: 8px; /* Adjust to place the label over the textarea */
+    left: 8px;
+    padding-right: x;
     font-size: 14px;
-    color: #aaa; /* Match the placeholder color */
-    margin-top: -47px;
-    text-align: left;
-    margin-left: 8px;
+    color: #aaa; /* Placeholder color */
+    pointer-events: none;
+    transition: all 0.10s ease;
+}
+
+
+
+/* When textarea is focused or contains text, move label up */
+.editText:focus + .hint-label,
+.editText:not(:placeholder-shown) + .hint-label {
+    top: -15px; /* Move label up on focus */
+    font-size: 12px;
+    color: darkblue; /* Change color on focus */
+    background-color: white; /* Ensure label is still visible */
 }
 .logotitle1{
   color: #E7C755;
@@ -347,10 +360,12 @@ section {
     align-items: center;
    
 }
+
+
 .editText3{
   width: 100%;
 height: 100%;
-font-size: 10px;
+
 border: none;
 outline: none;
 background: none;
@@ -368,7 +383,7 @@ text-align: start; /* Ensures placeholder text starts at the top */
 .editText2{
   width: 100%;
 height: 100%;
-font-size: 10px;
+
 border: none;
 outline: none;
 background: none;
@@ -719,7 +734,7 @@ button:hover {
 .editText {
     width: 100%;
             height: 100%;
-            font-size: 10px;
+            
             border: none;
             outline: none;
             background: none;
@@ -736,7 +751,8 @@ button:hover {
 .editText2{
   width: 100%;
 height: 100%;
-font-size: 10px;
+
+
 border: none;
 outline: none;
 background: none;
@@ -945,7 +961,7 @@ font-size: 12px;
     height: 100%;
     pointer-events: none;
     font-size: 14px;
-    padding-left: 7px;
+    padding-left: 6px;
     padding-top: 8px;
     color: transparent;
     box-sizing: border-box;
