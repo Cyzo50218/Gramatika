@@ -131,10 +131,11 @@ const RefreshButton = document.querySelector('.refreshButton');
 
 RefreshButton.style.visibility = 'hidden';
     document.querySelector('.refreshButton').addEventListener('click', function() {
+      
         document.querySelector('.editText').value = '';
        textsee.style.display = 'none';
        handleTextSeeUnpressed();
-       textarea.removeAttribute('readonly'); // Makes the textarea editable again
+       TEXTAREA.removeAttribute('readonly'); // Makes the textarea editable again
         correctButton.style.visibility = 'visible';
 refreshButton.style.visibility = 'visible';
 TEXTAREA.style.display = 'block';
