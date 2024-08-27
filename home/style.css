@@ -339,26 +339,26 @@ section {
       text-align: center;
        width: 100%;
     }
-    .correctorcontainer {
-      display: relative;
-      justify-content: center;
-      text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    width: 100%;
-    margin: 10px 10px;
+.correctorcontainer {
+  position: relative; /* Changed from display: relative to position: relative */
+    justify-content: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 90%; /* Adjust width to make room for margins */
+  margin: 10px auto; /* Center the container horizontally */
 }
 
 .max-width2{
     display: inline;
     justify-content: center;
     align-items: center;
-   
+  
 }
 
 
