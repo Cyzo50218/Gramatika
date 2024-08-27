@@ -58,7 +58,7 @@ document.querySelector('.editTextContainer').addEventListener('click', function(
 });
 
 document.querySelector('.editText').addEventListener('input', function() {
-  const textarea = document.querySelector('.editText');
+  
   const hintLabel = document.querySelector('.hint-label');
 
   if (textarea.value.length > 0) {
@@ -99,27 +99,62 @@ const correctButton = document.querySelector('.correctButton');
 const refreshButton = document.querySelector('.refreshButton');
 const functioncontainer3 = document.querySelector('.dropdown');
 
+const texthide = document.getElementById('texthide');
+const correctedbox = document.getElementById('correctedContainer');
+const textinsideCorrectedBox = document.getElementById('textOriginal');
+const textOverlayInsideCorrectedBoxTwo = document.getElementById('ovarlaycorrectedid');
+const textOriginalText = document.getElementById('originaltext');
+const textsee = document.querySelector('.textsee');
+const hintLabel = document.querySelector('.hint-label');
+const TEXTAREA = document.querySelector('.editText');
+
+const editText2 = document.querySelector('.editText2');
+const textOriginal = document.getElementById('textOriginal');
+const textoriginal2 = document.getElementById('originaltext');
+textsee.style.display = 'none';
+textOriginal.style.display = 'none';
+textoriginal2.style.display = 'none';
+let emptyText = null;
+let originalText = null;
+
+let seeOriginal = false;
+
+let suggestionsFromAPI = null;
+let correctedHighlightedText = null;
+textOriginalText.style.display = 'none';
+correctedbox.style.display = 'none';
+
 loading.style.display = 'none';
 loading.style.visibility = 'hidden';
 
+const RefreshButton = document.querySelector('.refreshButton');
+
+RefreshButton.style.visibility = 'hidden';
     document.querySelector('.refreshButton').addEventListener('click', function() {
         document.querySelector('.editText').value = '';
-        overlay.style.opacity = '0';
+       textsee.style.display = 'none';
+       handleTextSeeUnpressed();
         correctButton.style.visibility = 'visible';
 refreshButton.style.visibility = 'visible';
-
-        
+TEXTAREA.style.display = 'block';
+overlay.style.display = 'none';
+hintLabel.style.display = 'block';
+textinsideCorrectedBox.value=' ';
+textOverlayInsideCorrectedBoxTwo.value = '';
+RefreshButton.style.visibility = 'hidden';
+        correctedbox.style.display = 'none';
+        textOriginalText.value = '';
+        textOriginalText.style.display = 'none';
         checkContainer.style.display = 'none';
         clear = true;
-        overlay.value = ' ';
-        textresult.value = ' ';
+        overlay.value = '';
+        textresult.value = '';
         maxwidth2.style.display = 'inline';
         textresultcontainer.style.display = 'none'; // Hide the container on refresh
 
 
   const textarea = document.querySelector('.editText');
-  const hintLabel = document.querySelector('.hint-label');
-
+  
   if (textarea.value.length > 0) {
     hintLabel.style.display = 'none';
   } else {
@@ -140,6 +175,8 @@ let detected = false;
 const errorText  = document.querySelector('.errorText');
 const dropdownContainer= document.getElementById('dropdownContainer');
 const paragraph = document.querySelector('.suggestions');
+
+
 
 const definitions = document.querySelector('.definitions');
 definitions.style.display = 'none';
@@ -249,36 +286,23 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
 };
 
 
-const textsee = document.querySelector('.textsee');
-const editText2 = document.querySelector('.editText2');
-const textOriginal = document.getElementById('textOriginal');
-const textoriginal2 = document.getElementById('originaltext');
-textsee.style.display = 'none';
-textOriginal.style.display = 'none';
-textoriginal2.style.display = 'none';
-let emptyText = null;
-let originalText = null;
 
-let seeOriginal = false;
 
-let suggestionsFromAPI = null;
-let correctedHighlightedText = null;
-
-document.querySelector('.correctButton').addEventListener('click', async function() {
+document.querySelector('.correctButton').addEventListener('click', async function () {
   if (textarea.value.trim() === "") {
     alert("Pakiusap, maglagay ng teksto para masuri.");
   } else {
     try {
+      textarea.setAttribute('readonly', true); // Makes the textarea non-editable
+      
       loading.style.display = 'block';
       loading.style.visibility = 'visible';
       correctButton.style.visibility = 'hidden';
-      refreshButton.style.visibility = 'hidden';
 
       checkContainer.innerHTML = 'Munkahing Pagtatama';
-
       window.addEventListener('resize', adjustFontSize);
 
-      suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
+       suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
       console.log('Suggestions from API:', suggestionsFromAPI);
 
       if (!suggestionsFromAPI || suggestionsFromAPI.length === 0) {
@@ -300,7 +324,7 @@ document.querySelector('.correctButton').addEventListener('click', async functio
         emptyText = textarea.value;
         editText2.textContent = emptyText;
         overlaycorrected.textContent = fullText;
-
+        textOriginalText.value = fullText;
         console.log('Error text:', errorsTextarea);
         console.log('Rule description:', ruleDesc);
         console.log('Suggestions:', suggestionText);
@@ -325,69 +349,56 @@ document.querySelector('.correctButton').addEventListener('click', async functio
 
         // Add click event listeners for each suggestion
         clonedNewContainer.querySelectorAll('.suggestion').forEach(suggestionElem => {
-          suggestionElem.addEventListener('click', function() {
+          suggestionElem.addEventListener('click', function () {
             const selectedSuggestion = this.textContent;
 
             if (window.innerWidth <= 768) {
-              textsee.style.display = 'block';
               
+              overlay.style.fontSize = '14px';
+              
+              textsee.style.display = 'block';
               if (getComputedStyle(overlay).paddingTop === '8px') {
                 overlay.style.paddingTop = '28px';
               }
               if (getComputedStyle(overlaycorrected).paddingTop === '8px') {
-  overlaycorrected.style.paddingTop = '28px';
-}
+                overlaycorrected.style.paddingTop = '28px';
+              }
+              
             } else if (window.innerWidth <= 1024) {
+              
+              overlaycorrected.style.fontSize = '14px';
               textsee.style.display = 'block';
               if (getComputedStyle(overlay).paddingTop === '11px') {
-                overlay.style.paddingTop = '14px';
+                overlay.style.paddingTop = '30px';
               }
               if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
-  overlaycorrected.style.paddingTop = '14px';
-}
+                overlaycorrected.style.paddingTop = '30px';
+              }
+              
             } else {
               textsee.style.display = 'none';
               overlay.style.paddingTop = '';
               overlaycorrected.style.paddingTop = '';
             }
-const regex = new RegExp(errorsTextarea, 'gi');
 
-
+            const regex = new RegExp(errorsTextarea, 'gi');
             textarea.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
-
             textOriginal.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
-            
-            
-          
-correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
-  return `<span class="highlightCorrected">${errorsTextarea}</span>`;
-});
 
-overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
+            correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
+              return `<span class="highlightCorrected">${errorsTextarea}</span>`;
+            });
 
-            clonedNewContainer.remove();
-
+            overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
+clonedNewContainer.remove();
             updateHighlights();
-
             overlaycorrected.style.display = 'block';
             correctedbox.style.display = 'block';
-
             textsee.innerHTML = '< See Original';
-
             textOriginal.style.display = 'block';
 
-
-            if (clonedNewContainer) {
-
-            } else {
-              console.log('none!');
-              textoriginal2.display = 'block';
-              correctedbox.style.display = 'block';
-              checkContainer.style.display = 'none';
-              textarea.style.display = 'none';
-              overlay.style.display = 'none';
-            }
-
+            // Check if any cloned containers are left after a suggestion is selected
+            checkForClonedContainers();
           });
         });
       });
@@ -396,26 +407,46 @@ overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
 
       loading.style.display = 'none';
       correctButton.style.visibility = 'hidden';
-      refreshButton.style.visibility = 'visible';
-
+      RefreshButton.style.visibility = 'visible';
     } catch (error) {
-      if (error instanceof ReferenceError) {
-        console.error('ReferenceError:', error.message, error.stack);
-      } else if (error instanceof TypeError) {
-        console.error('TypeError:', error.message, error.stack);
-      } else if (error instanceof SyntaxError) {
-        console.error('SyntaxError:', error.message, error.stack);
-      } else {
-        console.error('General Error:', error.message, error.stack);
-      }
-
-      checkContainer.innerHTML = 'An error occurred while checking the text.';
-      checkContainer.style.display = 'none';
-      loading.style.display = 'none';
-      refreshButton.style.visibility = 'visible';
+      handleError(error);
     }
   }
 });
+
+function checkForClonedContainers() {
+  const clonedContainers = document.querySelectorAll('.clonedContainer');
+
+  if (clonedContainers.length === 0) {
+    console.log('No cloned containers left!');
+    // Perform actions when no cloned containers are left
+    textoriginal2.style.display = 'block';
+    correctedbox.style.display = 'block';
+    checkContainer.style.display = 'none';
+    textarea.style.display = 'none';
+    overlay.style.display = 'none';
+    RefreshButton.style.visibility = 'visible';
+  } else {
+    console.log(`${clonedContainers.length} cloned containers remaining.`);
+  }
+}
+
+function handleError(error) {
+  if (error instanceof ReferenceError) {
+    console.error('ReferenceError:', error.message, error.stack);
+  } else if (error instanceof TypeError) {
+    console.error('TypeError:', error.message, error.stack);
+  } else if (error instanceof SyntaxError) {
+    console.error('SyntaxError:', error.message, error.stack);
+  } else {
+    console.error('General Error:', error.message, error.stack);
+  }
+
+  checkContainer.innerHTML = 'An error occurred while checking the text.';
+  checkContainer.style.display = 'none';
+  loading.style.display = 'none';
+  RefreshButton.style.visibility = 'hidden';
+}
 
 let highlightedText = null;
 
@@ -438,10 +469,10 @@ function updateHighlights() {
       
       highlightedText = fullText;
     }
-    
+    console.log('one');
     // Highlight the original errors
     highlightedText = highlightedText.replace(regex, match => {
-      return `<span class="highlight">${match}</span>`;
+      return `<span class="highlight">${errorText}</span>`;
     });
 
     // Apply the first suggestion to the corrected text
@@ -454,9 +485,7 @@ function updateHighlights() {
 
 }
 
-const texthide =document.getElementById('texthide');
-const correctedbox = document.getElementById('correctedContainer');
-correctedbox.style.display = 'none';
+
 let nowHidden = false;
 
 function setupTextSeeListener() {
@@ -471,56 +500,62 @@ function setupTextSeeListener() {
       handleTextSeeUnpressed();
     }
   }
-  function hideText(){
-    handleTextSeeUnpressed();
-  }
-  
-  function textHides (){
-        // Actions for when the button is unpressed (show original text)
-    overlay.style.display = 'block';
-    textoriginal2.style.display = 'block';
-    correctedbox.style.display = 'none';
-    overlaycorrected.style.display = 'none';
-    textOriginal.style.display = 'none';
-    textarea.style.display = 'none';
-    textsee.innerHTML = 'See Corrected >';
-    seeOriginal = true;
-    makeNonEditable();
-    updateHighlights();
-  }
+}
 
-  function handleTextSeePressed() {
-    // Actions for when the button is pressed (show corrected text)
-    overlaycorrected.style.display = 'block';
-    correctedbox.style.display = 'block';
-    overlay.style.display = 'none';
-        overlay.style.display = 'none';
-    textoriginal2.style.display = 'none';
-    textOriginal.style.display = 'block';
-    textarea.style.display = 'none';
-    textsee.innerHTML = '< See Original';
-    seeOriginal = false;
-  }
+function hideText() {
+  handleTextSeeUnpressed();
+}
 
-  function handleTextSeeUnpressed() {
-    // Actions for when the button is unpressed (show original text)
-    overlay.style.display = 'block';
-    textoriginal2.style.display = 'block';
-    correctedbox.style.display = 'none';
-    overlaycorrected.style.display = 'none';
-    textOriginal.style.display = 'none';
-    textarea.style.display = 'none';
-    textsee.innerHTML = 'See Corrected >';
-    seeOriginal = true;
-    makeNonEditable();
-    updateHighlights();
-  }
+function textHides() {
+  // Actions for when the button is unpressed (show original text)
+  overlay.style.display = 'block';
+  textoriginal2.style.display = 'block';
+  correctedbox.style.display = 'none';
+  overlaycorrected.style.display = 'none';
+  textOriginal.style.display = 'none';
+  textarea.style.display = 'none';
+  textsee.innerHTML = 'See Corrected >';
+  textOriginalText.style.display = 'block';
+  seeOriginal = true;
+  makeNonEditable();
+  updateHighlights();
+}
+
+function handleTextSeePressed() {
+  // Actions for when the button is pressed (show corrected text)
+  overlaycorrected.style.display = 'block';
+  correctedbox.style.display = 'block';
+  overlay.style.display = 'none';
+  overlay.style.display = 'none';
+  textoriginal2.style.display = 'none';
+  textOriginal.style.display = 'block';
+  textOriginalText.style.display = 'none';
+  textarea.style.display = 'none';
+  textsee.innerHTML = '< See Original';
+  seeOriginal = false;
+  console.log('TWO');
+}
+
+function handleTextSeeUnpressed() {
+  // Actions for when the button is unpressed (show original text)
+  overlay.style.display = 'block';
+  textoriginal2.style.display = 'none';
+  correctedbox.style.display = 'none';
+  overlaycorrected.style.display = 'none';
+  textOriginal.style.display = 'none';
+  textarea.style.display = 'none';
+  textOriginalText.style.display = 'block';
+  textsee.innerHTML = 'See Corrected >';
+  seeOriginal = true;
+  makeNonEditable();
+  console.log('ONE');
+  updateHighlights();
 }
 
 setupTextSeeListener();
 
 
-
+makeNonEditable();
 
 
 // The rest of the code remains the same
@@ -536,10 +571,10 @@ setupTextSeeListener();
 
     // Method to make textarea non-editable but copyable
     function makeNonEditable() {
-        editText2.setAttribute('readonly', true); // Makes the textarea non-editable
-        editText2.addEventListener('focus', () => {
-            editText2.select(); // Select the text on focus for copying
-        });
+        textOriginalText.setAttribute('readonly', true); // Makes the textarea non-editable
+
+textOriginal.setAttribute('readonly', true); // Makes the textarea non-editable
+
     }
 
     // Call the method to make it non-editable
