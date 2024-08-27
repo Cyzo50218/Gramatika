@@ -5,6 +5,7 @@
       "src": "api/**/*.js",
       "use": "@vercel/node"
     },
+    { "src": "tamana.png", "use": "@vercel/static" },
     {
       "src": "home/**",
       "use": "@vercel/static"
