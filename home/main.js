@@ -391,12 +391,16 @@ document.querySelector('.correctButton').addEventListener('click', async functio
               return `<span class="highlightCorrected">${errorsTextarea}</span>`;
             });
 
+textoriginal2.style.display = 'block';
+correctedbox.style.display = 'block';
+textarea.style.display = 'none';
             overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
-clonedNewContainer.remove();
+overlay.style.display = 'block';
+scrollToTarget();
             updateHighlights();
             overlaycorrected.style.display = 'block';
             correctedbox.style.display = 'block';
-            textsee.innerHTML = '< See Original';
+            textsee.style.visibility ='block';
             textOriginal.style.display = 'block';
 
             // Check if any cloned containers are left after a suggestion is selected
@@ -424,9 +428,10 @@ function checkForClonedContainers() {
     // Perform actions when no cloned containers are left
     textoriginal2.style.display = 'block';
     correctedbox.style.display = 'block';
-    checkContainer.style.display = 'none';
-    textarea.style.display = 'none';
-    overlay.style.display = 'none';
+    checkContainer.style.display = 'block';
+    
+    overlay.style.display = 'block';
+    correctButton.style.visibility = 'visible';
     RefreshButton.style.visibility = 'visible';
   } else {
     console.log(`${clonedContainers.length} cloned containers remaining.`);
@@ -452,6 +457,19 @@ function handleError(error) {
 
 let highlightedText = null;
 
+function scrollToTarget() {
+   
+    if (correctedbox) {
+        correctedbox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        correctedbox.focus();
+    }
+}
+
+// Check if the device is mobile
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+    window.addEventListener('load', scrollToTarget);
+}
+
 
 // Make sure the updateHighlights function exists and is correctly implemented
 function updateHighlights() {
@@ -466,7 +484,7 @@ function updateHighlights() {
     
     if(seeOriginal){
       highlightedText = originalText;
-      
+      textsee.style.visibility ='hidden';
     }else{
       
       highlightedText = fullText;
@@ -491,10 +509,7 @@ function updateHighlights() {
 let nowHidden = false;
 
 function setupTextSeeListener() {
-  textsee.addEventListener('click', toggleTextSee);
-  texthide.addEventListener('click', hideText);
-
-
+  
   function toggleTextSee() {
     if (correctedbox.style.display === 'none' || correctedbox.style.display === '') {     
       handleTextSeePressed();
@@ -517,7 +532,7 @@ function textHides() {
   textOriginal.style.display = 'none';
   textarea.style.display = 'none';
   textsee.innerHTML = 'See Corrected >';
-  textOriginalText.style.display = 'block';
+ textsee.style.visibility ='hidden';
   seeOriginal = true;
   makeNonEditable();
   updateHighlights();
@@ -527,13 +542,11 @@ function handleTextSeePressed() {
   // Actions for when the button is pressed (show corrected text)
   overlaycorrected.style.display = 'block';
   correctedbox.style.display = 'block';
-  overlay.style.display = 'none';
-  overlay.style.display = 'none';
-  textoriginal2.style.display = 'none';
+  overlay.style.display = 'block';
   textOriginal.style.display = 'block';
-  textOriginalText.style.display = 'none';
+  textsee.innerHTML = 'See Corrected >';
   textarea.style.display = 'none';
-  textsee.innerHTML = '< See Original';
+ textsee.style.visibility ='visible';
   seeOriginal = false;
   console.log('TWO');
 }
@@ -548,6 +561,7 @@ function handleTextSeeUnpressed() {
   textarea.style.display = 'none';
   textOriginalText.style.display = 'block';
   textsee.innerHTML = 'See Corrected >';
+  textsee.style.visibility ='visible';
   seeOriginal = true;
   makeNonEditable();
   console.log('ONE');
@@ -573,10 +587,11 @@ makeNonEditable();
 
     // Method to make textarea non-editable but copyable
     function makeNonEditable() {
-        textOriginalText.setAttribute('readonly', true); // Makes the textarea non-editable
-
+        
 textOriginal.setAttribute('readonly', true); // Makes the textarea non-editable
-
+textOriginal.setupTextSeeListener(
+  textOriginal.onselect()
+  );
     }
 
     // Call the method to make it non-editable
