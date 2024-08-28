@@ -493,7 +493,6 @@ text-align: start; /* Ensures placeholder text starts at the top */
 }
 
 .definitions{
-  
   padding-top:10px;
   font-size: 15px;
   text-align: center;
@@ -509,7 +508,7 @@ text-align: start; /* Ensures placeholder text starts at the top */
     min-height: 300px; /* Ensure it's at least 100px tall */
     max-height: none; /* Allow it to grow beyond 100px if needed */
     
-    border: 1px solid darkblue;
+    border: 1px solid #00000045;
     border-radius: 4px;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
     overflow-y: auto; /* Enable vertical scrolling if needed */
@@ -521,7 +520,9 @@ text-align: start; /* Ensures placeholder text starts at the top */
     background-clip: padding-box;
     box-shadow: inset 0 0 0 1px white; /* White inner border effect */
 }
-
+    .checkContainer::-webkit-scrollbar {
+display: none; /* Chrome, Safari, and Opera */
+}
 
 .overlay {
     position: absolute;
@@ -1086,7 +1087,27 @@ display: inline-flex; /* Enable flexbox properties */
     display: inline-flex; /* Enable flexbox properties */
 
 }
-
+.checkContainer {
+    display: block;
+    position: static;
+    width: 100%;
+    margin-bottom: 10px;
+    height: 300px; /* Set default height */
+    min-height: 300px; /* Ensure it's at least 100px tall */
+    max-height: none; /* Allow it to grow beyond 100px if needed */
+    
+    border: 1px solid darkblue;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    overflow-x: hidden; /* Hide horizontal scrollbar if any */
+    
+    padding: 10px 0; /* Add padding to top and bottom */
+    
+    /* Add an inner border effect with box-shadow */
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px white; /* White inner border effect */
+}
 
     .dropdown {
       width: 120px;
