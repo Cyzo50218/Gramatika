@@ -86,8 +86,8 @@ document.querySelector('.editText').addEventListener('input', function() {
     textresultcontainer.style.display = 'none';
     const textarea = document.querySelector('.editText');
     const overlay = document.querySelector('.overlay');
-    const overlaycorrected = document.querySelector('.overlayCorrected');
-    
+    const overlaycorrected = document.getElementById('ovarlaycorrectedid');
+    const overlaycorrectedTwo = document.getElementById('ovarlaycorrectedtwoid');
     textresult.style.display = 'none';
     textresultlayouts.style.display = 'none';
 
@@ -104,15 +104,17 @@ const correctedbox = document.getElementById('correctedContainer');
 const textinsideCorrectedBox = document.getElementById('textOriginal');
 const textOverlayInsideCorrectedBoxTwo = document.getElementById('ovarlaycorrectedid');
 const textOriginalText = document.getElementById('originaltext');
-const textsee = document.querySelector('.textsee');
+const textsee = document.getElementById('textsee');
 const hintLabel = document.querySelector('.hint-label');
 const TEXTAREA = document.querySelector('.editText');
 
 const editText2 = document.querySelector('.editText2');
 const textOriginal = document.getElementById('textOriginal');
+const correctedtextmobile = document.getElementById('correctedtextmobile');
 const textoriginal2 = document.getElementById('originaltext');
 textsee.style.display = 'none';
 textOriginal.style.display = 'none';
+correctedtextmobile.style.display = 'none';
 textoriginal2.style.display = 'none';
 let emptyText = null;
 let originalText = null;
@@ -121,21 +123,47 @@ let seeOriginal = false;
 
 let suggestionsFromAPI = null;
 let correctedHighlightedText = null;
+let correctedHighlightedTwoText = null;
+
 textOriginalText.style.display = 'none';
 correctedbox.style.display = 'none';
 
 loading.style.display = 'none';
 loading.style.visibility = 'hidden';
+const textseeTwo = document.getElementById('textseeTwo');
 
+textseeTwo.style.display = 'none';
 const RefreshButton = document.querySelector('.refreshButton');
 
 RefreshButton.style.visibility = 'hidden';
     document.querySelector('.refreshButton').addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+  correctedtextmobile.style.display = 'none';
+         overlaycorrectedTwo.style.display = 'none';
+         overlaycorrectedTwo.value = '';
+         correctedtextmobile.value = '';
+         textarea.value = '';
+         textarea.removeAttribute('readonly');
+overlay.style.display = 'none';
+textarea.style.display = 'block';
+
+checkContainer.style.display = 'none';
+textsee.style.display = 'none';
+}else if (window.innerWidth <= 1024) {
+  textseeTwo.style.display = 'none';
+  correctedtextmobile.style.display = 'none';
+overlaycorrectedTwo.style.display = 'none';
+overlaycorrectedTwo.value = '';
+correctedtextmobile.value = '';
+textarea.value = '';
+textarea.removeAttribute('readonly');
+overlay.style.display = 'none';
+textarea.style.display = 'block';
+
+checkContainer.style.display = 'none';
+textsee.style.display = 'none';
+}
       
-        document.querySelector('.editText').value = '';
-       textsee.style.display = 'none';
-       handleTextSeeUnpressed();
-       TEXTAREA.removeAttribute('readonly'); // Makes the textarea editable again
         correctButton.style.visibility = 'visible';
 refreshButton.style.visibility = 'visible';
 TEXTAREA.style.display = 'block';
@@ -146,6 +174,7 @@ textOverlayInsideCorrectedBoxTwo.value = '';
 RefreshButton.style.visibility = 'hidden';
         correctedbox.style.display = 'none';
         textOriginalText.value = '';
+        correctedtextmobile.value = '';
         textOriginalText.style.display = 'none';
         checkContainer.style.display = 'none';
         clear = true;
@@ -153,10 +182,6 @@ RefreshButton.style.visibility = 'hidden';
         textresult.value = '';
         maxwidth2.style.display = 'inline';
         textresultcontainer.style.display = 'none'; // Hide the container on refresh
-
-
-  const textarea = document.querySelector('.editText');
-  
   if (textarea.value.length > 0) {
     hintLabel.style.display = 'none';
   } else {
@@ -164,10 +189,7 @@ RefreshButton.style.visibility = 'hidden';
   }
 
 
-        if (window.innerWidth <= 768) {
-            textresult.style.display = 'none';
-            textresultlayouts.style.display = 'none';
-        }
+        
     });
 let textdetector = document.getElementById('text');
 let detected = false;
@@ -190,7 +212,23 @@ let highlightedWords = ''; // Initialize highlightedWords
 
 
 
+checkContainer.addEventListener('mouseenter', () => {
+  // Enable scrolling by adding the necessary event listeners
+  document.addEventListener('wheel', handleScroll);
+});
 
+// Add a mouseleave event to disable scrolling when the mouse leaves the area
+checkContainer.addEventListener('mouseleave', () => {
+  // Disable scrolling by removing the event listener
+  document.removeEventListener('wheel', handleScroll);
+});
+
+function handleScroll(event) {
+  // Check if the mouse is over the checkContainer and handle scrolling
+  if (event.deltaY !== 0) {
+    checkContainer.scrollTop += event.deltaY; // Scroll vertically
+  }
+}
 
 
 function showDefinition(event) {
@@ -288,6 +326,7 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
 };
 
 
+const displaywebsite = document.querySelector('.websitedisplay');
 
 
 document.querySelector('.correctButton').addEventListener('click', async function () {
@@ -353,12 +392,31 @@ document.querySelector('.correctButton').addEventListener('click', async functio
         clonedNewContainer.querySelectorAll('.suggestion').forEach(suggestionElem => {
           suggestionElem.addEventListener('click', function () {
             const selectedSuggestion = this.textContent;
+const regex = new RegExp(errorsTextarea, 'gi');
+
 
             if (window.innerWidth <= 768) {
               
+                          //Mobile
+correctedtextmobile.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
+            //Mobile
+            correctedHighlightedTwoText = correctedHighlightedTwoText.replace(regex, match => {
+              return `<span class="highlightCorrected">${errorsTextarea}</span>`;
+            });
+            //Mobile
+overlaycorrectedTwo.innerHTML = correctedHighlightedTwoText.replace(/\n/g, '<br>');
+       correctedtextmobile.style.display = 'block';
+         overlaycorrectedTwo.style.display = 'block';
+overlay.style.display = 'none';
+textarea.style.display = 'none';
+
+
+
               overlay.style.fontSize = '14px';
               
               textsee.style.display = 'block';
+              
+              
               if (getComputedStyle(overlay).paddingTop === '8px') {
                 overlay.style.paddingTop = '28px';
               }
@@ -366,16 +424,40 @@ document.querySelector('.correctButton').addEventListener('click', async functio
                 overlaycorrected.style.paddingTop = '28px';
               }
               
-            } else if (window.innerWidth <= 1024) {
+              if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
+  overlaycorrectedTwo.style.paddingTop = '28px';
+}
+              textsee.innerHTML = 'Mga naitamang teksto.';
               
+              
+            } else if (window.innerWidth <= 1024) {
+              displaywebsite.style.display = 'flex';
+              correctedbox.style.marginLeft = '10px';
+              displaywebsite.style.paddingBottom = '10px';
+                  //DESKTOP 
+            textseeTwo.style.display = 'block';
+            textOriginal.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
+            correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
+  return `<span class="highlightCorrected">${errorsTextarea}</span>`;
+});
+textOriginal.style.display = 'block';
+
+overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
+
               overlaycorrected.style.fontSize = '14px';
-              textsee.style.display = 'block';
-              if (getComputedStyle(overlay).paddingTop === '11px') {
-                overlay.style.paddingTop = '30px';
-              }
+              textsee.style.display = 'none';
+              
+              
+correctedbox.style.display = 'block';
+overlay.style.display = 'block';
+
               if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
                 overlaycorrected.style.paddingTop = '30px';
               }
+              
+              if (getComputedStyle(overlay).paddingTop === '11px') {
+  overlay.style.paddingTop = '30px';
+}
               
             } else {
               textsee.style.display = 'none';
@@ -383,26 +465,8 @@ document.querySelector('.correctButton').addEventListener('click', async functio
               overlaycorrected.style.paddingTop = '';
             }
 
-            const regex = new RegExp(errorsTextarea, 'gi');
-            textarea.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
-            textOriginal.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
-
-            correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
-              return `<span class="highlightCorrected">${errorsTextarea}</span>`;
-            });
-
-textoriginal2.style.display = 'block';
-correctedbox.style.display = 'block';
-textarea.style.display = 'none';
-            overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
-overlay.style.display = 'block';
-scrollToTarget();
             updateHighlights();
-            overlaycorrected.style.display = 'block';
-            correctedbox.style.display = 'block';
-            textsee.style.visibility ='block';
-            textOriginal.style.display = 'block';
-
+           
             // Check if any cloned containers are left after a suggestion is selected
             checkForClonedContainers();
           });
@@ -476,7 +540,8 @@ function updateHighlights() {
   const fullText = textarea.value;
   
   correctedHighlightedText = emptyText;
-
+ correctedHighlightedTwoText = emptyText;
+ 
   suggestionsFromAPI.forEach(correction => {
     const errorText = correction.errorText;
     const suggestionText = correction.suggestions[0]; // Assuming we apply the first suggestion for the corrected text
@@ -484,7 +549,7 @@ function updateHighlights() {
     
     if(seeOriginal){
       highlightedText = originalText;
-      textsee.style.visibility ='hidden';
+     
     }else{
       
       highlightedText = fullText;
@@ -505,19 +570,52 @@ function updateHighlights() {
 
 }
 
+setupTextSeeListener();
 
 let nowHidden = false;
 
 function setupTextSeeListener() {
+  textsee.addEventListener('click', toggleTextSee);
   
   function toggleTextSee() {
-    if (correctedbox.style.display === 'none' || correctedbox.style.display === '') {     
-      handleTextSeePressed();
+    if (textsee.innerHTML === 'Mga naitamang teksto.') {     
+      
+      handleTextSeePressedMOBILS();
     } else {
-      handleTextSeeUnpressed();
+handleTextSeeUnpressedMOBILE();
+      
     }
   }
 }
+function handleTextSeePressedMOBILS() {
+  correctedtextmobile.style.display = 'none';
+overlaycorrectedTwo.style.display = 'none';
+overlay.style.display = 'block';
+textOriginal.style.display = 'none';
+textarea.style.display = 'block';
+  
+  seeOriginal = false;
+  textsee.style.display = 'block';
+  textsee.innerHTML = 'Mga Orihinal na teksto.';
+  console.log('TWO');
+}
+
+function handleTextSeeUnpressedMOBILE() {
+  // Actions for when the button is unpressed (show original text)
+  correctedtextmobile.style.display = 'block';
+         overlaycorrectedTwo.style.display = 'block';
+overlay.style.display = 'none';
+textOriginal.style.display = 'none';
+textarea.style.display = 'none';
+textsee.innerHTML = 'Mga naitamang teksto.';
+  
+  seeOriginal = true;
+textsee.style.display = 'block';
+  console.log('ONE');
+  
+}
+
+makeCorrectedTextMobileSelectable();
 
 function hideText() {
   handleTextSeeUnpressed();
@@ -568,10 +666,21 @@ function handleTextSeeUnpressed() {
   updateHighlights();
 }
 
-setupTextSeeListener();
+
+function makeCorrectedTextMobileSelectable() {
+  // Set the textarea to readonly
+  correctedtextmobile.readOnly = true;
+
+  // Add a click event listener
+  correctedtextmobile.addEventListener('click', () => {
+    // Handle the click event
+    console.log('Text selected or clicked');
+    // Add your logic here if needed
+  });
+}
 
 
-makeNonEditable();
+
 
 
 // The rest of the code remains the same
@@ -586,14 +695,7 @@ makeNonEditable();
     const textresulttext = document.getElementById('textresult');
 
     // Method to make textarea non-editable but copyable
-    function makeNonEditable() {
-        
-textOriginal.setAttribute('readonly', true); // Makes the textarea non-editable
-textOriginal.setupTextSeeListener(
-  textOriginal.onselect()
-  );
-    }
+    // Function to handle text selection and copy on long press
 
-    // Call the method to make it non-editable
 });
 
