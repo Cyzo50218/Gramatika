@@ -25,7 +25,7 @@
     <nav class="navbar">
 
     <div class="max-width">
-  <div class="logo" id="logo"><a href="index.html" class="logotitle">Tama<span>Na</span></a><img class="imagelogo"src="TamaNa.png" alt="TamaNa" height="150px" width="150px"></div>
+  <div class="logo" id="logo"><a href="index.html" class="logotitle">Tama<span>Na</span></a><img class="imagelogo"src="/tamana.png" alt="TamaNa" height="150px" width="150px"></div>
 
   <div class="menu-btn" id="menu-btn">
     <i class="fas fa-bars"></i>
@@ -64,25 +64,43 @@
   
   <div class="correctorcontainer">
 <div class="max-width2" id="maxwidth2">
-  <div class="editTextContainer">
-         <div class="overlay" id="ovarlayid"></div>
-<div style="position: relative; width: 100%; height: 100%;">
-   <div class="textsee">Orihinal na mga teksto.</div>
-    <textarea type="text" id="text" class="editText" ></textarea>
-    <textarea type="text" id="originaltext" class="editText3" ></textarea>
-    <label for="text" class="hint-label">
+  
+  <div class="websitedisplay">
+      <div class="editTextContainer">
+    <div class="overlay" id="ovarlayid"></div>
+    <div class="overlayCorrected" id="ovarlaycorrectedtwoid"></div>
+    <div style="position: relative; width: 100%; height: 100%;">
+      <div class="textsee" id="textsee">Orihinal na mga teksto.</div>
+      <div class="textsee" id="textseeTwo">Orihinal na mga teksto.</div>
+      <textarea type="text" id="text" class="editText"></textarea>
+      <textarea type="text" id="originaltext" class="editText3"></textarea>
+      <textarea type="text" id="correctedtextmobile" class="editText3"></textarea>
+      <label for="text" class="hint-label">
         <span class="fontplaceholderitallic" style="font-style: italic;">i-type...</span>
-    </label>
-</div>
+      </label>
+    </div>
 
 
 
   </div>
+
+  <div class="editTextContainer" id="correctedContainer">
+    <div class="overlayCorrected" id="ovarlaycorrectedid"></div>
+    <div class="texthide" id="texthide">Mga naitamang teksto.</div>
+    <textarea type="text" id="textOriginal" class="editText2" style="width: 100%;"></textarea>
+  </div>
+  </div>
+
+ 
   <div class="container4">
     <div class="loader">
   <div class="half"></div>
   <div class="half"></div>
     </div>
+    
+
+    
+    
   <div class="checkContainer">
         <h2 class="resultdes" id="textresult">Detected word mistakes</h2>
    <div class="containerWrapper">
@@ -137,12 +155,6 @@
  <div class="editTextContainer2" id="resultContainer">
 .
    <textarea type="text" id="result" class="resultBox" placeholder="Language grammer result here"></textarea>
- </div>
-
- <div class="editTextContainer" id="correctedContainer">
-   <div class="overlayCorrected" id="ovarlaycorrectedid"></div>
-   <div class="texthide" id="texthide">Naitamang mga teksto.</div>
-   <textarea type="text" id="textOriginal" class="editText2" style="width: 100%;"></textarea>
  </div>
  
          <div class="functionscontainer2">
