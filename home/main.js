@@ -110,6 +110,9 @@ const TEXTAREA = document.querySelector('.editText');
 
 const editText2 = document.querySelector('.editText2');
 const textOriginal = document.getElementById('textOriginal');
+const textOriginalHides = document.getElementById('textOriginalHides');
+
+textOriginalHides.style.display = 'none';
 const correctedtextmobile = document.getElementById('correctedtextmobile');
 const textoriginal2 = document.getElementById('originaltext');
 textsee.style.display = 'none';
@@ -140,34 +143,42 @@ RefreshButton.style.visibility = 'hidden';
       if (window.innerWidth <= 768) {
   correctedtextmobile.style.display = 'none';
          overlaycorrectedTwo.style.display = 'none';
-         overlaycorrectedTwo.value = '';
+         overlaycorrectedTwo.innerHTML = ''; 
          correctedtextmobile.value = '';
          textarea.value = '';
          textarea.removeAttribute('readonly');
-overlay.style.display = 'none';
+overlay.style.display = 'block';
 textarea.style.display = 'block';
 
 checkContainer.style.display = 'none';
 textsee.style.display = 'none';
+
+if (getComputedStyle(overlay).paddingTop === '28px') {
+  overlay.style.paddingTop = '8px';
+}
 }else if (window.innerWidth <= 1024) {
   textseeTwo.style.display = 'none';
   correctedtextmobile.style.display = 'none';
 overlaycorrectedTwo.style.display = 'none';
-overlaycorrectedTwo.value = '';
+overlaycorrectedTwo.innerHTML = ''; 
 correctedtextmobile.value = '';
 textarea.value = '';
 textarea.removeAttribute('readonly');
-overlay.style.display = 'none';
+overlay.style.display = 'block';
 textarea.style.display = 'block';
 
 checkContainer.style.display = 'none';
 textsee.style.display = 'none';
+
+if (getComputedStyle(overlay).paddingTop === '30px') {
+  overlay.style.paddingTop = '11px';
+}
+
 }
       
         correctButton.style.visibility = 'visible';
 refreshButton.style.visibility = 'visible';
 TEXTAREA.style.display = 'block';
-overlay.style.display = 'none';
 hintLabel.style.display = 'block';
 textinsideCorrectedBox.value=' ';
 textOverlayInsideCorrectedBoxTwo.value = '';
@@ -178,7 +189,7 @@ RefreshButton.style.visibility = 'hidden';
         textOriginalText.style.display = 'none';
         checkContainer.style.display = 'none';
         clear = true;
-        overlay.value = '';
+        overlay.innerHTML = ''; 
         textresult.value = '';
         maxwidth2.style.display = 'inline';
         textresultcontainer.style.display = 'none'; // Hide the container on refresh
@@ -310,6 +321,7 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
       const offset = match.context.offset;
       const length = match.context.length;
       const errorText = context.substr(offset, length);
+      console.log('TEXTERROR TEST: ', + errorText);
       const ruleDescription = match.rule.description;
       const suggestions = match.replacements; // Use match.replacements directly
       return { errorText, suggestions, ruleDescription };
@@ -328,14 +340,48 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
 
 const displaywebsite = document.querySelector('.websitedisplay');
 
+async function getBestSuggestionFromGemini(ruleDesc, errorsTextarea, suggestionText) {
+  try {
+    const response = await fetch('https://call-gemini-api-tau.vercel.app/api/v2/geminiapi', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ruleDesc, errorsTextarea, suggestionText })
+    });
 
+    const data = await response.json();
+    if (response.ok) {
+      return data.bestSuggestion;
+    } else {
+      console.error('Error from API:', data.error);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error calling the API:", error);
+    return null;
+  }
+}
+let errorsText = [];
+let suggestionMap = [];
+let arrayErrorText = [];
 document.querySelector('.correctButton').addEventListener('click', async function () {
   if (textarea.value.trim() === "") {
     alert("Pakiusap, maglagay ng teksto para masuri.");
   } else {
     try {
-      textarea.setAttribute('readonly', true); // Makes the textarea non-editable
-      
+      if (window.innerWidth <= 768) {
+        textarea.setAttribute('readonly', true); // Makes the textarea non-editable
+      }
+      const fullText = textarea.value;
+originalText = fullText;
+textOriginalHides.value = fullText;
+textoriginal2.textContent = fullText;
+emptyText = textarea.value;
+editText2.textContent = emptyText;
+overlaycorrected.textContent = fullText;
+textOriginalText.value = fullText;
+
       loading.style.display = 'block';
       loading.style.visibility = 'visible';
       correctButton.style.visibility = 'hidden';
@@ -355,21 +401,72 @@ document.querySelector('.correctButton').addEventListener('click', async functio
 
       // Iterate over each correction suggestion
       suggestionsFromAPI.forEach(correction => {
+       
         const errorsTextarea = correction.errorText;
+        const suggestionTextRandom = correction.suggestions[0];
         const ruleDesc = correction.ruleDescription;
         const suggestionText = [...new Set(correction.suggestions)];
 
-        const fullText = textarea.value;
-        originalText = fullText;
-        textoriginal2.textContent = fullText;
-        emptyText = textarea.value;
-        editText2.textContent = emptyText;
-        overlaycorrected.textContent = fullText;
-        textOriginalText.value = fullText;
-        console.log('Error text:', errorsTextarea);
+       
+       
+        let existingEntryOnErrorTexts = suggestionMap.find(entry => entry.errorTextAreas && entry.errorTextAreas.includes(errorsTextarea));
+
+if (existingEntryOnErrorTexts) {
+  existingEntryOnErrorTexts.errorTextAreas.push(errorsTextarea);
+}else{
+suggestionMap.push({
+  errorTextAreas: [errorsTextarea],
+});
+}
+  
+        console.log('Error text:', errorsText);
         console.log('Rule description:', ruleDesc);
         console.log('Suggestions:', suggestionText);
+        
+        const regex = new RegExp(errorsTextarea, 'gi');
+        
+        if (window.innerWidth <= 1024) {
+          
+  originalText = originalText.replace(regex, match => {
+    return `<span class="highlight">${errorsTextarea}</span>`;
+  });
 
+  overlay.innerHTML = originalText.replace(/\n/g, '<br>');
+
+}
+
+
+if (window.innerWidth <= 768) {
+  const originalText = textarea.value;
+  const updatedText = originalText.replace(errorsTextarea, suggestionTextRandom);
+ 
+correctedtextmobile.value = updatedText;
+
+
+overlay.style.fontSize = '14px';
+textsee.style.display = 'block';
+
+if (getComputedStyle(overlay).paddingTop === '8px') {
+  overlay.style.paddingTop = '28px';
+}
+if (getComputedStyle(overlaycorrected).paddingTop === '8px') {
+  overlaycorrected.style.paddingTop = '28px';
+}
+if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
+  overlaycorrectedTwo.style.paddingTop = '28px';
+}
+
+textsee.innerHTML = 'Orihinal na mga teksto.';
+
+}else if (window.innerWidth <= 1024) {
+  textarea.value = textarea.value.replace(errorsTextarea, suggestionTextRandom);
+textOriginal.value = textarea.value;
+textarea.style.display = 'none';
+textOriginalText.style.display = 'block';
+}
+
+
+updateHighlights();
         // Create a new container for the correction
         const clonedNewContainer = document.createElement('div');
         clonedNewContainer.classList.add('clonedContainer');
@@ -388,89 +485,149 @@ document.querySelector('.correctButton').addEventListener('click', async functio
         // Append the container to the checkContainer
         checkContainer.appendChild(clonedNewContainer);
 
+const bestSuggestion = getBestSuggestionFromGemini(ruleDesc, errorsTextarea, suggestionText);
+if(!bestSuggestion){
+        // Automatically replace the error text with the best suggestion
+        correctedtextmobile.value = textarea.value.replace(errorsTextarea, bestSuggestion);
+}
+
         // Add click event listeners for each suggestion
-        clonedNewContainer.querySelectorAll('.suggestion').forEach(suggestionElem => {
-          suggestionElem.addEventListener('click', function () {
-            const selectedSuggestion = this.textContent;
-const regex = new RegExp(errorsTextarea, 'gi');
+        // Create the suggestionMap array to store each update
 
+// Loop through each suggestion element and add an event listener
+clonedNewContainer.querySelectorAll('.suggestion').forEach(suggestionElem => {
+  suggestionElem.addEventListener('click', function () {
+    const selectedSuggestion = this.textContent;
+    const regex = new RegExp(errorsTextarea, 'gi');
+const regexTwo = new RegExp(`\\b${errorsTextarea}\\b`, 'i'); // Use word boundaries to match whole words
+  let existingEntry = suggestionMap.find(entry => entry.selectedSuggestions && entry.selectedSuggestions.includes(selectedSuggestion));
 
-            if (window.innerWidth <= 768) {
-              
-                          //Mobile
-correctedtextmobile.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
-            //Mobile
-            correctedHighlightedTwoText = correctedHighlightedTwoText.replace(regex, match => {
-              return `<span class="highlightCorrected">${errorsTextarea}</span>`;
-            });
-            //Mobile
-overlaycorrectedTwo.innerHTML = correctedHighlightedTwoText.replace(/\n/g, '<br>');
-       correctedtextmobile.style.display = 'block';
-         overlaycorrectedTwo.style.display = 'block';
-overlay.style.display = 'none';
-textarea.style.display = 'none';
-
-
-
-              overlay.style.fontSize = '14px';
-              
-              textsee.style.display = 'block';
-              
-              
-              if (getComputedStyle(overlay).paddingTop === '8px') {
-                overlay.style.paddingTop = '28px';
-              }
-              if (getComputedStyle(overlaycorrected).paddingTop === '8px') {
-                overlaycorrected.style.paddingTop = '28px';
-              }
-              
-              if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
-  overlaycorrectedTwo.style.paddingTop = '28px';
+if (existingEntry) {
+  // If the entry exists, push the new suggestion and error into their respective arrays
+  existingEntry.selectedSuggestions.push(selectedSuggestion);
+  
+  console.log('Nope');
+  
+} else {
+  // If the entry doesn't exist, create a new entry with arrays for both
+  suggestionMap.push({
+    selectedSuggestions: [selectedSuggestion]
+  });
+  
+  console.log('Yep');
 }
-              textsee.innerHTML = 'Mga naitamang teksto.';
-              
-              
-            } else if (window.innerWidth <= 1024) {
-              displaywebsite.style.display = 'flex';
-              correctedbox.style.marginLeft = '10px';
-              displaywebsite.style.paddingBottom = '10px';
-                  //DESKTOP 
-            textseeTwo.style.display = 'block';
-            textOriginal.value = textarea.value.replace(errorsTextarea, selectedSuggestion);
-            correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
-  return `<span class="highlightCorrected">${errorsTextarea}</span>`;
+   
+
+    if (window.innerWidth <= 768) {
+            
+      const textArrayHides = textOriginalHides.value.split(/\s+/);
+const textArrayOriginal = correctedtextmobile.value.split(/\s+/);
+
+// Iterate through textArrayHides and update textArrayOriginal based on matches with errorTextArea
+textArrayHides.forEach((word, index) => {
+  if (word === errorsTextarea) {
+    // Replace the corresponding word in textArrayOriginal
+    textArrayOriginal[index] = selectedSuggestion;
+  }
 });
-textOriginal.style.display = 'block';
 
-overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
+// Join the updated array back into a string
+const updatedText = textArrayOriginal.join(' ');
 
-              overlaycorrected.style.fontSize = '14px';
-              textsee.style.display = 'none';
-              
-              
-correctedbox.style.display = 'block';
-overlay.style.display = 'block';
+// Update textOriginal with the modified text
+correctedtextmobile.value = updatedText;
+      
+      
+      
+console.log('Suggestions and errors: ', [suggestionMap]);
+      correctedHighlightedTwoText = correctedHighlightedTwoText.replace(regex, match => {
+        return `<span class="highlightCorrected">${errorsTextarea}</span>`;
+      });
 
-              if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
-                overlaycorrected.style.paddingTop = '30px';
-              }
-              
-              if (getComputedStyle(overlay).paddingTop === '11px') {
-  overlay.style.paddingTop = '30px';
-}
-              
-            } else {
-              textsee.style.display = 'none';
-              overlay.style.paddingTop = '';
-              overlaycorrected.style.paddingTop = '';
-            }
+      overlaycorrectedTwo.innerHTML = correctedHighlightedTwoText.replace(/\n/g, '<br>');
+      correctedtextmobile.style.display = 'block';
+      overlaycorrectedTwo.style.display = 'block';
+      overlay.style.display = 'none';
+      textarea.style.display = 'none';
 
-            updateHighlights();
-           
-            // Check if any cloned containers are left after a suggestion is selected
-            checkForClonedContainers();
-          });
-        });
+overlaycorrectedTwo.style.fontSize = '14px';
+      overlay.style.fontSize = '14px';
+      textsee.style.display = 'block';
+
+      if (getComputedStyle(overlay).paddingTop === '8px') {
+        overlay.style.paddingTop = '28px';
+      }
+      if (getComputedStyle(overlaycorrected).paddingTop === '8px') {
+        overlaycorrected.style.paddingTop = '28px';
+      }
+      if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
+        overlaycorrectedTwo.style.paddingTop = '28px';
+      }
+      textsee.innerHTML = 'Mga naitamang teksto.';
+
+    } else if (window.innerWidth <= 1024) {
+      // Desktop
+      displaywebsite.style.display = 'flex';
+      correctedbox.style.marginLeft = '10px';
+      displaywebsite.style.paddingBottom = '10px';
+
+      textseeTwo.style.display = 'block';
+      
+      
+      
+      const textArrayHides = textOriginalHides.value.split(/\s+/);
+const textArrayOriginal = textOriginal.value.split(/\s+/);
+
+// Iterate through textArrayHides and update textArrayOriginal based on matches with errorTextArea
+textArrayHides.forEach((word, index) => {
+  if (word === errorsTextarea) {
+    // Replace the corresponding word in textArrayOriginal
+    textArrayOriginal[index] = selectedSuggestion;
+  }
+});
+
+// Join the updated array back into a string
+const updatedText = textArrayOriginal.join(' ');
+
+// Update textOriginal with the modified text
+textOriginal.value = updatedText;
+
+console.log('Updated Text:', updatedText);
+
+      textarea.style.display = 'none';
+      textoriginal2.style.display = 'block';
+
+      correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
+        return `<span class="highlightCorrected">${errorsTextarea}</span>`;
+      });
+      textOriginal.style.display = 'block';
+
+      overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
+      overlaycorrected.style.fontSize = '15px';
+      textsee.style.display = 'none';
+
+      correctedbox.style.display = 'block';
+      overlay.style.display = 'block';
+
+      if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
+        overlaycorrected.style.paddingTop = '30px';
+      }
+      if (getComputedStyle(overlay).paddingTop === '11px') {
+        overlay.style.paddingTop = '30px';
+      }
+
+    } else {
+      textsee.style.display = 'none';
+      overlay.style.paddingTop = '';
+      overlaycorrected.style.paddingTop = '';
+    }
+
+    updateHighlights();
+
+    // Check if any cloned containers are left after a suggestion is selected
+    checkForClonedContainers();
+  });
+});
       });
 
       updateHighlights();
@@ -556,18 +713,27 @@ function updateHighlights() {
     }
     console.log('one');
     // Highlight the original errors
-    highlightedText = highlightedText.replace(regex, match => {
+    if (window.innerWidth <= 768) {
+      originalText = originalText.replace(regex, match => {
       return `<span class="highlight">${errorText}</span>`;
     });
 
+overlay.innerHTML = originalText.replace(/\n/g, '<br>');
+
+  } else if (window.innerWidth <= 1024) {
+    originalText = originalText.replace(regex, match => {
+      return `<span class="highlight">${errorText}</span>`;
+    });
+
+overlay.innerHTML = originalText.replace(/\n/g, '<br>');
+
+  }
     // Apply the first suggestion to the corrected text
     
   });
 
   // Reflect the highlights in the overlays
-  overlay.innerHTML = highlightedText.replace(/\n/g, '<br>');
- 
-
+  
 }
 
 setupTextSeeListener();
@@ -592,8 +758,8 @@ function handleTextSeePressedMOBILS() {
 overlaycorrectedTwo.style.display = 'none';
 overlay.style.display = 'block';
 textOriginal.style.display = 'none';
-textarea.style.display = 'block';
-  
+textoriginal2.style.display = 'block';
+textarea.style.display = 'none';
   seeOriginal = false;
   textsee.style.display = 'block';
   textsee.innerHTML = 'Mga Orihinal na teksto.';
@@ -606,9 +772,10 @@ function handleTextSeeUnpressedMOBILE() {
          overlaycorrectedTwo.style.display = 'block';
 overlay.style.display = 'none';
 textOriginal.style.display = 'none';
-textarea.style.display = 'none';
+
 textsee.innerHTML = 'Mga naitamang teksto.';
-  
+  textoriginal2.style.display = 'none';
+  textarea.style.display = 'none';
   seeOriginal = true;
 textsee.style.display = 'block';
   console.log('ONE');
