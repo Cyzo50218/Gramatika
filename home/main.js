@@ -836,7 +836,7 @@ function updateHighlights() {
 
 overlay.innerHTML = originalText.replace(/\n/g, '<br>');
 
-  } else if (window.innerWidth <= 1024) {
+  } else {
     originalText = originalText.replace(regex, match => {
       return `<span class="highlight">${errorText}</span>`;
     });
