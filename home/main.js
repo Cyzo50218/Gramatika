@@ -363,6 +363,7 @@ async function getBestSuggestionFromGemini(ruleDesc, errorsTextarea, suggestionT
   }
 }
 let errorsText = [];
+let onceupdate = true;
 let suggestionMap = [];
 let arrayErrorText = [];
 document.querySelector('.correctButton').addEventListener('click', async function () {
@@ -403,7 +404,7 @@ textOriginalText.value = fullText;
       suggestionsFromAPI.forEach(correction => {
        
         const errorsTextarea = correction.errorText;
-        const suggestionTextRandom = correction.suggestions[0];
+        const suggestionTextRandom = correction.suggestions[1];
         const ruleDesc = correction.ruleDescription;
         const suggestionText = [...new Set(correction.suggestions)];
 
@@ -437,12 +438,75 @@ suggestionMap.push({
 
 
 if (window.innerWidth <= 768) {
-  const originalText = textarea.value;
-  const updatedText = originalText.replace(errorsTextarea, suggestionTextRandom);
- 
-correctedtextmobile.value = updatedText;
+  scrollToTarget();
+  const originalTextCopied = textOriginalHides.value;
+  
+correctedtextmobile.value = originalTextCopied;
+
+  const originalText = textOriginalHides.value.trim();
+let correctedText = correctedtextmobile.value.trim();
+
+// Function to detect and combine double repeated words
+function combineRepeatedWords(text) {
+    const words = text.split(' ');
+    const combinedWords = [];
+
+    for (let i = 0; i < words.length; i++) {
+        // If the current word is the same as the next word (case-insensitive)
+        if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
+            // Combine the repeated words into one
+            combinedWords.push(`${words[i]} ${words[i + 1]}`);
+            i++; // Skip the next word since it's already combined
+        } else {
+            combinedWords.push(words[i]);
+        }
+    }
+
+    return combinedWords;
+}
+
+// Apply the function to both texts
+let originalArray = combineRepeatedWords(originalText);
+let correctedArray = combineRepeatedWords(correctedText);
+
+console.log(originalArray); // ["Kaway kaway", "na", "tayu", "dyan"]
+console.log(correctedArray); // (Depending on the input)
 
 
+console.log(originalArray)
+// Handle repeated words in originalArray
+let combinedArray = [];
+let i = 0;
+
+while (i < originalArray.length) {
+    let word = originalArray[i];
+    if (i + 1 < originalArray.length && originalArray[i + 1] === word) {
+        // Combine repeated words
+        combinedArray.push(word + ' ' + word);
+        i += 2; // Skip the next word since it's a repeat
+    } else {
+        combinedArray.push(word);
+        i++;
+    }
+}
+
+// Find the index of the word to be replaced in the combined array
+let targetIndex = combinedArray.indexOf(errorsTextarea);
+
+// Check if the targetIndex is valid and within bounds
+if (targetIndex !== -1 && targetIndex < correctedArray.length) {
+    // Set an invisible placeholder (zero-width space) at the corresponding index in correctedArray
+    correctedArray[targetIndex] = correctedArray[targetIndex] + "\u200B";
+
+    // Replace the placeholder with the selected suggestion
+    correctedArray[targetIndex] = suggestionTextRandom;
+}
+
+// Join the corrected array back into a string
+correctedtextmobile.value = correctedArray.join(' ');
+
+
+console.log('Replaced', )
 overlay.style.fontSize = '14px';
 textsee.style.display = 'block';
 
@@ -459,8 +523,72 @@ if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
 textsee.innerHTML = 'Orihinal na mga teksto.';
 
 }else if (window.innerWidth <= 1024) {
-  textarea.value = textarea.value.replace(errorsTextarea, suggestionTextRandom);
-textOriginal.value = textarea.value;
+  const originalTextCopied = textOriginalText.value;
+  
+textOriginal.value = originalTextCopied;
+
+  const originalText = textOriginalText.value.trim();
+let correctedText = textOriginal.value.trim();
+
+// Function to detect and combine double repeated words
+function combineRepeatedWords(text) {
+    const words = text.split(' ');
+    const combinedWords = [];
+
+    for (let i = 0; i < words.length; i++) {
+        // If the current word is the same as the next word (case-insensitive)
+        if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
+            // Combine the repeated words into one
+            combinedWords.push(`${words[i]} ${words[i + 1]}`);
+            i++; // Skip the next word since it's already combined
+        } else {
+            combinedWords.push(words[i]);
+        }
+    }
+
+    return combinedWords;
+}
+
+// Apply the function to both texts
+let originalArray = combineRepeatedWords(originalText);
+let correctedArray = combineRepeatedWords(correctedText);
+
+console.log(originalArray); // ["Kaway kaway", "na", "tayu", "dyan"]
+console.log(correctedArray); // (Depending on the input)
+
+
+console.log(originalArray)
+// Handle repeated words in originalArray
+let combinedArray = [];
+let i = 0;
+
+while (i < originalArray.length) {
+    let word = originalArray[i];
+    if (i + 1 < originalArray.length && originalArray[i + 1] === word) {
+        // Combine repeated words
+        combinedArray.push(word + ' ' + word);
+        i += 2; // Skip the next word since it's a repeat
+    } else {
+        combinedArray.push(word);
+        i++;
+    }
+}
+
+// Find the index of the word to be replaced in the combined array
+let targetIndex = combinedArray.indexOf(errorsTextarea);
+
+// Check if the targetIndex is valid and within bounds
+if (targetIndex !== -1 && targetIndex < correctedArray.length) {
+    // Set an invisible placeholder (zero-width space) at the corresponding index in correctedArray
+    correctedArray[targetIndex] = correctedArray[targetIndex] + "\u200B";
+
+    // Replace the placeholder with the selected suggestion
+    correctedArray[targetIndex] = suggestionTextRandom;
+}
+
+// Join the corrected array back into a string
+textOriginal.value = correctedArray.join(' ');
+
 textarea.style.display = 'none';
 textOriginalText.style.display = 'block';
 }
@@ -519,25 +647,72 @@ if (existingEntry) {
    
 
     if (window.innerWidth <= 768) {
+            scrollToTargetBackUp();
             
-      const textArrayHides = textOriginalHides.value.split(/\s+/);
-const textArrayOriginal = correctedtextmobile.value.split(/\s+/);
+const originalText = textOriginalHides.value.trim();
+let correctedText = correctedtextmobile.value.trim();
 
-// Iterate through textArrayHides and update textArrayOriginal based on matches with errorTextArea
-textArrayHides.forEach((word, index) => {
-  if (word === errorsTextarea) {
-    // Replace the corresponding word in textArrayOriginal
-    textArrayOriginal[index] = selectedSuggestion;
-  }
-});
+// Function to detect and combine double repeated words
+function combineRepeatedWords(text) {
+    const words = text.split(' ');
+    const combinedWords = [];
 
-// Join the updated array back into a string
-const updatedText = textArrayOriginal.join(' ');
+    for (let i = 0; i < words.length; i++) {
+        // If the current word is the same as the next word (case-insensitive)
+        if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
+            // Combine the repeated words into one
+            combinedWords.push(`${words[i]} ${words[i + 1]}`);
+            i++; // Skip the next word since it's already combined
+        } else {
+            combinedWords.push(words[i]);
+        }
+    }
 
-// Update textOriginal with the modified text
-correctedtextmobile.value = updatedText;
-      
-      
+    return combinedWords;
+}
+
+// Apply the function to both texts
+let originalArray = combineRepeatedWords(originalText);
+let correctedArray = combineRepeatedWords(correctedText);
+
+console.log(originalArray); // ["Kaway kaway", "na", "tayu", "dyan"]
+console.log(correctedArray); // (Depending on the input)
+
+
+console.log(originalArray)
+// Handle repeated words in originalArray
+let combinedArray = [];
+let i = 0;
+
+while (i < originalArray.length) {
+    let word = originalArray[i];
+    if (i + 1 < originalArray.length && originalArray[i + 1] === word) {
+        // Combine repeated words
+        combinedArray.push(word + ' ' + word);
+        i += 2; // Skip the next word since it's a repeat
+    } else {
+        combinedArray.push(word);
+        i++;
+    }
+}
+
+// Find the index of the word to be replaced in the combined array
+let targetIndex = combinedArray.indexOf(errorsTextarea);
+
+// Check if the targetIndex is valid and within bounds
+if (targetIndex !== -1 && targetIndex < correctedArray.length) {
+    // Set an invisible placeholder (zero-width space) at the corresponding index in correctedArray
+    correctedArray[targetIndex] = correctedArray[targetIndex] + "\u200B";
+
+    // Replace the placeholder with the selected suggestion
+    correctedArray[targetIndex] = selectedSuggestion;
+}
+
+// Join the corrected array back into a string
+correctedtextmobile.value = correctedArray.join(' ');
+
+
+
       
 console.log('Suggestions and errors: ', [suggestionMap]);
       correctedHighlightedTwoText = correctedHighlightedTwoText.replace(regex, match => {
@@ -574,25 +749,69 @@ overlaycorrectedTwo.style.fontSize = '14px';
       textseeTwo.style.display = 'block';
       
       
-      
-      const textArrayHides = textOriginalHides.value.split(/\s+/);
-const textArrayOriginal = textOriginal.value.split(/\s+/);
+      const originalText = textOriginalHides.value.trim();
+let correctedText = textOriginal.value.trim();
 
-// Iterate through textArrayHides and update textArrayOriginal based on matches with errorTextArea
-textArrayHides.forEach((word, index) => {
-  if (word === errorsTextarea) {
-    // Replace the corresponding word in textArrayOriginal
-    textArrayOriginal[index] = selectedSuggestion;
-  }
-});
+// Function to detect and combine double repeated words
+function combineRepeatedWords(text) {
+    const words = text.split(' ');
+    const combinedWords = [];
 
-// Join the updated array back into a string
-const updatedText = textArrayOriginal.join(' ');
+    for (let i = 0; i < words.length; i++) {
+        // If the current word is the same as the next word (case-insensitive)
+        if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
+            // Combine the repeated words into one
+            combinedWords.push(`${words[i]} ${words[i + 1]}`);
+            i++; // Skip the next word since it's already combined
+        } else {
+            combinedWords.push(words[i]);
+        }
+    }
 
-// Update textOriginal with the modified text
-textOriginal.value = updatedText;
+    return combinedWords;
+}
 
-console.log('Updated Text:', updatedText);
+// Apply the function to both texts
+let originalArray = combineRepeatedWords(originalText);
+let correctedArray = combineRepeatedWords(correctedText);
+
+console.log(originalArray); // ["Kaway kaway", "na", "tayu", "dyan"]
+console.log(correctedArray); // (Depending on the input)
+
+
+console.log(originalArray)
+// Handle repeated words in originalArray
+let combinedArray = [];
+let i = 0;
+
+while (i < originalArray.length) {
+    let word = originalArray[i];
+    if (i + 1 < originalArray.length && originalArray[i + 1] === word) {
+        // Combine repeated words
+        combinedArray.push(word + ' ' + word);
+        i += 2; // Skip the next word since it's a repeat
+    } else {
+        combinedArray.push(word);
+        i++;
+    }
+}
+
+// Find the index of the word to be replaced in the combined array
+let targetIndex = combinedArray.indexOf(errorsTextarea);
+
+// Check if the targetIndex is valid and within bounds
+if (targetIndex !== -1 && targetIndex < correctedArray.length) {
+    // Set an invisible placeholder (zero-width space) at the corresponding index in correctedArray
+    correctedArray[targetIndex] = correctedArray[targetIndex] + "\u200B";
+
+    // Replace the placeholder with the selected suggestion
+    correctedArray[targetIndex] = selectedSuggestion;
+}
+
+// Join the corrected array back into a string
+textOriginal.value = correctedArray.join(' ');
+
+
 
       textarea.style.display = 'none';
       textoriginal2.style.display = 'block';
@@ -673,17 +892,26 @@ function handleError(error) {
   checkContainer.innerHTML = 'An error occurred while checking the text.';
   checkContainer.style.display = 'none';
   loading.style.display = 'none';
-  RefreshButton.style.visibility = 'hidden';
+  RefreshButton.style.visibility = 'visible';
 }
 
 let highlightedText = null;
 
 function scrollToTarget() {
    
-    if (correctedbox) {
-        correctedbox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        correctedbox.focus();
+    if (checkContainer) {
+        checkContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        checkContainer.focus();
     }
+}
+
+const originalBox = document.querySelector('.editTextContainer');
+function scrollToTargetBackUp() {
+   
+    
+        originalBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        originalBox.focus();
+    
 }
 
 // Check if the device is mobile
