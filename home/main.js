@@ -3,17 +3,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const menu = document.getElementById('menu');
     
 const textsss = document.querySelector('.editText');
+const textOriginalText = document.getElementById('originaltext');
+const textOriginal = document.getElementById('textOriginal');
+const textOriginalHides = document.getElementById('textOriginalHides');
 
 function adjustFontSize() {
   const width = window.innerWidth;
-if (width >= 1440) {
+if (width <= 768) {
   textsss.style.fontSize = '14px'; // Smaller font size for very large screens
-} else if (width >= 1024) {
-  textsss.style.fontSize = '14px'; // 12px smaller than default for large screens
-} else if (width >= 768) {
-  textsss.style.fontSize = '14px'; // Slightly smaller for medium screens
 } else {
-  textsss.style.fontSize = '14px'; // Default font size for small screens
+  textOriginal.style.fontSize = '20px';
+  textOriginalHides.style.fontSize = '20px';
+  textOriginalText.style.fontSize = '20px';
+  textsss.style.fontSize = '20px'; // Default font size for small screens
+  console.log('resizes');
 }
 }
 
@@ -103,14 +106,12 @@ const texthide = document.getElementById('texthide');
 const correctedbox = document.getElementById('correctedContainer');
 const textinsideCorrectedBox = document.getElementById('textOriginal');
 const textOverlayInsideCorrectedBoxTwo = document.getElementById('ovarlaycorrectedid');
-const textOriginalText = document.getElementById('originaltext');
+
 const textsee = document.getElementById('textsee');
 const hintLabel = document.querySelector('.hint-label');
 const TEXTAREA = document.querySelector('.editText');
 
 const editText2 = document.querySelector('.editText2');
-const textOriginal = document.getElementById('textOriginal');
-const textOriginalHides = document.getElementById('textOriginalHides');
 
 textOriginalHides.style.display = 'none';
 const correctedtextmobile = document.getElementById('correctedtextmobile');
@@ -130,16 +131,27 @@ let correctedHighlightedTwoText = null;
 
 textOriginalText.style.display = 'none';
 const displaywebsite = document.querySelector('.websitedisplay');
+const correctorcontainer = document.querySelector('.correctorcontainer');
+
+const logoimg = document.querySelector('.imagelogo');
+const navtexts = document.querySelector('.menu');
+
+const editText = document.querySelector('.editText');
 
 if (window.innerWidth <= 768) {
   correctedbox.style.display = 'none';
+  correctorcontainer.style.width = '90%';
   console.log('non');
+  
 } else {
+  logoimg.style.marginLeft ='-80px';
+ 
+  navtexts.style.marginRight = '-80px';
   correctedbox.style.display = 'block';
   displaywebsite.style.display = 'flex';
   correctedbox.style.marginLeft = '10px';
       displaywebsite.style.paddingBottom = '10px';
-
+correctorcontainer.style.width = '70%';
   console.log('visible');
 }
 
@@ -153,7 +165,8 @@ const textseeTwo = document.getElementById('textseeTwo');
 textseeTwo.style.display = 'none';
 const RefreshButton = document.querySelector('.refreshButton');
 
-RefreshButton.style.visibility = 'hidden';
+RefreshButton.style.display = 'none';
+
     document.querySelector('.refreshButton').addEventListener('click', function() {
       if (window.innerWidth <= 768) {
   correctedtextmobile.style.display = 'none';
@@ -164,6 +177,9 @@ RefreshButton.style.visibility = 'hidden';
          textarea.removeAttribute('readonly');
 overlay.style.display = 'block';
 textarea.style.display = 'block';
+correctedbox.style.display = 'none';
+correctorcontainer.style.width = '90%';
+console.log('non');
 
 checkContainer.style.display = 'none';
 textsee.style.display = 'none';
@@ -171,11 +187,14 @@ textsee.style.display = 'none';
 if (getComputedStyle(overlay).paddingTop === '28px') {
   overlay.style.paddingTop = '8px';
 }
+
 }else {
   textseeTwo.style.display = 'none';
   correctedtextmobile.style.display = 'none';
 overlaycorrectedTwo.style.display = 'none';
 overlaycorrectedTwo.innerHTML = ''; 
+overlaycorrected.innerHTML = '';
+
 correctedtextmobile.value = '';
 textarea.value = '';
 textarea.removeAttribute('readonly');
@@ -188,17 +207,24 @@ textsee.style.display = 'none';
 if (getComputedStyle(overlay).paddingTop === '30px') {
   overlay.style.paddingTop = '11px';
 }
-
+correctedbox.style.display = 'block';
+displaywebsite.style.display = 'flex';
+correctedbox.style.marginLeft = '10px';
+displaywebsite.style.paddingBottom = '10px';
+correctorcontainer.style.width = '70%';
+console.log('visible');
 }
-      
+  
+
+    
         correctButton.style.visibility = 'visible';
 refreshButton.style.visibility = 'visible';
 TEXTAREA.style.display = 'block';
 hintLabel.style.display = 'block';
 textinsideCorrectedBox.value=' ';
 textOverlayInsideCorrectedBoxTwo.value = '';
-RefreshButton.style.visibility = 'hidden';
-        correctedbox.style.display = 'none';
+RefreshButton.style.display = 'none';
+        
         textOriginalText.value = '';
         correctedtextmobile.value = '';
         textOriginalText.style.display = 'none';
@@ -388,6 +414,7 @@ document.querySelector('.correctButton').addEventListener('click', async functio
       if (window.innerWidth <= 768) {
         textarea.setAttribute('readonly', true); // Makes the textarea non-editable
       }
+      
       const fullText = textarea.value;
 originalText = fullText;
 textOriginalHides.value = fullText;
@@ -402,8 +429,7 @@ textOriginalText.value = fullText;
       correctButton.style.visibility = 'hidden';
 
       checkContainer.innerHTML = 'Munkahing Pagtatama';
-      window.addEventListener('resize', adjustFontSize);
-
+      
        suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
       console.log('Suggestions from API:', suggestionsFromAPI);
 
@@ -422,7 +448,7 @@ textOriginalText.value = fullText;
         const ruleDesc = correction.ruleDescription;
         const suggestionText = [...new Set(correction.suggestions)];
 
-       
+       RefreshButton.style.display = 'block';
        
         let existingEntryOnErrorTexts = suggestionMap.find(entry => entry.errorTextAreas && entry.errorTextAreas.includes(errorsTextarea));
 
@@ -480,9 +506,10 @@ textsee.innerHTML = 'Orihinal na mga teksto.';
   
 textOriginal.value = originalTextCopied;
 
-  
+  overlay.style.fontSize = '20px';
 textarea.style.display = 'none';
 textOriginalText.style.display = 'block';
+textOriginal.style.display = 'none';
 }
 
 
@@ -714,7 +741,8 @@ textOriginal.value = correctedArray.join(' ');
       textOriginal.style.display = 'block';
 
       overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
-      overlaycorrected.style.fontSize = '15px';
+      overlaycorrected.style.fontSize = '20px';
+      overlay.style.fontSize = '20px';
       textsee.style.display = 'none';
 
       correctedbox.style.display = 'block';
