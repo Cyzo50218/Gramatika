@@ -129,7 +129,22 @@ let correctedHighlightedText = null;
 let correctedHighlightedTwoText = null;
 
 textOriginalText.style.display = 'none';
-correctedbox.style.display = 'none';
+const displaywebsite = document.querySelector('.websitedisplay');
+
+if (window.innerWidth <= 768) {
+  correctedbox.style.display = 'none';
+  console.log('non');
+} else if (window.innerWidth <= 1024) {
+  correctedbox.style.display = 'block';
+  displaywebsite.style.display = 'flex';
+  correctedbox.style.marginLeft = '10px';
+      displaywebsite.style.paddingBottom = '10px';
+
+  console.log('visible');
+}
+
+
+
 
 loading.style.display = 'none';
 loading.style.visibility = 'hidden';
@@ -338,7 +353,6 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
 };
 
 
-const displaywebsite = document.querySelector('.websitedisplay');
 
 async function getBestSuggestionFromGemini(ruleDesc, errorsTextarea, suggestionText) {
   try {
