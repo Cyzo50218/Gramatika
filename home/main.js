@@ -134,7 +134,7 @@ const displaywebsite = document.querySelector('.websitedisplay');
 if (window.innerWidth <= 768) {
   correctedbox.style.display = 'none';
   console.log('non');
-} else if (window.innerWidth <= 1024) {
+} else {
   correctedbox.style.display = 'block';
   displaywebsite.style.display = 'flex';
   correctedbox.style.marginLeft = '10px';
@@ -171,7 +171,7 @@ textsee.style.display = 'none';
 if (getComputedStyle(overlay).paddingTop === '28px') {
   overlay.style.paddingTop = '8px';
 }
-}else if (window.innerWidth <= 1024) {
+}else {
   textseeTwo.style.display = 'none';
   correctedtextmobile.style.display = 'none';
 overlaycorrectedTwo.style.display = 'none';
@@ -475,7 +475,7 @@ if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
 
 textsee.innerHTML = 'Orihinal na mga teksto.';
 
-}else if (window.innerWidth <= 1024) {
+}else {
   const originalTextCopied = textOriginalText.value;
   
 textOriginal.value = originalTextCopied;
