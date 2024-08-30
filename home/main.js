@@ -632,7 +632,7 @@ overlaycorrectedTwo.style.fontSize = '14px';
       }
       textsee.innerHTML = 'Mga naitamang teksto.';
 
-    } else if (window.innerWidth <= 1024) {
+    } else {
       // Desktop
       displaywebsite.style.display = 'flex';
       correctedbox.style.marginLeft = '10px';
@@ -727,11 +727,7 @@ textOriginal.value = correctedArray.join(' ');
         overlay.style.paddingTop = '30px';
       }
 
-    } else {
-      textsee.style.display = 'none';
-      overlay.style.paddingTop = '';
-      overlaycorrected.style.paddingTop = '';
-    }
+    } 
 
     updateHighlights();
 
