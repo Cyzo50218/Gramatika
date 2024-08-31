@@ -6,12 +6,18 @@ const textsss = document.querySelector('.editText');
 const textOriginalText = document.getElementById('originaltext');
 const textOriginal = document.getElementById('textOriginal');
 const textOriginalHides = document.getElementById('textOriginalHides');
+const hintLabel = document.querySelector('.hint-label');
+const textLabelOriginal = document.getElementById('textseeTwo');
+const textLabelCorrected = document.querySelector('.texthide');
 
 function adjustFontSize() {
   const width = window.innerWidth;
 if (width <= 768) {
   textsss.style.fontSize = '14px'; // Smaller font size for very large screens
 } else {
+  textLabelCorrected.style.fontSize = '15px';
+  textLabelOriginal.style.fontSize = '15px';
+  hintLabel.style.fontSize = '20px';
   textOriginal.style.fontSize = '20px';
   textOriginalHides.style.fontSize = '20px';
   textOriginalText.style.fontSize = '20px';
@@ -62,8 +68,6 @@ document.querySelector('.editTextContainer').addEventListener('click', function(
 
 document.querySelector('.editText').addEventListener('input', function() {
   
-  const hintLabel = document.querySelector('.hint-label');
-
   if (textarea.value.length > 0) {
     hintLabel.style.display = 'none';
   } else {
@@ -108,7 +112,7 @@ const textinsideCorrectedBox = document.getElementById('textOriginal');
 const textOverlayInsideCorrectedBoxTwo = document.getElementById('ovarlaycorrectedid');
 
 const textsee = document.getElementById('textsee');
-const hintLabel = document.querySelector('.hint-label');
+
 const TEXTAREA = document.querySelector('.editText');
 
 const editText2 = document.querySelector('.editText2');
