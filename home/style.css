@@ -381,7 +381,7 @@ section {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  width: 90%; /* Adjust width to make room for margins */
+  width: 60%; /* Adjust width to make room for margins */
   margin: 10px auto; /* Center the container horizontally */
 }
 
@@ -711,13 +711,18 @@ button:hover {
       width: 100%;
       height: 80px;
      padding-bottom: 20px;
-      background-color: #214C9E;
+      
       overflow: hidden;
+    }
+
+    .bg-navbar{
+      padding-top: 5px;
+      padding-bottom: 20px;
+background-color: #214C9E;
     }
     
     #toolbar {
-  width: 100%;
-  height: 50px;
+  
   background-color: #214C9E;
   display: flex;
   align-items: center;
