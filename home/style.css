@@ -903,10 +903,10 @@ padding: 10px;
       
   .footer-bottom {
     font-size: 14px;
-    margin-top: -70px;
+    margin-top: -30px;
   }
   .footer-contents{
-    margin-top: 50px;
+    padding-top: 10px;
   }
   
       .max-width {
