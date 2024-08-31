@@ -9,12 +9,16 @@ const textOriginalHides = document.getElementById('textOriginalHides');
 const hintLabel = document.querySelector('.hint-label');
 const textLabelOriginal = document.getElementById('textseeTwo');
 const textLabelCorrected = document.querySelector('.texthide');
-
+const bgnavbar = document.querySelector('.bg-navbar');
 function adjustFontSize() {
   const width = window.innerWidth;
 if (width <= 768) {
+  bgnavbar.style.paddingTop = '0px';
+  bgnavbar.style.paddingBottom = '0px';
+  bgnavbar.style.backgroundColor='#00000000';
   textsss.style.fontSize = '14px'; // Smaller font size for very large screens
 } else {
+ 
   textLabelCorrected.style.fontSize = '15px';
   textLabelOriginal.style.fontSize = '15px';
   hintLabel.style.fontSize = '20px';
@@ -148,9 +152,9 @@ if (window.innerWidth <= 768) {
   console.log('non');
   
 } else {
-  logoimg.style.marginLeft ='-80px';
+  logoimg.style.marginLeft ='-150px';
  
-  navtexts.style.marginRight = '-80px';
+  navtexts.style.marginRight = '-150px';
   correctedbox.style.display = 'block';
   displaywebsite.style.display = 'flex';
   correctedbox.style.marginLeft = '10px';
