@@ -903,11 +903,13 @@ padding: 10px;
       
   .footer-bottom {
     font-size: 14px;
-    margin-top: -20px;
+    padding-top: 10px;
+    margin-top: -30px;
+    
     text-align: center;
   }
   .footer-contents{
-    margin-top: 60px;
+   
   }
   
       .max-width {
