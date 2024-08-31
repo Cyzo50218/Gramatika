@@ -149,43 +149,19 @@ body>*:not(footer) {
 .footer {
   background-color: #214C9E;
   color: #ffffff;
-  padding: 20px 0;
+  padding-top: 10px;
   text-align: center;
   flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-}
-
-.footer-logo .logotitle {
-  font-size: 24px;
-  margin-right: 10px;
-}
-
-.footer-links {
-  display: flex;
-  gap: 15px;
-}
-
-.footer-link {
-  color: #ffffff;
-  text-decoration: none;
+.footer-bottom {
+  display: block;        /* Ensure block-level element for centering */
+  text-align: center;
+  margin: 0 auto;        /* Center the content horizontally */
+  padding-bottom: 20px;
   font-size: 16px;
 }
 
-.footer-bottom {
-  margin-top: 10px;
-  font-size: 14px;
-}
     .clonedContainer {
     box-shadow: 0 4px 8px 0 rgba(100, 149, 237, 0.6); /* Cornflower blue glow */
     padding: 10px;
