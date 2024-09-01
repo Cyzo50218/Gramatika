@@ -943,18 +943,20 @@ body {
   height: 30px; /* Allows the height to adjust based on content */
   min-height: 10px; /* Ensures a minimum height */
   box-sizing: border-box; /* Ensures padding is included within the height */
+  position: relative; /* Sets the footer as a relative positioning context for absolute elements */
 }
-.footer-bottom{
 
-  
-}
 .footer-contents {
-  overflow: visible;
-  margin-top: -15px;
+  position: absolute; /* Allows positioning within the footer */
+  bottom: 0; /* Aligns content to the bottom initially */
+  left: 0; /* Aligns content to the left */
+  right: 0; /* Aligns content to the right */
+  padding-bottom: 15px;
+  margin-top: 0; /* Reset the margin */
   font-size: 10px; /* Small font size for a thin appearance */
   color: #000000; /* Light text color for contrast */
-  
 }
+
 
 
     .max-width {
