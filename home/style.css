@@ -937,7 +937,7 @@ body {
   padding: 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
   margin-top: auto; /* Pushes the footer to the bottom */
-  height: 20px; /* Sets an explicit height for the footer */
+  height: 30px; /* Sets an explicit height for the footer */
   box-sizing: border-box; /* Ensures padding is included within the height */
 }
 .footer-bottom{
@@ -945,9 +945,9 @@ body {
   
 }
 .footer-contents {
-  margin: 0; /* Removes default margin */
+  
   font-size: 10px; /* Small font size for a thin appearance */
-  color: #040406; /* Light text color for contrast */
+  color: #FCFCFF; /* Light text color for contrast */
   
 }
 
