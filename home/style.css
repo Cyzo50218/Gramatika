@@ -933,6 +933,7 @@ body {
 .footer {
   overflow-y: hidden;
   background-color: #214C9E;
+  max-height: 30px;
   width: 100%;
   padding: 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
