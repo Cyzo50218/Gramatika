@@ -911,42 +911,37 @@ padding: 10px;
     @media (max-width: 768px) {
       
 .footer {
+background-color: #214C9E00;
+  height: 100%; /* Adjust this value for the desired thinness */
   display: flex;
-  justify-content: center;
   align-items: center;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #214C9E;
+  justify-content: center;
   
 }
 
 .max-widthfooter {
-  display: flex;
-  
-  
-  justify-content: center;
-  align-items: center;
+background-color: #214C9E;
   width: 100%;
-  
+  padding-top: -20px;
+  margin: 0 auto; /* Center the footer content */
 }
 
 .footer-bottom {
-  color: white;
- 
+  width: 100%;
   margin-top: -15px;
-  font-size: 14px; /* Reduced font size for thinner footer */
-  line-height: 1;
-  
-  
+  text-align: center;
+  color: white; /* Text color for contrast */
+  font-size: 10px; /* Small font size to match the footer height */
+  line-height: 20px; /* Match line-height with the footer height */
 }
 
 .footer-contents {
   margin: 0;
   padding: 0;
-  
+  width: 100%;
 }
-      .max-width {
+
+    .max-width {
         padding: 0 20px;
         margin-top: 25px;
       }
