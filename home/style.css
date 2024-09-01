@@ -914,33 +914,36 @@ padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
   bottom: 0;
   left: 0;
+  padding-top: -500px;
   right: 0;
   background-color: #214C9E;
-  height: 20px; /* Adjust this value for the thinnest possible height */
+  height: -80%; /* Adjust this value for the thinnest possible height */
 }
 
 .max-widthfooter {
   display: flex;
+  
+  
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 20%;
 }
 
 .footer-bottom {
   color: white;
-  margin-top: 18px;
+ 
+  margin-top: -20px;
   font-size: 10px; /* Reduced font size for thinner footer */
   line-height: 1;
-  margin: 0;
+  
   padding: 0;
 }
 
 .footer-contents {
-  margin: 0;
+  margin: 100;
   padding: 0;
 }
       .max-width {
