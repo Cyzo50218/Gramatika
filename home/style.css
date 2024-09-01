@@ -949,9 +949,10 @@ body {
   
 }
 .footer-contents {
-  margin-top: -40px;
+  overflow: visible;
+  margin-top: -15px;
   font-size: 10px; /* Small font size for a thin appearance */
-  color: #FCFCFF; /* Light text color for contrast */
+  color: #000000; /* Light text color for contrast */
   
 }
 
