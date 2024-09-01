@@ -928,7 +928,7 @@ background-color: #214C9E;
 
 .footer-bottom {
   width: 100%;
-  margin-top: -5px;
+  margin-top: 0;
   text-align: center;
   color: white; /* Text color for contrast */
   font-size: 10px; /* Small font size to match the footer height */
