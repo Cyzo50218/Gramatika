@@ -147,7 +147,7 @@ body>*:not(footer) {
 }
 
 .footer {
-  
+  background-color: #214C9E;
   color: #ffffff;
   padding-top: 10px;
   text-align: center;
@@ -911,7 +911,7 @@ padding: 10px;
     @media (max-width: 768px) {
       
 .footer {
-
+background-color: #00000000;
   height: 100%; /* Adjust this value for the desired thinness */
   display: flex;
   align-items: center;
