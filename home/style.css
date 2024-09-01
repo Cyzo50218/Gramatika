@@ -931,13 +931,12 @@ body {
   
 }
 
-
 .footer {
   overflow-y: hidden;
   background-color: #214C9E;
   max-height: none;
   width: 100%;
-  color: #000000; /* Light text color for contrast */
+  color: #000000; /* Text color for contrast */
   padding: 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
   margin-top: auto; /* Pushes the footer to the bottom */
@@ -949,13 +948,11 @@ body {
 
 .footer-contents {
   position: absolute; /* Allows positioning within the footer */
-  bottom: 0; /* Aligns content to the bottom initially */
-  left: 0; /* Aligns content to the left */
-  right: 0; /* Aligns content to the right */
-  padding-bottom: 500px;
+  top: 50%; /* Positions content halfway down the footer */
+  left: 50%; /* Centers content horizontally */
+  transform: translate(-50%, -50%); /* Adjusts for content size to fully center */
   margin-top: 0; /* Reset the margin */
-  font-size: 10px; /* Small font size for a thin appearance */
-  
+  font-size: 12px; /* Small font size for a thin appearance */
 }
 
 
