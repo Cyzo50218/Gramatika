@@ -940,7 +940,7 @@ body {
   padding: 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
   margin-top: auto; /* Pushes the footer to the bottom */
-  height: 40px; /* Allows the height to adjust based on content */
+  height: 45px; /* Allows the height to adjust based on content */
   min-height: 30px; /* Ensures a minimum height */
   box-sizing: border-box; /* Ensures padding is included within the height */
   position: relative; /* Sets the footer as a relative positioning context for absolute elements */
@@ -950,8 +950,8 @@ body {
   position: absolute !important;
   top: 50% !important;
   left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  font-size: 10px !important;
+  transform: translate(-50%, -20px) !important;
+  font-size: 11px !important;
 }
 
 
