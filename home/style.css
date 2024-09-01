@@ -908,30 +908,31 @@ padding: 10px;
     overflow: hidden;
 }
 }
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
   
+  /* CSS for the thinnest footer */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures footer is at the bottom */
+}
 
-  .footer {
-    background-color: #214C9E;
-    height: 20%; /* Adjust this value for the desired thinness */
-    display: flex;
-    
-    padding-top: 10px;
-    align-items: center;
-    justify-content: center; /* Center contents horizontally */
-    margin-top: auto; /* Push footer to the bottom */
-  }
-  
-  .max-widthfooter{
-margin-top: -5px;
+.footer {
+  background-color: #214C9E;
+  width: 100%;
+  padding: 2px 0; /* Very thin padding */
+  text-align: center; /* Centers the text */
+  margin-top: auto; /* Pushes the footer to the bottom of the page */
+}
 
-  }
+.footer-contents {
+  margin: 3px; /* Removes default margin from the paragraph */
+  font-size: 15px; /* Small font size for thin appearance */
+  color: #F9F9FA; /* Dark text color for better contrast */
+}
 
-  .footer-contents {
-    font-size: 12px;
-    
-    
-  }
+
 
     .max-width {
         padding: 0 20px;
