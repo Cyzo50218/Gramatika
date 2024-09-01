@@ -922,13 +922,13 @@ background-color: #214C9E00;
 .max-widthfooter {
 background-color: #214C9E;
   width: 100%;
-  padding-top: -20px;
+  
   margin: 0 auto; /* Center the footer content */
 }
 
 .footer-bottom {
   width: 100%;
-  margin-top: -15px;
+  margin-top: -5px;
   text-align: center;
   color: white; /* Text color for contrast */
   font-size: 10px; /* Small font size to match the footer height */
