@@ -937,11 +937,12 @@ body {
   background-color: #214C9E;
   max-height: none;
   width: 100%;
+  color: #000000; /* Light text color for contrast */
   padding: 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
   margin-top: auto; /* Pushes the footer to the bottom */
-  height: 30px; /* Allows the height to adjust based on content */
-  min-height: 10px; /* Ensures a minimum height */
+  height: 40px; /* Allows the height to adjust based on content */
+  min-height: 30px; /* Ensures a minimum height */
   box-sizing: border-box; /* Ensures padding is included within the height */
   position: relative; /* Sets the footer as a relative positioning context for absolute elements */
 }
@@ -954,7 +955,7 @@ body {
   padding-bottom: 15px;
   margin-top: 0; /* Reset the margin */
   font-size: 10px; /* Small font size for a thin appearance */
-  color: #000000; /* Light text color for contrast */
+  
 }
 
 
