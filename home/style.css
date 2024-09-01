@@ -916,10 +916,9 @@ padding: 10px;
   align-items: center;
   bottom: 0;
   left: 0;
-  padding-top: -500px;
   right: 0;
   background-color: #214C9E;
-  height: -80%; /* Adjust this value for the thinnest possible height */
+  height: -120%; /* Adjust this value for the thinnest possible height */
 }
 
 .max-widthfooter {
@@ -936,15 +935,16 @@ padding: 10px;
   color: white;
  
   margin-top: -20px;
-  font-size: 10px; /* Reduced font size for thinner footer */
+  font-size: 12px; /* Reduced font size for thinner footer */
   line-height: 1;
   
   padding: 0;
 }
 
 .footer-contents {
-  margin: 100;
+  margin: 0;
   padding: 0;
+  
 }
       .max-width {
         padding: 0 20px;
