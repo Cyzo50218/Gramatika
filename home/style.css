@@ -642,6 +642,12 @@ button:hover {
       font-size: 30px;
     }
     
+        .max-widthfooter {
+      max-width: 1100px;
+      padding: 0 80px;
+      font-size: 30px;
+    }
+    
    .navbar.expanded {
      
     height: 350px; /* Adjusted height for the expanded navbar */
@@ -739,6 +745,17 @@ background-color: #214C9E;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+    }
+    
+    .max-widthfooter{
+      max-width: 1100px;
+margin: auto;
+padding: 0 80px;
+margin-top: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
     }
 
     .logo a {
@@ -893,28 +910,41 @@ padding: 10px;
 }
     @media (max-width: 768px) {
       
-      .footer {
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: #214C9E;
- 
-  text-align: center;
-  flex-shrink: 0;
-  /* Prevent footer from shrinking */
+  height: 20px; /* Adjust this value for the thinnest possible height */
 }
-      
-  .footer-bottom {
-    font-size: 14px;
-    padding-top: 10px;
-    margin-top: -30px;
-    
-    text-align: center;
-  }
-  .footer-contents{
-   
-  }
-  
+
+.max-widthfooter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 18px;
+  height: 100%;
+}
+
+.footer-bottom {
+  color: white;
+  font-size: 10px; /* Reduced font size for thinner footer */
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-contents {
+  margin: 0;
+  padding: 0;
+}
       .max-width {
         padding: 0 20px;
-        margin-top: 20px;
+        margin-top: 25px;
       }
       .checkContainer {
     display: block;
