@@ -910,26 +910,39 @@ padding: 10px;
 }
     @media screen and (max-width: 768px) {
   
-  /* CSS for the thinnest footer */
+/* CSS for the thinnest footer */
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
 body {
-  margin: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensures footer is at the bottom */
+  margin: 0;
+  padding: 0;
 }
+body {
+  flex: 1; /* Allows the body to expand and fill remaining space */
+}
+
 
 .footer {
   background-color: #214C9E;
-  width: 100%;
-  padding: 2px 0; /* Very thin padding */
-  text-align: center; /* Centers the text */
-  margin-top: auto; /* Pushes the footer to the bottom of the page */
+  color: #ffffff;
+  padding-top: 2px;
+  text-align: center;
+  flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
-.footer-contents {
-  margin: 3px; /* Removes default margin from the paragraph */
-  font-size: 15px; /* Small font size for thin appearance */
-  color: #F9F9FA; /* Dark text color for better contrast */
+.footer-bottom {
+  display: block;        /* Ensure block-level element for centering */
+  text-align: center;
+  margin: 0 auto;        /* Center the content horizontally */
+  padding-bottom: 10px;
+  font-size: 14px;
 }
 
 
