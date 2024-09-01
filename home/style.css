@@ -913,8 +913,10 @@ padding: 10px;
 
   .footer {
     background-color: #214C9E;
-    height: 60px; /* Adjust this value for the desired thinness */
+    height: 50%; /* Adjust this value for the desired thinness */
     display: flex;
+    margin: 0;
+    padding: 15px;
     align-items: center;
     justify-content: center; /* Center contents horizontally */
     margin-top: auto; /* Push footer to the bottom */
