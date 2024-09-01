@@ -932,7 +932,7 @@ body {
 .footer {
   background-color: #214C9E;
   color: #ffffff;
-  padding-top: 0;
+  padding: 0;
   
   text-align: center;
   flex-shrink: 0; /* Prevent footer from shrinking */
@@ -942,9 +942,9 @@ body {
   display: block;        /* Ensure block-level element for centering */
   text-align: center;
   margin: 0 auto;        /* Center the content horizontally */
-  padding-bottom: 10px;
+  padding-bottom: -1px;
  
-  font-size: 15px;
+  font-size: 13px;
 }
 
 
