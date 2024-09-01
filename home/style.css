@@ -915,15 +915,22 @@ padding: 10px;
     background-color: #214C9E;
     height: 20%; /* Adjust this value for the desired thinness */
     display: flex;
-    margin: 0;
-    padding: -15px;
+    
+    padding-top: 10px;
     align-items: center;
     justify-content: center; /* Center contents horizontally */
     margin-top: auto; /* Push footer to the bottom */
   }
+  
+  .max-widthfooter{
+margin-top: -5px;
+
+  }
 
   .footer-contents {
     font-size: 12px;
+    
+    
   }
 
     .max-width {
