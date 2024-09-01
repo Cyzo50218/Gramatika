@@ -952,7 +952,7 @@ body {
   bottom: 0; /* Aligns content to the bottom initially */
   left: 0; /* Aligns content to the left */
   right: 0; /* Aligns content to the right */
-  padding-bottom: 25px;
+  padding-bottom: 500px;
   margin-top: 0; /* Reset the margin */
   font-size: 10px; /* Small font size for a thin appearance */
   
