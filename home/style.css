@@ -932,18 +932,19 @@ body {
 .footer {
   background-color: #214C9E;
   width: 100%;
-  padding: 1px 0; /* Minimal padding to make the footer as thin as possible */
+  padding: 1px 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
-  margin-top: auto; /* Pushes the footer to the bottom of the page */
+  margin-top: auto; /* Pushes the footer to the bottom */
+  height: 40px; /* Sets an explicit height for the footer */
+  line-height: 15px; /* Matches line-height to height to keep text vertically centered */
+  box-sizing: border-box; /* Ensures padding is included within the height */
 }
 
 .footer-contents {
-  margin: 0; /* Removes all default margin from the paragraph */
-  font-size: 11px; /* Small font size for the thinnest appearance */
+  margin: 0; /* Removes default margin */
+  font-size: 10px; /* Small font size for a thin appearance */
   color: #F9F9FA; /* Light text color for contrast */
-  line-height: 1; /* Minimal line height to reduce footer height */
 }
-
 
 
     .max-width {
