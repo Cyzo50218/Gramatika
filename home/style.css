@@ -947,13 +947,13 @@ body {
 }
 
 .footer-contents {
-  position: absolute; /* Allows positioning within the footer */
-  top: 50%; /* Positions content halfway down the footer */
-  left: 50%; /* Centers content horizontally */
-  transform: translate(-50%, -50%); /* Adjusts for content size to fully center */
-  margin-top: 0; /* Reset the margin */
-  font-size: 12px; /* Small font size for a thin appearance */
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-size: 10px !important;
 }
+
 
 
 
