@@ -924,22 +924,25 @@ body {
   margin: 0;
   padding: 0;
   
+  
 }
 body {
   flex: 1; /* Allows the body to expand and fill remaining space */
+  
 }
 
 
 .footer {
-  overflow-y: hidden;
+  
   background-color: #214C9E;
   max-height: none;
   width: 100%;
+ 
   padding: 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
   margin-top: auto; /* Pushes the footer to the bottom */
-  height: 35px; /* Allows the height to adjust based on content */
-  min-height: 10px; /* Ensures a minimum height */
+  height: auto; /* Allows the height to adjust based on content */
+  min-height: 5px; /* Ensures a minimum height */
   box-sizing: border-box; /* Ensures padding is included within the height */
 }
 .footer-bottom{
