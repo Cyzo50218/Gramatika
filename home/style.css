@@ -914,11 +914,12 @@ padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   background-color: #214C9E;
-  
+  height: 20px; /* Adjust this value for the thinnest possible height */
 }
 
 .max-widthfooter {
@@ -926,16 +927,14 @@ padding: 10px;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding-bottom: 18px;
-  height: 20px; /* Adjust this value for the thinnest possible height */
-  
+  height: 100%;
 }
 
 .footer-bottom {
   color: white;
+  margin-top: 18px;
   font-size: 10px; /* Reduced font size for thinner footer */
   line-height: 1;
-  height: -50px;
   margin: 0;
   padding: 0;
 }
