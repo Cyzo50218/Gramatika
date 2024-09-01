@@ -938,7 +938,7 @@ body {
   text-align: center; /* Centers the text */
   margin-top: auto; /* Pushes the footer to the bottom */
   height: auto; /* Allows the height to adjust based on content */
-  min-height: 33px; /* Ensures a minimum height */
+  min-height: 10px; /* Ensures a minimum height */
   box-sizing: border-box; /* Ensures padding is included within the height */
 }
 .footer-bottom{
