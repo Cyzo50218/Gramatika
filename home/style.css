@@ -923,6 +923,7 @@ body {
   flex-direction: column;
   margin: 0;
   padding: 0;
+  
 }
 body {
   flex: 1; /* Allows the body to expand and fill remaining space */
@@ -930,13 +931,14 @@ body {
 
 
 .footer {
+  overflow: hidden;
   background-color: #214C9E;
   width: 100%;
   padding: 1px 0; /* Minimal padding to keep footer thin */
   text-align: center; /* Centers the text */
   margin-top: auto; /* Pushes the footer to the bottom */
-  height: 43px; /* Sets an explicit height for the footer */
-  line-height: 15px; /* Matches line-height to height to keep text vertically centered */
+  height: 20px; /* Sets an explicit height for the footer */
+  line-height: 3px; /* Matches line-height to height to keep text vertically centered */
   box-sizing: border-box; /* Ensures padding is included within the height */
 }
 
