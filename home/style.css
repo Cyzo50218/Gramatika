@@ -938,8 +938,9 @@ body {
   background-color: #214C9E;
   width: 100%;
   color: #000000; /* Text color for contrast */
-  height: 45px; /* Thin height for the footer */
+  height: 25px; /* Thin height for the footer */
   padding: 0; /* No padding to keep footer thin */
+  overflow: hidden;
   box-sizing: border-box; /* Ensures padding is included within the height */
   position: relative; /* Sets the footer as a relative positioning context */
   white-space: nowrap; /* Prevents text from wrapping to a new line */
@@ -948,9 +949,9 @@ body {
 .footer-contents2{
   display: block;
   
-  color: #000000; /* Text color for contrast */
+  color: #FFFFFF; /* Text color for contrast */
   position: absolute; /* Allows positioning within the footer */
-  bottom: 30px; /* Aligns content to the top of the footer */
+  bottom: 5px; /* Aligns content to the top of the footer */
   left: 50%; /* Centers content horizontally */
   transform: translateX(-50%); /* Adjusts for content width to fully center */
   font-size: 12px; /* Small font size for a thin appearance */
