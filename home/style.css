@@ -154,6 +154,10 @@ body>*:not(footer) {
   flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
+.footer-contents2{
+  display: none;
+}
+
 .footer-bottom {
   display: block;        /* Ensure block-level element for centering */
   text-align: center;
@@ -941,15 +945,22 @@ body {
   white-space: nowrap; /* Prevents text from wrapping to a new line */
 }
 
-.footer-contents {
- 
+.footer-contents2{
+  display: block;
+  
+  color: #000000; /* Text color for contrast */
   position: absolute; /* Allows positioning within the footer */
-  bottom: 50px; /* Aligns content to the top of the footer */
+  bottom: 30px; /* Aligns content to the top of the footer */
   left: 50%; /* Centers content horizontally */
   transform: translateX(-50%); /* Adjusts for content width to fully center */
-  font-size: 10px; /* Small font size for a thin appearance */
+  font-size: 12px; /* Small font size for a thin appearance */
   margin: 0; /* Remove default margins */
   white-space: nowrap; /* Prevents text from wrapping to a new line */
+}
+
+.footer-contents {
+ display: none;
+  
 }
 
 
