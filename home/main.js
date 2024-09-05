@@ -10,15 +10,17 @@ const hintLabel = document.querySelector('.hint-label');
 const textLabelOriginal = document.getElementById('textseeTwo');
 const textLabelCorrected = document.querySelector('.texthide');
 const bgnavbar = document.querySelector('.bg-navbar');
+const footer =document.querySelector('.footer');
 function adjustFontSize() {
   const width = window.innerWidth;
 if (width <= 768) {
+  
   bgnavbar.style.paddingTop = '0px';
   bgnavbar.style.paddingBottom = '0px';
   bgnavbar.style.backgroundColor='#00000000';
   textsss.style.fontSize = '14px'; // Smaller font size for very large screens
-} else {
- 
+} else { 
+ footer.style.backgroundColor = '#214C9E'
   textLabelCorrected.style.fontSize = '15px';
   textLabelOriginal.style.fontSize = '15px';
   hintLabel.style.fontSize = '20px';
@@ -440,6 +442,9 @@ textOriginalText.value = fullText;
       
        suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
       console.log('Suggestions from API:', suggestionsFromAPI);
+
+RefreshButton.style.visibility = 'visible';
+RefreshButton.style.display = 'block';
 
       if (!suggestionsFromAPI || suggestionsFromAPI.length === 0) {
         throw new Error("No suggestions received from the API.");
