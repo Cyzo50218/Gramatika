@@ -388,6 +388,7 @@ const getSuggestionsFromAPI = async (text, language = 'tl-PH') => {
   }
 };
 
+let originalArrayTextOutside;
 
 
 async function getBestSuggestionFromGemini(ruleDesc, errorsTextarea, suggestionText) {
@@ -440,7 +441,342 @@ textOriginalText.value = fullText;
 
       checkContainer.innerHTML = 'Munkahing Pagtatama';
       
-       suggestionsFromAPI = await getSuggestionsFromAPI(textarea.value);
+      const timeExists = true;
+      
+function combineWords(text) {
+  const words = text.split(' ');
+  const combinedWords = [];
+  let i = 0;
+
+  // Existing patterns for names and salutations
+  const namePattern = /^[A-Z][a-z]+(?:\s?[A-Z][a-z]+)+$/;
+  
+  const salutationPattern = /^(Dr.|Bb.|G\..|Gng.|Mr.|Mrs.|Ms.|Engr.|Atty.)\.$/;
+const newsNamePattern = /^(Manila Times|Philippine Daily Inquirer|The Star|Rappler|ABS-CBN News|GMA News|Philippine Star|SunStar|BusinessMirror|Daily Tribune|Inquirer\.net|Philippine News Agency|The Manila Bulletin|Tempo|News5|Bulatlat|Mindanao Times|Philippine Information Agency|Hataw|Pinoy Times)$/;
+
+const moreNamesPattern = /^(Computer Programming|Software Development|Web Development|Data Science|Artificial Intelligence|Machine Learning|Programming Languages|Software Engineering|Database Management|Network Security|Information Systems|Cybersecurity|Cloud Computing|Mobile App Development|Game Development|DevOps|Systems Analysis|IT Project Management|User Experience Design|Big Data Analytics|Embedded Systems)$/;;
+
+const salutationWords = ["Dr", "Bb", "G.", "Gng", "Mr", "Mrs", "Ms", "Engr", "Atty"];
+
+const newsName = [
+  "Manila Times",
+  "Philippine Daily Inquirer",
+  "The Star",
+  "Rappler",
+  "ABS-CBN News",
+  "GMA News",
+  "Philippine Star",
+  "SunStar",
+  "BusinessMirror",
+  "Daily Tribune",
+  "Inquirer.net",
+  "Philippine News Agency",
+  "The Manila Bulletin",
+  "Tempo",
+  "News5",
+  "Bulatlat",
+  "Mindanao Times",
+  "Philippine Information Agency",
+  "Hataw",
+  "Pinoy Times"
+];
+const surpriseWords = [
+    "Uy",
+    "Aray",
+    "Wow",
+    "Hala",
+    "Ay",
+    "uyy",
+    "Uyy",
+    "HALA",
+    "ARAYY",
+    "ARAY",
+    "WOW",
+    "AY",
+    "AYY"
+];
+
+const moreNames = [
+  "Computer Programming",
+  "Software Development",
+  "Web Development",
+  "Data Science",
+  "Artificial Intelligence",
+  "Machine Learning",
+  "Programming Languages",
+  "Software Engineering",
+  "Database Management",
+  "Network Security",
+  "Information Systems",
+  "Cybersecurity",
+  "Cloud Computing",
+  "Mobile App Development",
+  "Game Development",
+  "DevOps",
+  "Systems Analysis",
+  "IT Project Management",
+  "User Experience Design",
+  "Big Data Analytics",
+  "Embedded Systems"
+];
+
+
+  const famousPersons = [
+  // Previously added names
+  "Jose Rizal", "Andres Bonifacio", "Manuel Quezon", "Emilio Aguinaldo", "Lapu Lapu",
+  "Antonio Luna", "Melchora Aquino", "Gabriela Silang", "Apolinario Mabini", "Juan Luna",
+  "Pedro Paterno", "Felipe Agoncillo", "Julian Felipe", "Carlos Romulo", "Diosdado Macapagal",
+  "Ferdinand Marcos", "Corazon Aquino", "Ramon Magsaysay", "Elpidio Quirino", "Sergio Osmeña",
+  "Jose Laurel", "Manuel Roxas", "Benigno Aquino", "Leandro Locsin", "Juan Nakpil",
+  "Francisco Balagtas", "Fernando Amorsolo", "Lucio San Pedro", "Francisco Santiago",
+  "Lorenzo Ruiz", "Claro Recto", "Teodoro Agoncillo", "Ninoy Aquino", "Manny Pacquiao",
+  "Risa Hontiveros", "Grace Poe", "Bam Aquino", "Lito Atienza", "Isko Moreno",
+  "Sara Duterte", "Ping Lacson", "Leni Robredo", "Chiz Escudero", "Erap Estrada",
+  "Mar Roxas", "Jejomar Binay", "Gloria Macapagal", "Alan Cayetano", "Vicente Sotto",
+  "Imee Marcos", "Ramon Mitra", "Koko Pimentel", "Cesar Virata", "Jojo Binay",
+  "Nene Pimentel", "Sonny Angara", "Ralph Recto", "Jun Evasco", "Tony Tan",
+  "Alfredo Lim", "Tommy Osmeña", "Cory Aquino", "Pepe Diokno", "Lito Lapid",
+  "Roilo Golez", "Jun Abaya", "Jess Dureza", "Nikki Coseteng", "Rodolfo Biazon",
+  "Joey Lina", "Jinggoy Estrada", "Kris Aquino", "Fidel Ramos", "Marcial Lichauco",
+  "Raul Roco", "Butch Abad", "Manuel Villar", "Rene Saguisag", "Jesse Robredo",
+  "Miro Quimbo", "Erwin Tulfo", "Sonny Belmonte", "Gary Alejano", "Mark Villar",
+  "Dick Gordon", "Ping Lacson", "Lito Banayo", "Mike Defensor", "Vicente Sotto",
+  "Enrile Reyes", "Ramon Ang", "Luis Singson", "Erin Tañada", "Frank Drilon",
+  "Diosdado Cabangon", "Joey Salceda", "Rodante Marcoleta", "Miriam Defensor",
+  "Aimee Marcos", "Paolo Duterte", "Harry Roque", "Nancy Binay", "Bong Go",
+  "Grace Padaca", "Rene Cayetano", "Feliciano Belmonte", "Orly Mercado",
+  "Dante Fascinillo", "Gina Lopez", "Benhur Abalos", "Loren Legarda",
+  "Teddy Baguilat", "Alan Peter", "Francis Tolentino", "Mark Cojuangco",
+  "Manny Villar",
+
+  // Additional two-word political dynasty names
+  "Imee Marcos", "Imelda Marcos", "Ferdinand Marcos", "Bongbong Marcos",
+  "Gloria Arroyo", "Juan Ponce", "Bam Aquino", "Noynoy Aquino", "Bong Revilla",
+  "Lani Mercado", "JV Ejercito", "Jinggoy Estrada", "Joseph Estrada",
+  "Sarah Duterte", "Rodrigo Duterte", "Gwen Garcia", "Pablo Garcia", "Jack Enrile",
+  "Juan Enrile", "Cynthia Villar", "Mark Villar", "Nancy Binay", "Abby Binay",
+  "Toby Tiangco", "Ruffy Biazon", "Teofisto Guingona", "Migz Zubiri",
+  "Imee Marcos", "Ferdinand Marcos", "Gibo Teodoro", "Neptali Gonzales", "Lino Cayetano",
+  "Pia Cayetano", "Mar Roxas", "Jinggoy Estrada", "Toby Tiangco", "Chavit Singson",
+  "Danilo Suarez", "Prospero Nograles", "Pantaleon Alvarez", "Martin Romualdez",
+  "Imelda Marcos", "Jolo Revilla", "Ramon Revilla", "Rico Puno", "Gilbert Teodoro",
+  "Alfred Romualdez", "Bebot Alvarez", "Butz Aquino", "Pepeng Cojuangco",
+  "Bongbong Marcos", "Jose Ma. Zubiri", "Teofisto Guingona", "Carlos Padilla",
+  "Ronnie Zamora", "Del De Guzman", "Chiz Escudero", "Peping Cojuangco",
+  "Gilbert Remulla", "Emmanuel Pacquiao", "Isidro Ungab", "Daisy Avance"
+];
+
+  // New patterns for time and Bible verses
+  const timePattern = /^\d{1,4}$/; // Detects numbers like "362", "1202" for time format
+  const yearPattern = /^\d{4}$/; // Detects 4-digit year numbers like "1992"
+
+  // List of all Bible book names (supporting any case: uppercase or lowercase)
+  const bibleBooks = [
+    "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth",
+    "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah",
+    "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah",
+    "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah",
+    "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi", "Matthew", "Mark", "Luke",
+    "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians",
+    "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy",
+    "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John",
+    "Jude", "Revelation"
+  ].map(book => book.toLowerCase()); // Convert all book names to lowercase for case-insensitive comparison
+
+  while (i < words.length) {
+    let j = i;
+    let combinedEntry = words[j];
+
+    // Check for salutation patterns followed by one or two words
+    if (salutationPattern.test(words[j]) && j < words.length - 1) {
+      let nextWord = words[j + 1];
+      let nextNextWord = words[j + 2];
+
+      // Check if the next two words form a famous person's name
+      if (nextNextWord && famousPersons.includes(nextWord + ' ' + nextNextWord)) {
+        
+        combinedEntry += ' ' + nextWord + ' ' + nextNextWord;
+        combinedWords.push(combinedEntry);
+        i = j + 3;
+        continue;
+      }
+
+      // Check if the next word is capitalized (one word after salutation)
+      if (/^[A-Z][a-z]+$/.test(nextWord)) {
+        
+        combinedEntry += ' ' + nextWord;
+        combinedWords.push(combinedEntry);
+        i = j + 2;
+        continue;
+      }
+    }
+
+while (j < words.length - 1 && namePattern.test(combinedEntry + ' ' + words[j + 1])) {
+  // Check if the next word is in the surpriseWords array
+  if (surpriseWords.includes(words[j])) {
+    console.log('Surprise word detected, skipping combination');
+    break; // Exit the inner loop if a surprise word is detected
+  }
+  
+  if (salutationWords.includes(words[j])) {
+      break; // Exit the inner loop if a surprise word is detected
+  }
+
+
+  console.log('Combining two words');
+  j++;
+  combinedEntry += ' ' + words[j];
+}
+
+    // Exception: Do not add parentheses if the combinedEntry matches a famous person
+    if (j > i) {
+      if ( moreNames.includes(combinedEntry)) {
+        combinedWords.push('"' + combinedEntry + '"'); // Add without parentheses
+        console.log('detectone')
+      } else if(famousPersons.includes(combinedEntry)){
+   combinedWords.push("(" + combinedEntry + ")"); // Add without parentheses
+   console.log('detecttwo')
+        }else if(newsName.includes(combinedEntry)){
+          combinedWords.push('"' + combinedEntry + '"');
+          console.log('detectthree')
+          }else if(surpriseWords.includes(combinedEntry)){
+            combinedWords.push(combinedEntry);
+          }else {
+            
+        combinedWords.push("\u200B" + combinedEntry + "\u200B"); // Add with parentheses for other names
+        console.log('detectfour')
+      }
+      i = j + 1;
+      continue;
+    }
+
+
+    // **Updated Logic**: Handle time patterns
+   
+let timePattern = /\b(1[0-2]|0?[1-9])[0-5][0-9]\b/; // Matches valid time patterns in hhmm format
+
+// Assuming words is your input array
+for (let i = 0; i < words.length; i++) {
+    let hasAmPm = (i < words.length - 1 && (words[i + 1] === 'am' || words[i + 1] === 'pm'));
+    let isTimePattern = timePattern.test(words[i]);
+
+    if (hasAmPm && isTimePattern) {
+        // If the number is less than 4 digits and ends with pm, add a leading zero
+        if (words[i + 1] === 'pm' && words[i].length === 3) {
+            words[i] = '0' + words[i]; // Add leading zero
+        }
+        // Combine the time with "am" or "pm"
+        words[i] = words[i] + ' ' + words[i + 1];
+
+        // Remove the next element ("am" or "pm") to avoid duplication
+        words.splice(i + 1, 1);
+    }
+}
+
+
+
+ 
+
+    // **New Logic**: Detect year ranges like "1992 - 2007"
+    if (j < words.length - 2 && yearPattern.test(words[j]) && words[j + 1] === '-' && yearPattern.test(words[j + 2])) {
+      combinedEntry = words[j] + ' ' + words[j + 1] + ' ' + words[j + 2];
+      combinedWords.push(combinedEntry);
+      i = j + 3; // Move past the combined year range
+      continue;
+    }
+
+    // **Updated Logic**: Handle Bible verse patterns or number patterns
+    let isNumberPattern = /^\d+([-–]?\d+)?$/.test(words[j]);
+    let isWord = /^[A-Za-z]+$/.test(words[j]);
+    let isNextWordNumber = (j < words.length - 1 && /^\d+([-–]?\d+)?$/.test(words[j + 1]));
+
+    // Check for Bible book names
+    if (bibleBooks.includes(words[j].toLowerCase()) && isNextWordNumber) {
+      combinedEntry = words[j] + ' ' + words[j + 1];
+      combinedWords.push(combinedEntry);
+      i = j + 2;
+      continue;
+    } else if (isNumberPattern && j < words.length - 1 && (words[j + 1].includes('-') || /^\d+([-–]?\d+)?$/.test(words[j + 1]))) {
+      combinedEntry += ' ' + words[j + 1];
+      combinedWords.push(combinedEntry);
+      i = j + 2;
+      continue;
+    }
+
+    // New Logic: Combine "Na ang", "Na na", but not "Na ng"
+    if (i < words.length - 1 && words[i].toLowerCase() === 'na' && words[i + 1].toLowerCase() === 'ang') {
+      combinedWords.push('na ang');
+      i += 2;
+    } else if (i < words.length - 1 && words[i].toLowerCase() === 'na' && words[i + 1].toLowerCase() === 'na') {
+      combinedWords.push('na na');
+      i += 2;
+    }
+    // Exception: Keep "na ng" as is
+    else if (i < words.length - 1 && words[i].toLowerCase() === 'na' && words[i + 1].toLowerCase() === 'ng') {
+      combinedWords.push('na ng');
+      i += 2;
+    }
+    // Combine specific word patterns like "lakad at pawis"
+    else if (i < words.length - 2) {
+      const phrase = `${words[i]} ${words[i + 1]} ${words[i + 2]}`;
+      const specificWordPattern = /\b(lakad|pamatay|kaliwa|humigit|tahanan|dalaga|bahay)\s(ng|sa|at|na|ay)\s(takbo|insekto|kanan|kumulang|maligaya|bukid|aliwan)\b/;
+
+      if (specificWordPattern.test(phrase)) {
+        combinedWords.push(phrase); // Combine the three words that match the pattern
+        i += 3; // Skip the next two words
+      } else {
+        combinedWords.push(words[i]);
+        i++;
+      }
+    }
+
+    // Combine repeated words into one
+    else if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
+  combinedWords.push(`${words[i]} ${words[i + 1]}`);
+  i += 2;
+}else {
+      combinedWords.push(words[i]);
+      i++;
+    }
+  }
+
+
+
+  // Additional logic to combine specific phrases like "tulad ng"
+  const combinedPhrases = [];
+  const specificPattern = /^tulad$/;
+
+  for (let k = 0; k < combinedWords.length; k++) {
+    if (specificPattern.test(combinedWords[k]) && combinedWords[k + 1] === "ng") {
+      combinedPhrases.push(combinedWords[k] + ' ' + combinedWords[k + 1]);
+      k++;
+    } else {
+      combinedPhrases.push(combinedWords[k]);
+    }
+  }
+
+  const finalWords = [];
+for (let l = 0; l < combinedPhrases.length; l++) {
+  if (l < combinedPhrases.length - 1 && combinedPhrases[l].toLowerCase() === combinedPhrases[l + 1].toLowerCase()) {
+    finalWords.push(`${combinedPhrases[l]} ${combinedPhrases[l + 1]}`);
+    l++; // Skip the next word as it's part of the current combination
+  } else {
+    finalWords.push(combinedPhrases[l]);
+  }
+}
+
+return finalWords;
+}
+
+
+// This creates the combined array from the input
+ originalArrayTextOutside = combineWords(textarea.value); // Assuming textarea is an HTML element with some text
+
+      let newTextValue = originalArrayTextOutside.join(' ');
+      console.log('Parenthisis test: ', originalArrayTextOutside);
+      
+      
+       suggestionsFromAPI = await getSuggestionsFromAPI(newTextValue);
       console.log('Suggestions from API:', suggestionsFromAPI);
 
 RefreshButton.style.visibility = 'visible';
@@ -473,11 +809,13 @@ suggestionMap.push({
 });
 }
   
-        console.log('Error text:', errorsText);
+        console.log('Error text:', errorsTextarea);
         console.log('Rule description:', ruleDesc);
         console.log('Suggestions:', suggestionText);
         
-        const regex = new RegExp(errorsTextarea, 'gi');
+const escapedErrorText = errorsTextarea.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+        const regex = new RegExp(escapedErrorText, 'gi'); // Include flags if needed
         
         if (window.innerWidth <= 1024) {
           
@@ -584,34 +922,15 @@ if (existingEntry) {
 const originalText = textOriginalHides.value.trim();
 let correctedText = correctedtextmobile.value.trim();
 
-// Function to detect and combine double repeated words
-function combineRepeatedWords(text) {
-    const words = text.split(' ');
-    const combinedWords = [];
-
-    for (let i = 0; i < words.length; i++) {
-        // If the current word is the same as the next word (case-insensitive)
-        if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
-            // Combine the repeated words into one
-            combinedWords.push(`${words[i]} ${words[i + 1]}`);
-            i++; // Skip the next word since it's already combined
-        } else {
-            combinedWords.push(words[i]);
-        }
-    }
-
-    return combinedWords;
-}
 
 // Apply the function to both texts
-let originalArray = combineRepeatedWords(originalText);
-let correctedArray = combineRepeatedWords(correctedText);
+let originalArray = combineWords(originalText);
+let correctedArray = originalArrayTextOutside;
 
-console.log(originalArray); // ["Kaway kaway", "na", "tayu", "dyan"]
+console.log(originalArray); // Example output: ["Sino sino", "ba", "Na ang", "nandyan?"]
 console.log(correctedArray); // (Depending on the input)
 
 
-console.log(originalArray)
 // Handle repeated words in originalArray
 let combinedArray = [];
 let i = 0;
@@ -643,8 +962,10 @@ if (targetIndex !== -1 && targetIndex < correctedArray.length) {
 // Join the corrected array back into a string
 correctedtextmobile.value = correctedArray.join(' ');
 
+console.log(originalArray);
+console.log(correctedArray);
 
-
+console.log('New value: ', correctedArray);
       
 console.log('Suggestions and errors: ', [suggestionMap]);
       correctedHighlightedTwoText = correctedHighlightedTwoText.replace(regex, match => {
@@ -670,7 +991,7 @@ overlaycorrectedTwo.style.fontSize = '14px';
       if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
         overlaycorrectedTwo.style.paddingTop = '28px';
       }
-      textsee.innerHTML = 'Mga naitamang teksto.';
+      textsee.innerHTML = 'Mga naitama.';
 
     } else {
       // Desktop
@@ -684,28 +1005,9 @@ overlaycorrectedTwo.style.fontSize = '14px';
       const originalText = textOriginalHides.value.trim();
 let correctedText = textOriginal.value.trim();
 
-// Function to detect and combine double repeated words
-function combineRepeatedWords(text) {
-    const words = text.split(' ');
-    const combinedWords = [];
-
-    for (let i = 0; i < words.length; i++) {
-        // If the current word is the same as the next word (case-insensitive)
-        if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
-            // Combine the repeated words into one
-            combinedWords.push(`${words[i]} ${words[i + 1]}`);
-            i++; // Skip the next word since it's already combined
-        } else {
-            combinedWords.push(words[i]);
-        }
-    }
-
-    return combinedWords;
-}
-
 // Apply the function to both texts
-let originalArray = combineRepeatedWords(originalText);
-let correctedArray = combineRepeatedWords(correctedText);
+let originalArray = combineWords(originalText);
+let correctedArray = originalArrayTextOutside;
 
 console.log(originalArray); // ["Kaway kaway", "na", "tayu", "dyan"]
 console.log(correctedArray); // (Depending on the input)
@@ -852,46 +1154,44 @@ if (/Mobi|Android/i.test(navigator.userAgent)) {
 // Make sure the updateHighlights function exists and is correctly implemented
 function updateHighlights() {
   const fullText = textarea.value;
-  
+
   correctedHighlightedText = emptyText;
- correctedHighlightedTwoText = emptyText;
- 
+  correctedHighlightedTwoText = emptyText;
+
   suggestionsFromAPI.forEach(correction => {
     const errorText = correction.errorText;
     const suggestionText = correction.suggestions[0]; // Assuming we apply the first suggestion for the corrected text
-    const regex = new RegExp(errorText, 'gi');
-    
-    if(seeOriginal){
-      highlightedText = originalText;
-     
-    }else{
-      
-      highlightedText = fullText;
+
+const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    try {
+      const regex = new RegExp(escapedErrorText, 'gi'); // Include flags if needed
+
+      if (seeOriginal) {
+        highlightedText = originalText;
+      } else {
+        highlightedText = fullText;
+      }
+
+      console.log('one');
+
+      // Highlight the original errors
+      const highlighted = highlightedText.replace(regex, match => {
+        return `<span class="highlight">${errorText}</span>`;
+      });
+
+      overlay.innerHTML = highlighted.replace(/\n/g, '<br>');
+
+    } catch (e) {
+      console.error(`Error creating regex for "${errorText}":`, e);
     }
-    console.log('one');
-    // Highlight the original errors
-    if (window.innerWidth <= 768) {
-      originalText = originalText.replace(regex, match => {
-      return `<span class="highlight">${errorText}</span>`;
-    });
 
-overlay.innerHTML = originalText.replace(/\n/g, '<br>');
-
-  } else {
-    originalText = originalText.replace(regex, match => {
-      return `<span class="highlight">${errorText}</span>`;
-    });
-
-overlay.innerHTML = originalText.replace(/\n/g, '<br>');
-
-  }
-    // Apply the first suggestion to the corrected text
-    
   });
 
   // Reflect the highlights in the overlays
-  
 }
+
+
+
 
 setupTextSeeListener();
 
@@ -901,7 +1201,7 @@ function setupTextSeeListener() {
   textsee.addEventListener('click', toggleTextSee);
   
   function toggleTextSee() {
-    if (textsee.innerHTML === 'Mga naitamang teksto.') {     
+    if (textsee.innerHTML === 'Mga naitama.') {     
       
       handleTextSeePressedMOBILS();
     } else {
@@ -930,7 +1230,7 @@ function handleTextSeeUnpressedMOBILE() {
 overlay.style.display = 'none';
 textOriginal.style.display = 'none';
 
-textsee.innerHTML = 'Mga naitamang teksto.';
+textsee.innerHTML = 'Mga naitamaneksto.';
   textoriginal2.style.display = 'none';
   textarea.style.display = 'none';
   seeOriginal = true;
@@ -1022,4 +1322,5 @@ function makeCorrectedTextMobileSelectable() {
     // Function to handle text selection and copy on long press
 
 });
+
 
