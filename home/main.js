@@ -1230,7 +1230,7 @@ function handleTextSeeUnpressedMOBILE() {
 overlay.style.display = 'none';
 textOriginal.style.display = 'none';
 
-textsee.innerHTML = 'Mga naitamaneksto.';
+textsee.innerHTML = 'Mga naitama.';
   textoriginal2.style.display = 'none';
   textarea.style.display = 'none';
   seeOriginal = true;
