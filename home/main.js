@@ -702,6 +702,15 @@ for (let i = 0; i < words.length; i++) {
       i = j + 2;
       continue;
     }
+    
+    if (words[i + 1] && 
+    (words[i + 1].toLowerCase() === "pag" || words[i + 1].toLowerCase() === "pa") && 
+    /^[aeiouAEIOU]/.test(words[i + 2])) {
+  // Combine the words with "pa" or "pag" prefix followed by a word starting with a vowel
+  combinedWords.push(words[i + 1] + " " + words[i + 2]);
+  i += 3; // Skip the next two words (the "pa/pag" and the word starting with a vowel)
+}
+
 
     // New Logic: Combine "Na ang", "Na na", but not "Na ng"
     if (i < words.length - 1 && words[i].toLowerCase() === 'na' && words[i + 1].toLowerCase() === 'ang') {
@@ -716,6 +725,7 @@ for (let i = 0; i < words.length; i++) {
       combinedWords.push('na ng');
       i += 2;
     }
+   
     // Combine specific word patterns like "lakad at pawis"
     else if (i < words.length - 2) {
       const phrase = `${words[i]} ${words[i + 1]} ${words[i + 2]}`;
@@ -731,8 +741,8 @@ for (let i = 0; i < words.length; i++) {
     }
 
     // Combine repeated words into one
-    else if (i < words.length - 1 && words[i].toLowerCase() === words[i + 1].toLowerCase()) {
-  combinedWords.push(`${words[i]} ${words[i + 1]}`);
+    else if (i < words.length - 1 && words[i].toLowerCase() ===  words[i + 1].toLowerCase()) {
+  combinedWords.push(`${words[i]} ${words[i + 1]}`); 
   i += 2;
 }else {
       combinedWords.push(words[i]);
@@ -743,29 +753,63 @@ for (let i = 0; i < words.length; i++) {
 
 
   // Additional logic to combine specific phrases like "tulad ng"
-  const combinedPhrases = [];
-  const specificPattern = /^tulad$/;
+  
+const combinedPhrases = [];
 
-  for (let k = 0; k < combinedWords.length; k++) {
-    if (specificPattern.test(combinedWords[k]) && combinedWords[k + 1] === "ng") {
-      combinedPhrases.push(combinedWords[k] + ' ' + combinedWords[k + 1]);
-      k++;
-    } else {
-      combinedPhrases.push(combinedWords[k]);
-    }
+// Check for specific patterns and handle them
+for (let k = 0; k < combinedWords.length; k++) {
+  const currentWord = combinedWords[k];
+  const nextWord = combinedWords[k + 1];
+  const nextNextWord = combinedWords[k + 2];
+  
+  
+  
+  // Add the word directly to combinedPhrases
+  if (/^[a-zA-Z]+$/.test(currentWord)) {
+    
   }
+  
+  // Check for "tulad ng" pattern
+  if (currentWord === "tulad" && nextWord === "ng") {
+    combinedPhrases.push(`${currentWord} ${nextWord}`);
+    k++; // Skip "ng"
+  }
+  
+  // Check for repeated words with "ng" in between
+  else if (k < combinedWords.length - 2 &&
+           currentWord.toLowerCase() === nextNextWord.toLowerCase() &&
+           nextWord === "ng") {
+             console.log('confirmed one');
+    combinedPhrases.push(`${currentWord} ng ${nextNextWord}`);
+    k += 2; // Skip "ng" and the repeated word
+  }
+  // Default case: just add the current word
+  else {
+    combinedPhrases.push(currentWord);
+  }
+}
+
+console.log(combinedPhrases);
+
+
 
   const finalWords = [];
 for (let l = 0; l < combinedPhrases.length; l++) {
-  if (l < combinedPhrases.length - 1 && combinedPhrases[l].toLowerCase() === combinedPhrases[l + 1].toLowerCase()) {
+  // Check if both current and next element exist
+  if (l < combinedPhrases.length - 1 && 
+      combinedPhrases[l] !== undefined && combinedPhrases[l + 1] !== undefined && 
+      combinedPhrases[l].toLowerCase() === combinedPhrases[l + 1].toLowerCase()) {
+    
     finalWords.push(`${combinedPhrases[l]} ${combinedPhrases[l + 1]}`);
     l++; // Skip the next word as it's part of the current combination
   } else {
+    // Push the current word if there's no match or it's the last word
     finalWords.push(combinedPhrases[l]);
   }
 }
 
 return finalWords;
+
 }
 
 
