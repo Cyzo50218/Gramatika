@@ -393,7 +393,7 @@ let originalArrayTextOutside;
 
 async function getBestSuggestionFromGemini(ruleDesc, errorsTextarea, suggestionText) {
   try {
-    const response = await fetch('https://call-gemini-api-tau.vercel.app/api/v2/geminiapi', {
+    const response = await fetch('https://lt-ruletagalog.vercel.app/api/v2/geminiapi', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -785,6 +785,12 @@ for (let k = 0; k < combinedWords.length; k++) {
     console.log('confirmed nang between non-repeated words');
     combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
     k += 2; // Skip "nang" and the next word
+}else if (k < combinedWords.length - 2 &&
+  currentWord.toLowerCase() === nextNextWord.toLowerCase() &&
+  nextWord === "ng") {
+  console.log('confirmed one');
+  combinedPhrases.push(`${currentWord} ng ${nextNextWord}`);
+  k += 2; // Skip "ng" and the repeated word
 } 
   // Default case: just add the current word
   else {
@@ -1306,6 +1312,13 @@ for (let k = 0; k < combinedWords.length; k++) {
   console.log('confirmed nang between non-repeated words two');
   combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
   k += 2; // Skip "nang" and the next word
+}
+else if (k < combinedWords.length - 2 &&
+  currentWord.toLowerCase() === nextNextWord.toLowerCase() &&
+  nextWord === "ng") {
+  console.log('confirmed one');
+  combinedPhrases.push(`${currentWord} ng ${nextNextWord}`);  
+  k += 2; // Skip "ng" and the repeated word
 }
   // Default case: just add the current word
   else {
