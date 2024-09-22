@@ -41,6 +41,50 @@ window.addEventListener('resize', adjustFontSize);
 
 const navbarbg = document.querySelector('.navbar');
 
+const homelist = document.getElementById('homelist');
+const aboutlist = document.getElementById('aboutlist');
+const contactlist = document.getElementById('contactlist');
+
+const homesection = document.getElementById('home');
+const aboutsection = document.getElementById('about');
+const contactussection = document.getElementById('contact-us');
+
+homelist.addEventListener('click', function() { 
+  scrollToHomeSection();
+});
+
+aboutlist.addEventListener('click', function() { 
+  scrollToAboutSection();
+});
+
+contactlist.addEventListener('click', function() { 
+  scrollToContactSection();
+});
+
+function scrollToHomeSection() {
+
+
+    homesection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    homesection.focus();
+  
+}
+
+function scrollToAboutSection() {
+
+
+    aboutlist.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    homesection.focus();
+  
+}
+
+function scrollToContactSection() {
+
+
+    contactlist.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    homesection.focus();
+  
+}
+
 menuBtn.addEventListener('click', function() {
   menu.classList.toggle('active');
   navbarbg.classList.toggle('expanded');
@@ -1687,6 +1731,8 @@ function scrollToTarget() {
         checkContainer.focus();
     }
 }
+
+
 
 const originalBox = document.querySelector('.editTextContainer');
 function scrollToTargetBackUp() {
