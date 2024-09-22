@@ -180,6 +180,43 @@ body>*:not(footer) {
 .logotitle{
   display: none;
 }
+.about{
+  margin-top: 40px;
+  background: #437DFF;
+  height: 100vh; /* Ensure it takes full height for vertical centering */
+  margin-bottom: 200px;
+}
+.aboutcontainer {
+  display: flex; /* Enable Flexbox */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  
+  max-width: 800px; /* Set a max width to compress sides */
+  margin: 0 auto; /* Center the container */
+  
+  padding: 15px 20px; /* Optional: Add padding to prevent content touching edges */
+}
+
+.about p {
+  margin: 10px;
+  font-size: 20px;
+}
+
+.pmain {
+  color: #F4F9FF;
+}
+
+.oneabout {
+  padding-top: 18px;
+  color: #F0F7FF;
+}
+
+.twoabout, .threeabout, .fourabou {
+  color: #F4F9FF;
+  padding-top: 15px;
+}
+
 
 .textsee{
   display: none;
