@@ -634,6 +634,20 @@ const moreNames = [
     let j = i;
     let combinedEntry = words[j];
 
+const firstWord = words[j].toLowerCase();
+const secondWord = words[j + 1]?.toLowerCase(); // Ensure we don't access undefined
+
+// Detect if the first word starts with "mag", "nag", or "pa" and compare with second word
+const prefixPattern = /^(mag|nag|pa)/;
+const baseFirstWord = firstWord.replace(prefixPattern, ''); // Remove prefix if it exists
+
+if (secondWord && baseFirstWord === secondWord) {
+  console.log('Detected repeated words with prefix, combining');
+  combinedWords.push(`${words[i]} ${words[i + 1]}`); // Combine the words with a space
+  i += 2; // Move index forward to skip the second word
+}
+
+
     // Check for salutation patterns followed by one or two words
     if (salutationPattern.test(words[j]) && j < words.length - 1) {
       let nextWord = words[j + 1];
@@ -786,9 +800,9 @@ for (let i = 0; i < words.length; i++) {
         i++;
       }
     }
-
     // Combine repeated words into one
     else if (i < words.length - 1 && words[i].toLowerCase() ===  words[i + 1].toLowerCase()) {
+      console.log('combined');
   combinedWords.push(`${words[i]} ${words[i + 1]}`); 
   i += 2;
 }else {
@@ -798,6 +812,8 @@ for (let i = 0; i < words.length; i++) {
   }
 
 
+ 
+
 
   // Additional logic to combine specific phrases like "tulad ng"
   
@@ -805,11 +821,9 @@ const combinedPhrases = [];
 
 // Check for specific patterns and handle them
 for (let k = 0; k < combinedWords.length; k++) {
-  const currentWord = combinedWords[k];
+  let currentWord = combinedWords[k];
   const nextWord = combinedWords[k + 1];
   const nextNextWord = combinedWords[k + 2];
-  
-  
   
   // Add the word directly to combinedPhrases
   if (/^[a-zA-Z]+$/.test(currentWord)) {
@@ -822,27 +836,49 @@ for (let k = 0; k < combinedWords.length; k++) {
     k++; // Skip "ng"
   }
   
-  // Check for repeated words with "ng" in between
+  // Check for repeated words with "nang" in between
   else if (k < combinedWords.length - 2 &&
          currentWord.toLowerCase() !== nextNextWord.toLowerCase() &&
          nextWord === "nang") {
     console.log('confirmed nang between non-repeated words');
     combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
     k += 2; // Skip "nang" and the next word
-}else if (k < combinedWords.length - 2 &&
-  currentWord.toLowerCase() === nextNextWord.toLowerCase() &&
-  nextWord === "ng") {
-  console.log('confirmed one');
-  combinedPhrases.push(`${currentWord} ng ${nextNextWord}`);
-  k += 2; // Skip "ng" and the repeated word
-} 
+  }
+  
+  // Check for repeated words with "ng" in between
+  else if (k < combinedWords.length - 2 &&
+           currentWord.toLowerCase() === nextNextWord.toLowerCase() &&
+           nextWord === "ng") {
+    console.log('confirmed one');
+    combinedPhrases.push(`${currentWord} ng ${nextNextWord}`);
+    k += 2; // Skip "ng" and the repeated word
+  } 
+
+  // Check for repeated words with "t" at the end and a space in between
+  else if (k < combinedWords.length - 1 &&
+           currentWord.endsWith("t") &&
+           currentWord.slice(0, -1).toLowerCase() === nextWord.toLowerCase()) {
+    console.log('confirmed repeated word with "t" and space');
+    combinedPhrases.push(`${currentWord} ${nextWord}`);
+    k++; // Skip the repeated word
+  }
+
+  // Check for repeated words with "t" at the end and a hyphen in between
+  else if (k < combinedWords.length - 1 &&
+           currentWord.endsWith("t") &&
+           nextWord.startsWith(currentWord.slice(0, -1).toLowerCase() + "-")) {
+    console.log('confirmed repeated word with "t" and hyphen');
+    combinedPhrases.push(`${currentWord}-${nextWord.split('-')[1]}`);
+    k++; // Skip the repeated word after hyphen
+  }
+
+
   // Default case: just add the current word
   else {
     combinedPhrases.push(currentWord);
   }
-  
-  
 }
+
 
 console.log(combinedPhrases);
 
@@ -853,7 +889,7 @@ for (let l = 0; l < combinedPhrases.length; l++) {
   if (l < combinedPhrases.length - 1 && 
       combinedPhrases[l] !== undefined && combinedPhrases[l + 1] !== undefined && 
       combinedPhrases[l].toLowerCase() === combinedPhrases[l + 1].toLowerCase()) {
-    
+   
     finalWords.push(`${combinedPhrases[l]} ${combinedPhrases[l + 1]}`);
     l++; // Skip the next word as it's part of the current combination
   } else {
@@ -1164,6 +1200,18 @@ const moreNames = [
     let j = i;
     let combinedEntry = words[j];
 
+const firstWord = words[j].toLowerCase();
+const secondWord = words[j + 1]?.toLowerCase(); // Ensure we don't access undefined
+
+// Detect if the first word starts with "mag", "nag", or "pa" and compare with second word
+const prefixPattern = /^(mag|nag|pa)/;
+const baseFirstWord = firstWord.replace(prefixPattern, ''); // Remove prefix if it exists
+
+if (secondWord && baseFirstWord === secondWord) {
+  console.log('Detected repeated words with prefix, combining');
+  combinedWords.push(`${words[i]} ${words[i + 1]}`); // Combine the words with a space
+  i += 2; // Move index forward to skip the second word
+}
     // Check for salutation patterns followed by one or two words
     if (salutationPattern.test(words[j]) && j < words.length - 1) {
       let nextWord = words[j + 1];
@@ -1339,38 +1387,62 @@ for (let k = 0; k < combinedWords.length; k++) {
   const nextWord = combinedWords[k + 1];
   const nextNextWord = combinedWords[k + 2];
   
-  
-  
   // Add the word directly to combinedPhrases
   if (/^[a-zA-Z]+$/.test(currentWord)) {
-    
+    // Your existing logic can go here
   }
   
   // Check for "tulad ng" pattern
   if (currentWord === "tulad" && nextWord === "ng") {
     combinedPhrases.push(`${currentWord} ${nextWord}`);
     k++; // Skip "ng"
-  }else if (k < combinedWords.length - 2 &&
-  currentWord.toLowerCase() !== nextNextWord.toLowerCase() &&
-  nextWord === "nang") {
-  console.log('confirmed nang between non-repeated words two');
-  combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
-  k += 2; // Skip "nang" and the next word
-}
-else if (k < combinedWords.length - 2 &&
-  currentWord.toLowerCase() === nextNextWord.toLowerCase() &&
-  nextWord === "ng") {
-  console.log('confirmed one');
-  combinedPhrases.push(`${currentWord} ng ${nextNextWord}`);  
-  k += 2; // Skip "ng" and the repeated word
-}
+  }
+  
+  // Check for repeated words with "nang" in between
+  else if (k < combinedWords.length - 2 &&
+           currentWord.toLowerCase() !== nextNextWord.toLowerCase() &&
+           nextWord === "nang") {
+    console.log('confirmed nang between non-repeated words');
+    combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
+    k += 2; // Skip "nang" and the next word
+  }
+  
+  // Check for repeated words with "ng" in between
+  else if (k < combinedWords.length - 2 &&
+           currentWord.toLowerCase() === nextNextWord.toLowerCase() &&
+           nextWord === "ng") {
+    console.log('confirmed one');
+    combinedPhrases.push(`${currentWord} ng ${nextNextWord}`);
+    k += 2; // Skip "ng" and the repeated word
+  } 
+
+  // Check for repeated words with "t" at the end and a space in between
+  else if (k < combinedWords.length - 1 &&
+           currentWord.endsWith("t") &&
+           currentWord.slice(0, -1).toLowerCase() === nextWord.toLowerCase()) {
+    console.log('confirmed repeated word with "t" and space');
+    combinedPhrases.push(`${currentWord} ${nextWord}`);
+    k++; // Skip the repeated word
+  }
+
+  // Check for repeated words with "t" at the end and a hyphen in between
+  else if (k < combinedWords.length - 1 &&
+           currentWord.endsWith("t") &&
+           nextWord.startsWith(currentWord.slice(0, -1).toLowerCase() + "-")) {
+    console.log('confirmed repeated word with "t" and hyphen');
+    combinedPhrases.push(`${currentWord}-${nextWord.split('-')[1]}`);
+    k++; // Skip the repeated word after hyphen
+  }
+
+
+
   // Default case: just add the current word
   else {
     combinedPhrases.push(currentWord);
   }
-  
-  
 }
+
+
 
 
 
