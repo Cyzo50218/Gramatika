@@ -1836,9 +1836,12 @@ function updateHighlights() {
     const errorText = correction.errorText;
     const suggestionText = correction.suggestions[0]; // Assuming we apply the first suggestion for the corrected text
 
-const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    // Escape special characters and allow capturing trailing spaces
+    const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    
     try {
-      const regex = new RegExp(escapedErrorText, 'gi'); // Include flags if needed
+      // Include spaces after the error text with `\\s*`
+      const regex = new RegExp(escapedErrorText + '(\\s*)', 'gi'); // Match the word followed by any spaces
 
       if (seeOriginal) {
         highlightedText = originalText;
@@ -1846,14 +1849,12 @@ const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
         highlightedText = fullText;
       }
 
-      console.log('one');
-
-      // Highlight the original errors
-      const highlighted = highlightedText.replace(regex, match => {
-        return `<span class="highlight">${errorText}</span>`;
+      // Highlight the error along with the spaces by wrapping everything in the span
+      const highlighted = highlightedText.replace(regex, (match, spaces) => {
+        return `<span class="highlight">${errorText}${spaces}${errorText}</span>`;
       });
 
-      overlay.innerHTML = highlighted.replace(/\n/g, '<br>');
+      overlay.innerHTML = highlighted.replace(/\n/g, '<br>'); // Preserve line breaks
 
     } catch (e) {
       console.error(`Error creating regex for "${errorText}":`, e);
@@ -1863,6 +1864,7 @@ const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
   // Reflect the highlights in the overlays
 }
+
 
 
 
