@@ -856,16 +856,18 @@ for (let k = 0; k < combinedWords.length; k++) {
 
   // Check for repeated words with "t" at the end and a space in between
   else if (k < combinedWords.length - 1 &&
-           currentWord.endsWith("t") &&
-           currentWord.slice(0, -1).toLowerCase() === nextWord.toLowerCase()) {
+         currentWord.endsWith("t") &&
+!/^(mag|nag|pa)/.test(currentWord) &&
+         currentWord.slice(0, -1).toLowerCase() === nextWord.toLowerCase()) { // Avoid words starting with "mag", "nag", or "pa"
     console.log('confirmed repeated word with "t" and space');
     combinedPhrases.push(`${currentWord} ${nextWord}`);
     k++; // Skip the repeated word
-  }
+}
 
   // Check for repeated words with "t" at the end and a hyphen in between
   else if (k < combinedWords.length - 1 &&
            currentWord.endsWith("t") &&
+!/^(mag|nag|pa)/.test(currentWord) &&
            nextWord.startsWith(currentWord.slice(0, -1).toLowerCase() + "-")) {
     console.log('confirmed repeated word with "t" and hyphen');
     combinedPhrases.push(`${currentWord}-${nextWord.split('-')[1]}`);
@@ -1418,21 +1420,23 @@ for (let k = 0; k < combinedWords.length; k++) {
 
   // Check for repeated words with "t" at the end and a space in between
   else if (k < combinedWords.length - 1 &&
-           currentWord.endsWith("t") &&
-           currentWord.slice(0, -1).toLowerCase() === nextWord.toLowerCase()) {
-    console.log('confirmed repeated word with "t" and space');
-    combinedPhrases.push(`${currentWord} ${nextWord}`);
-    k++; // Skip the repeated word
-  }
+  currentWord.endsWith("t") &&
+  !/^(mag|nag|pa)/.test(currentWord) &&
+  currentWord.slice(0, -1).toLowerCase() === nextWord.toLowerCase()) { // Avoid words starting with "mag", "nag", or "pa"
+  console.log('confirmed repeated word with "t" and space');
+  combinedPhrases.push(`${currentWord} ${nextWord}`);
+  k++; // Skip the repeated word
+}
 
-  // Check for repeated words with "t" at the end and a hyphen in between
-  else if (k < combinedWords.length - 1 &&
-           currentWord.endsWith("t") &&
-           nextWord.startsWith(currentWord.slice(0, -1).toLowerCase() + "-")) {
-    console.log('confirmed repeated word with "t" and hyphen');
-    combinedPhrases.push(`${currentWord}-${nextWord.split('-')[1]}`);
-    k++; // Skip the repeated word after hyphen
-  }
+// Check for repeated words with "t" at the end and a hyphen in between
+else if (k < combinedWords.length - 1 &&
+  currentWord.endsWith("t") &&
+  !/^(mag|nag|pa)/.test(currentWord) &&
+  nextWord.startsWith(currentWord.slice(0, -1).toLowerCase() + "-")) {
+  console.log('confirmed repeated word with "t" and hyphen');
+  combinedPhrases.push(`${currentWord}-${nextWord.split('-')[1]}`);
+  k++; // Skip the repeated word after hyphen
+}
 
 
 
