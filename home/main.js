@@ -463,7 +463,8 @@ let suggestionMap = [];
 let arrayErrorText = [];
 
 let captured = true;
-
+let changes = false;
+let firstletter = null;
 document.querySelector('.correctButton').addEventListener('click', async function () {
   if (textarea.value.trim() === "") {
     alert("Pakiusap, maglagay ng teksto para masuri.");
@@ -633,6 +634,16 @@ const moreNames = [
   while (i < words.length) {
     let j = i;
     let combinedEntry = words[j];
+    
+    if (j === 0 && /^[a-z]/.test(words[j])) {
+  // Convert the first letter of the first word to uppercase
+  words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
+  
+changes = true;
+firstletter = words[j];
+
+}
+
 
 const firstWord = words[j].toLowerCase();
 const secondWord = words[j + 1]?.toLowerCase(); // Ensure we don't access undefined
@@ -921,6 +932,52 @@ RefreshButton.style.display = 'block';
       if (!suggestionsFromAPI || suggestionsFromAPI.length === 0) {
         throw new Error("No suggestions received from the API.");
       }
+      
+      
+  if(changes){
+    const originalTextCopied = textOriginalHides.value;
+  
+
+correctedHighlightedTwoTextNotify = newTextValue;
+// Create a regex to match the capitalized first word for highlighting
+const regex = new RegExp(`\\b${firstletter}\\b`, 'g'); // Word boundary regex to match the exact word
+
+// Debug: Check values before replacement
+console.log('correctedHighlightedTwoText before replace:', correctedHighlightedTwoText);
+console.log('Regex:', regex);
+
+
+// Replace the matching text with highlighted text
+correctedHighlightedTwoTextNotify = correctedHighlightedTwoTextNotify.replace(regex, match => {
+  return `<span class="highlightCorrected">${match}</span>`;
+});
+
+// Update the overlay with the highlighted text
+overlaycorrectedTwo.innerHTML = correctedHighlightedTwoTextNotify.replace(/\n/g, '<br>');
+
+correctedtextmobile.value = originalArrayTextOutside.join(' ');
+correctedtextmobile.style.display = 'block';
+overlaycorrectedTwo.style.display = 'block';
+overlay.style.display = 'none';
+textarea.style.display = 'none';
+
+overlaycorrectedTwo.style.fontSize = '14px';
+overlay.style.fontSize = '14px';
+textsee.style.display = 'block';
+
+if (getComputedStyle(overlay).paddingTop === '8px') {
+  overlay.style.paddingTop = '28px';
+}
+if (getComputedStyle(overlaycorrected).paddingTop === '8px') {
+  overlaycorrected.style.paddingTop = '28px';
+}
+if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
+  overlaycorrectedTwo.style.paddingTop = '28px';
+}
+textsee.innerHTML = 'Mga naitama.';
+
+
+  }
 
       // Clear old highlights and cloned containers
       checkContainer.innerHTML = '';
@@ -968,12 +1025,13 @@ if (window.innerWidth <= 768) {
   scrollToTarget();
   const originalTextCopied = textOriginalHides.value;
   
-correctedtextmobile.value = originalTextCopied;
 
 
-
-console.log('Replaced', )
-overlay.style.fontSize = '14px';
+if(changes){
+  
+}else{
+  correctedtextmobile.value = originalTextCopied;
+  overlay.style.fontSize = '14px';
 textsee.style.display = 'block';
 
 if (getComputedStyle(overlay).paddingTop === '8px') {
@@ -987,6 +1045,10 @@ if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
 }
 
 textsee.innerHTML = 'Orihinal na mga teksto.';
+}
+
+console.log('Replaced', )
+
 
 }else {
   const originalTextCopied = textOriginalText.value;
@@ -1202,6 +1264,13 @@ const moreNames = [
     let j = i;
     let combinedEntry = words[j];
 
+if (j === 0 && /^[a-z]/.test(words[j])) {
+  // Convert the first letter of the first word to uppercase
+  words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
+  
+}
+
+
 const firstWord = words[j].toLowerCase();
 const secondWord = words[j + 1]?.toLowerCase(); // Ensure we don't access undefined
 
@@ -1389,6 +1458,8 @@ for (let k = 0; k < combinedWords.length; k++) {
   const nextWord = combinedWords[k + 1];
   const nextNextWord = combinedWords[k + 2];
   
+  const regex = /\b(Pag|pag|Pa|pa|Tag|tag|Mag|mag|Nag|nag)\b/;
+  
   // Add the word directly to combinedPhrases
   if (/^[a-zA-Z]+$/.test(currentWord)) {
     // Your existing logic can go here
@@ -1408,6 +1479,14 @@ for (let k = 0; k < combinedWords.length; k++) {
     combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
     k += 2; // Skip "nang" and the next word
   }
+  
+// Check if the currentWord matches the pattern and if nextWord starts with a vowel
+else if (regex.test(currentWord) && /^[AEIOUaeiou]/.test(nextWord)) {
+  console.log('Matched prefix with vowel-starting word');
+  // Combine the two words with a space
+  combinedPhrases.push(`${currentWord} ${nextWord}`);
+  k++; // Skip the next word since it's already combined
+}
   
   // Check for repeated words with "ng" in between
   else if (k < combinedWords.length - 2 &&
