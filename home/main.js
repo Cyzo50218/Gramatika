@@ -220,8 +220,9 @@ textseeTwo.style.display = 'none';
 const RefreshButton = document.querySelector('.refreshButton');
 
 RefreshButton.style.display = 'none';
-
+let changes = false;
     document.querySelector('.refreshButton').addEventListener('click', function() {
+      changes = false;
       if (window.innerWidth <= 768) {
   correctedtextmobile.style.display = 'none';
          overlaycorrectedTwo.style.display = 'none';
@@ -463,8 +464,9 @@ let suggestionMap = [];
 let arrayErrorText = [];
 
 let captured = true;
-let changes = false;
-let firstletter = null;
+
+let firstletter = [];
+let errorArray = [];
 document.querySelector('.correctButton').addEventListener('click', async function () {
   if (textarea.value.trim() === "") {
     alert("Pakiusap, maglagay ng teksto para masuri.");
@@ -636,16 +638,20 @@ const moreNames = [
     let combinedEntry = words[j];
     
     if (j === 0 && /^[a-z]/.test(words[j])) {
+      errorArray = [];
+      firstletter = [];
+      
+  errorArray.push(words[j]); // Add to error array before changing
   words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
-  
   changes = true;
-firstletter = words[j];
-
+  firstletter.push(words[j]); // Add to the array after changing
 }
 
-// Check if the previous word ends with a period followed by a space and the current word starts with a lowercase letter
+// Check if the previous word ends with a period and the current word starts with a lowercase letter
 if (j > 0 && words[j - 1].endsWith('.') && /^[a-z]/.test(words[j])) {
+  errorArray.push(words[j]); // Add to error array before changing
   words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
+  firstletter.push(words[j]); // Add to the array after changing
 }
 
 
@@ -840,10 +846,13 @@ for (let k = 0; k < combinedWords.length; k++) {
   const nextWord = combinedWords[k + 1];
   const nextNextWord = combinedWords[k + 2];
   
-  // Add the word directly to combinedPhrases
-  if (/^[a-zA-Z]+$/.test(currentWord)) {
-    
-  }
+const regex = /\b(Pag|pag|Pa|pa|Tag|tag|Mag|mag|Nag|nag)\b/;
+
+// Add the word directly to combinedPhrases
+if (/^[a-zA-Z]+$/.test(currentWord)) {
+  // Your existing logic can go here
+}
+
   
   // Check for "tulad ng" pattern
   if (currentWord === "tulad" && nextWord === "ng") {
@@ -859,6 +868,12 @@ for (let k = 0; k < combinedWords.length; k++) {
     combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
     k += 2; // Skip "nang" and the next word
   }
+  else if (regex.test(currentWord) && /^[AEIOUaeiou]/.test(nextWord)) {
+  console.log('Matched prefix with vowel-starting word');
+  // Combine the two words with a space
+  combinedPhrases.push(`${currentWord} ${nextWord}`);
+  k++; // Skip the next word since it's already combined
+}
   
   // Check for repeated words with "ng" in between
   else if (k < combinedWords.length - 2 &&
@@ -928,6 +943,7 @@ return finalWords;
       
       
        suggestionsFromAPI = await getSuggestionsFromAPI(newTextValue);
+       
       console.log('Suggestions from API:', suggestionsFromAPI);
 
 RefreshButton.style.visibility = 'visible';
@@ -936,19 +952,79 @@ RefreshButton.style.display = 'block';
       if (!suggestionsFromAPI || suggestionsFromAPI.length === 0) {
         throw new Error("No suggestions received from the API.");
       }
-      
+           // Clear old highlights and cloned containers
+      checkContainer.innerHTML = '';
+
       
   if(changes){
+    
+            const regexS = new RegExp(`\\b${firstletter.join('|')}\\b`, 'g'); // Regex to match any word from firstLetterArray
+const regexErrors = new RegExp(`\\b${errorArray.join('|')}\\b`, 'g'); // Regex to match any word from errorArray
+
+const clonedNewContainerTwo = document.createElement('div');
+clonedNewContainerTwo.classList.add('clonedContainer');
+
+const errorUppercases = [...new Set(errorArray)];
+const uppercaseSuggestions = [...new Set(firstletter)];
+
+const suggestionsHTMLTWO = uppercaseSuggestions.map(token => `<span class="suggestion">${token}</span>`).join(' ');
+
+// Display each word in its own container 
+// Clear the previous contents in checkContainer
+checkContainer.innerHTML = '';
+
+// Ensure both arrays have the same length, or handle accordingly
+const maxLength = Math.max(errorUppercases.length, uppercaseSuggestions.length);
+
+// Iterate over both arrays together
+for (let i = 0; i < maxLength; i++) {
+  // Get the current error and suggestion (handle undefined if arrays are not of equal length)
+  const error = errorUppercases[i] || ''; // Empty string if there's no error for this index
+  const suggestion =`<span class="suggestion" ">${uppercaseSuggestions[i]}</span>`;
+  
+  // Create a container for the current error and suggestion
+  const container = document.createElement('div');
+  container.classList.add('clonedContainer'); // Add the necessary class for styling
+
+  // Add the error and suggestion to the container, with their own descriptions
+  container.innerHTML = `
+    <div class="errorText">
+      ${error ? error : 'No Error'} <!-- Display 'No Error' if empty -->
+    </div>
+    <div class="suggestions">
+      ${suggestion} <!-- Display 'No Suggestion' if empty -->
+    </div>
+    <div class="ruleDescription">
+      ${'Sinusuri na nagsisimula ang pangungusap sa malaking letra'}
+    </div>
+  `;
+
+container.style.width = '80%';
+  // Append the container to checkContainer
+  checkContainer.appendChild(container);
+}
+
+
+
+
+
+
+        
+        
     const originalTextCopied = textOriginalHides.value;
   
 
 correctedHighlightedTwoTextNotify = newTextValue;
+textOriginalHides.value = newTextValue;
+correctedtextmobile.value= newTextValue;
 // Create a regex to match the capitalized first word for highlighting
 const regex = new RegExp(`\\b${firstletter}\\b`, 'g'); // Word boundary regex to match the exact word
+const regextwos = new RegExp(`\\b${errorArray}\\b`, 'g');
 
 // Debug: Check values before replacement
 console.log('correctedHighlightedTwoText before replace:', correctedHighlightedTwoText);
-console.log('Regex:', regex);
+console.log('Corrected uppercase:', regex);
+console.log('Error Uppercase:', regextwos);
 
 
 // Replace the matching text with highlighted text
@@ -959,7 +1035,7 @@ correctedHighlightedTwoTextNotify = correctedHighlightedTwoTextNotify.replace(re
 // Update the overlay with the highlighted text
 overlaycorrectedTwo.innerHTML = correctedHighlightedTwoTextNotify.replace(/\n/g, '<br>');
 
-correctedtextmobile.value = originalArrayTextOutside.join(' ');
+
 correctedtextmobile.style.display = 'block';
 overlaycorrectedTwo.style.display = 'block';
 overlay.style.display = 'none';
@@ -983,8 +1059,7 @@ textsee.innerHTML = 'Mga naitama.';
 
   }
 
-      // Clear old highlights and cloned containers
-      checkContainer.innerHTML = '';
+
 
       // Iterate over each correction suggestion
       suggestionsFromAPI.forEach(correction => {
@@ -1071,6 +1146,8 @@ updateHighlights();
         const clonedNewContainer = document.createElement('div');
         clonedNewContainer.classList.add('clonedContainer');
 
+
+
         checkContainer.style.display = 'block';
 
         const suggestionsHTML = suggestionText.map(token => `<span class="suggestion">${token}</span>`).join(' ');
@@ -1080,10 +1157,14 @@ updateHighlights();
           <div class="suggestions">${suggestionsHTML}</div>
           <div class="ruleDescription">${ruleDesc}</div>
         `;
+        
+
+     
         clonedNewContainer.style.width = '80%';
 
         // Append the container to the checkContainer
         checkContainer.appendChild(clonedNewContainer);
+        
 
 const bestSuggestion = getBestSuggestionFromGemini(ruleDesc, errorsTextarea, suggestionText);
 if(!bestSuggestion){
@@ -1269,11 +1350,18 @@ const moreNames = [
     let combinedEntry = words[j];
 
 if (j === 0 && /^[a-z]/.test(words[j])) {
-  // Convert the first letter of the first word to uppercase
+  
+ 
   words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
   
 }
 
+// Check if the previous word ends with a period and the current word starts with a lowercase letter
+if (j > 0 && words[j - 1].endsWith('.') && /^[a-z]/.test(words[j])) {
+  
+  words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
+  firstletter.push(words[j]); // Add to the array after changing
+}
 
 const firstWord = words[j].toLowerCase();
 const secondWord = words[j + 1]?.toLowerCase(); // Ensure we don't access undefined
