@@ -6,6 +6,9 @@
       "use": "@vercel/node"
     },
     { "src": "tamana.png", "use": "@vercel/static" },
+    { "src": "profile1.png", "use": "@vercel/static" },
+    { "src": "profile2.png", "use": "@vercel/static" },
+    { "src": "profile3.png", "use": "@vercel/static" },
     { "src": "geometric.gif", "use": "@vercel/static" },
     {
       "src": "home/**",
