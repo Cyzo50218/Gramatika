@@ -636,12 +636,16 @@ const moreNames = [
     let combinedEntry = words[j];
     
     if (j === 0 && /^[a-z]/.test(words[j])) {
-  // Convert the first letter of the first word to uppercase
   words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
   
-changes = true;
+  changes = true;
 firstletter = words[j];
 
+}
+
+// Check if the previous word ends with a period followed by a space and the current word starts with a lowercase letter
+if (j > 0 && words[j - 1].endsWith('.') && /^[a-z]/.test(words[j])) {
+  words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
 }
 
 
