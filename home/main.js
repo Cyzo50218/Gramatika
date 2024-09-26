@@ -1004,14 +1004,13 @@ container.style.width = '80%';
   checkContainer.appendChild(container);
 }
 
+  }
+  
 
-
-
-
-
-        
-        
-    const originalTextCopied = textOriginalHides.value;
+  
+  if (window.innerWidth <= 768) {
+    if (changes) {
+      const originalTextCopied = textOriginalHides.value;
   
 
 correctedHighlightedTwoTextNotify = newTextValue;
@@ -1056,7 +1055,51 @@ if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
 }
 textsee.innerHTML = 'Mga naitama.';
 
+    }
+  }else{
+    
+      if (changes) {
+    textOriginal.value = newTextValue;
+    
+   displaywebsite.style.display = 'flex';
+correctedbox.style.marginLeft = '10px';
+displaywebsite.style.paddingBottom = '10px';
 
+textseeTwo.style.display = 'block';
+
+    overlay.style.fontSize = '20px';
+textarea.style.display = 'none';
+textOriginalText.style.display = 'block';
+
+    textarea.style.display = 'none';
+    textoriginal2.style.display = 'block';
+    
+    const regex = new RegExp(`\\b${firstletter}\\b`, 'g');
+    
+    correctedHighlightedText = newTextValue;
+
+    correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
+      return `<span class="highlightCorrected">${match}</span>`;
+    });
+    textOriginal.style.display = 'block';
+
+    overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
+    overlaycorrected.style.fontSize = '20px';
+    overlay.style.fontSize = '20px';
+    textsee.style.display = 'none';
+
+    correctedbox.style.display = 'block';
+    overlay.style.display = 'block';
+
+    if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
+      overlaycorrected.style.paddingTop = '30px';
+    }
+    if (getComputedStyle(overlay).paddingTop === '11px') {
+      overlay.style.paddingTop = '30px';
+    }
+
+  }
+  
   }
 
 
@@ -1089,15 +1132,7 @@ const escapedErrorText = errorsTextarea.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'
 
         const regex = new RegExp(escapedErrorText, 'gi'); // Include flags if needed
         
-        if (window.innerWidth <= 1024) {
-          
-  originalText = originalText.replace(regex, match => {
-    return `<span class="highlight">${errorsTextarea}</span>`;
-  });
-
-  overlay.innerHTML = originalText.replace(/\n/g, '<br>');
-
-}
+        
 
 
 if (window.innerWidth <= 768) {
@@ -1130,14 +1165,32 @@ console.log('Replaced', )
 
 
 }else {
-  const originalTextCopied = textOriginalText.value;
   
+  if(changes){
+overlay.style.fontSize = '20px';
+textarea.style.display = 'none';
+textOriginalText.style.display = 'block';
+textOriginal.style.display = 'block';
+
+  }else{
+    const originalTextCopied = textOriginalText.value;
+
 textOriginal.value = originalTextCopied;
 
-  overlay.style.fontSize = '20px';
+overlay.style.fontSize = '20px';
 textarea.style.display = 'none';
 textOriginalText.style.display = 'block';
 textOriginal.style.display = 'none';
+
+displaywebsite.style.display = 'flex';
+correctedbox.style.marginLeft = '10px';
+displaywebsite.style.paddingBottom = '10px';
+
+textseeTwo.style.display = 'block';
+
+  }
+  
+  
 }
 
 
@@ -1776,6 +1829,9 @@ overlaycorrectedTwo.style.fontSize = '14px';
       textsee.innerHTML = 'Mga naitama.';
 
     } else {
+      
+      
+      
       // Desktop
       displaywebsite.style.display = 'flex';
       correctedbox.style.marginLeft = '10px';
