@@ -1133,8 +1133,11 @@ textOriginalText.style.display = 'block';
     textarea.style.display = 'none';
     textoriginal2.style.display = 'block';
     
+    const regextwos = new RegExp(`\\b${errorArray}\\b`, 'g');
+
     const regex = new RegExp(`\\b${firstletter}\\b`, 'g');
     
+   
     correctedHighlightedText = newTextValue;
 
     correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
@@ -1146,13 +1149,14 @@ textOriginalText.style.display = 'block';
   return `<span class="highlight">${match}</span>`;
 });
 
-// Update the overlay with the highlighted text
-overlaycorrectedTwo.innerHTML = correctedHighlightedTwoTextNotify.replace(/\n/g, '<br>');
+
+overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
 
 overlay_two.innerHTML = highlightedText.replace(/\n/g, '<br>');
 
     overlaycorrected.style.fontSize = '20px';
     overlay.style.fontSize = '20px';
+    overlay_two.style.fontSize = '20px';
     textsee.style.display = 'none';
 
     correctedbox.style.display = 'block';
