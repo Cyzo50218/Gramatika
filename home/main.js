@@ -143,6 +143,7 @@ document.querySelector('.editText').addEventListener('input', function() {
     textresultcontainer.style.display = 'none';
     const textarea = document.querySelector('.editText');
     const overlay = document.querySelector('.overlay');
+    const overlay_two = document.getElementById('ovarlayid_two');
     const overlaycorrected = document.getElementById('ovarlaycorrectedid');
     const overlaycorrectedTwo = document.getElementById('ovarlaycorrectedtwoid');
     textresult.style.display = 'none';
@@ -231,6 +232,7 @@ let changes = false;
          textarea.value = '';
          textarea.removeAttribute('readonly');
 overlay.style.display = 'block';
+overlay_two.style.display = 'block';
 textarea.style.display = 'block';
 correctedbox.style.display = 'none';
 correctorcontainer.style.width = '90%';
@@ -254,6 +256,7 @@ correctedtextmobile.value = '';
 textarea.value = '';
 textarea.removeAttribute('readonly');
 overlay.style.display = 'block';
+overlay_two.style.display = 'block';
 textarea.style.display = 'block';
 
 checkContainer.style.display = 'none';
@@ -286,7 +289,8 @@ RefreshButton.style.display = 'none';
         textOriginalText.style.display = 'none';
         checkContainer.style.display = 'none';
         clear = true;
-        overlay.innerHTML = ''; 
+        overlay.innerHTML = '';
+        overlay_two.innerHTML = '';
         textresult.value = '';
         maxwidth2.style.display = 'inline';
         textresultcontainer.style.display = 'none'; // Hide the container on refresh
@@ -468,6 +472,7 @@ let captured = true;
 
 let firstletter = [];
 let errorArray = [];
+let highlightsErrors;
 document.querySelector('.correctButton').addEventListener('click', async function () {
   if (textarea.value.trim() === "") {
     alert("Pakiusap, maglagay ng teksto para masuri.");
@@ -993,6 +998,7 @@ const uppercaseSuggestions = [...new Set(firstletter)];
 
 const suggestionsHTMLTWO = uppercaseSuggestions.map(token => `<span class="suggestion">${token}</span>`).join(' ');
 
+
 // Display each word in its own container 
 // Clear the previous contents in checkContainer
 checkContainer.innerHTML = '';
@@ -1004,6 +1010,11 @@ const maxLength = Math.max(errorUppercases.length, uppercaseSuggestions.length);
 for (let i = 0; i < maxLength; i++) {
   // Get the current error and suggestion (handle undefined if arrays are not of equal length)
   const error = errorUppercases[i] || ''; // Empty string if there's no error for this index
+  highlightsErrors = error;
+  
+  
+  console.log('TOKEN PART: ', error)
+  
   const suggestion =`<span class="suggestion" ">${uppercaseSuggestions[i]}</span>`;
   
   // Create a container for the current error and suggestion
@@ -1036,6 +1047,13 @@ container.style.width = '80%';
     if (changes) {
       const originalTextCopied = textOriginalHides.value;
   
+const fullText = textarea.value;
+
+  correctedHighlightedText = emptyText;
+  correctedHighlightedTwoText = emptyText;
+
+  let highlightedText = seeOriginal ? originalText : fullText; // Initialize with the full or original text
+
 
 correctedHighlightedTwoTextNotify = newTextValue;
 textOriginalHides.value = newTextValue;
@@ -1055,13 +1073,19 @@ correctedHighlightedTwoTextNotify = correctedHighlightedTwoTextNotify.replace(re
   return `<span class="highlightCorrected">${match}</span>`;
 });
 
+highlightedText = highlightedText.replace(regextwos, match => {
+  return `<span class="highlight">${match}</span>`;
+});
+
 // Update the overlay with the highlighted text
 overlaycorrectedTwo.innerHTML = correctedHighlightedTwoTextNotify.replace(/\n/g, '<br>');
 
+overlay_two.innerHTML = highlightedText.replace(/\n/g, '<br>');
 
 correctedtextmobile.style.display = 'block';
 overlaycorrectedTwo.style.display = 'block';
 overlay.style.display = 'none';
+overlay_two.style.display = 'none';
 textarea.style.display = 'none';
 
 overlaycorrectedTwo.style.fontSize = '14px';
@@ -1079,10 +1103,20 @@ if (getComputedStyle(overlaycorrectedTwo).paddingTop === '8px') {
 }
 textsee.innerHTML = 'Mga naitama.';
 
+
     }
   }else{
     
       if (changes) {
+        
+        const fullText = textarea.value;
+
+  correctedHighlightedText = emptyText;
+  correctedHighlightedTwoText = emptyText;
+
+  let highlightedText = seeOriginal ? originalText : fullText; // Initialize with the full or original text
+
+
     textOriginal.value = newTextValue;
     
    displaywebsite.style.display = 'flex';
@@ -1092,6 +1126,7 @@ displaywebsite.style.paddingBottom = '10px';
 textseeTwo.style.display = 'block';
 
     overlay.style.fontSize = '20px';
+    overlay_two.fontSize = '20px';
 textarea.style.display = 'none';
 textOriginalText.style.display = 'block';
 
@@ -1107,13 +1142,22 @@ textOriginalText.style.display = 'block';
     });
     textOriginal.style.display = 'block';
 
-    overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
+    highlightedText = highlightedText.replace(regextwos, match => {
+  return `<span class="highlight">${match}</span>`;
+});
+
+// Update the overlay with the highlighted text
+overlaycorrectedTwo.innerHTML = correctedHighlightedTwoTextNotify.replace(/\n/g, '<br>');
+
+overlay_two.innerHTML = highlightedText.replace(/\n/g, '<br>');
+
     overlaycorrected.style.fontSize = '20px';
     overlay.style.fontSize = '20px';
     textsee.style.display = 'none';
 
     correctedbox.style.display = 'block';
     overlay.style.display = 'block';
+    overlay_two.style.display = 'block';
 
     if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
       overlaycorrected.style.paddingTop = '30px';
@@ -1170,6 +1214,7 @@ if(changes){
 }else{
   correctedtextmobile.value = originalTextCopied;
   overlay.style.fontSize = '14px';
+  overlay_two.style.fontSize = '14px';
 textsee.style.display = 'block';
 
 if (getComputedStyle(overlay).paddingTop === '8px') {
@@ -1856,6 +1901,7 @@ console.log('Suggestions and errors: ', [suggestionMap]);
       correctedtextmobile.style.display = 'block';
       overlaycorrectedTwo.style.display = 'block';
       overlay.style.display = 'none';
+      overlay_two.style.display = 'none';
       textarea.style.display = 'none';
 
 overlaycorrectedTwo.style.fontSize = '14px';
@@ -2006,6 +2052,7 @@ console.log('New value: ', correctedArrayNew);
 
       correctedbox.style.display = 'block';
       overlay.style.display = 'block';
+      overlay_two.style.display = 'block';
 
       if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
         overlaycorrected.style.paddingTop = '80px';
@@ -2100,6 +2147,9 @@ if (/Mobi|Android/i.test(navigator.userAgent)) {
 // Make sure the updateHighlights function exists and is correctly implemented
 function updateHighlights() {
   const fullText = textarea.value;
+  
+  highlightsErrors
+  errorArray
 
   correctedHighlightedText = emptyText;
   correctedHighlightedTwoText = emptyText;
@@ -2158,6 +2208,7 @@ function handleTextSeePressedMOBILS() {
   correctedtextmobile.style.display = 'none';
 overlaycorrectedTwo.style.display = 'none';
 overlay.style.display = 'block';
+overlay_two.style.display = 'block';
 textOriginal.style.display = 'none';
 textoriginal2.style.display = 'block';
 textarea.style.display = 'none';
@@ -2173,7 +2224,7 @@ function handleTextSeeUnpressedMOBILE() {
          overlaycorrectedTwo.style.display = 'block';
 overlay.style.display = 'none';
 textOriginal.style.display = 'none';
-
+overlay_two.style.display = 'none';
 textsee.innerHTML = 'Mga naitama.';
   textoriginal2.style.display = 'none';
   textarea.style.display = 'none';
@@ -2192,6 +2243,7 @@ function hideText() {
 function textHides() {
   // Actions for when the button is unpressed (show original text)
   overlay.style.display = 'block';
+  overlay_two.style.display = 'block';
   textoriginal2.style.display = 'block';
   correctedbox.style.display = 'none';
   overlaycorrected.style.display = 'none';
@@ -2209,6 +2261,7 @@ function handleTextSeePressed() {
   overlaycorrected.style.display = 'block';
   correctedbox.style.display = 'block';
   overlay.style.display = 'block';
+  overlay_two.style.display = 'block';
   textOriginal.style.display = 'block';
   textsee.innerHTML = 'See Corrected >';
   textarea.style.display = 'none';
@@ -2220,6 +2273,7 @@ function handleTextSeePressed() {
 function handleTextSeeUnpressed() {
   // Actions for when the button is unpressed (show original text)
   overlay.style.display = 'block';
+  overlay_two.style.display = 'block';
   textoriginal2.style.display = 'none';
   correctedbox.style.display = 'none';
   overlaycorrected.style.display = 'none';
