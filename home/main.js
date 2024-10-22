@@ -936,7 +936,7 @@ for (let l = 0; l < combinedPhrases.length; l++) {
       currentWord.endsWith('u') && // Check if current word ends with 'u'
       nextWord.endsWith('o') // Check if next word ends with 'o'
     ) {
-      finalWords.push(`${currentWord} ${nextWord}`);
+      finalWords.push(`${currentWord}-${nextWord}`); // Combine with a hyphen
       l++; // Skip the next word as it's part of the current combination
     } else {
       // Push the current word if there's no match or it's the last word
