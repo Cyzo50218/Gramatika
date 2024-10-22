@@ -930,7 +930,8 @@ for (let l = 0; l < combinedPhrases.length; l++) {
       l++; // Skip the next word as it's part of the current combination
 
     // Check if they differ only by last letter (current ends with 'u' and next ends with 'o')
-    } else if (
+    }
+    /*else if (
       currentWord.length === nextWord.length && // Ensure they are the same length
       currentWord.slice(0, -1).toLowerCase() === nextWord.slice(0, -1).toLowerCase() && // Check all but the last character
       currentWord.endsWith('u') && // Check if current word ends with 'u'
@@ -938,7 +939,8 @@ for (let l = 0; l < combinedPhrases.length; l++) {
     ) {
       finalWords.push(`${currentWord}-${nextWord}`); // Combine with a hyphen
       l++; // Skip the next word as it's part of the current combination
-    } else {
+    } */
+    else {
       // Push the current word if there's no match or it's the last word
       finalWords.push(currentWord);
     }
