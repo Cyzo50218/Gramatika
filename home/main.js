@@ -868,12 +868,12 @@ if (/^[a-zA-Z]+$/.test(currentWord)) {
     combinedPhrases.push(`${currentWord} nang ${nextNextWord}`);
     k += 2; // Skip "nang" and the next word
   }
-  else if (regex.test(currentWord) && /^[AEIOUaeiou]/.test(nextWord)) {
+ /* else if (regex.test(currentWord) && /^[AEIOUaeiou]/.test(nextWord)) {
   console.log('Matched prefix with vowel-starting word');
   // Combine the two words with a space
   combinedPhrases.push(`${currentWord} ${nextWord}`);
   k++; // Skip the next word since it's already combined
-}
+} */
   
   // Check for repeated words with "ng" in between
   else if (k < combinedWords.length - 2 &&
@@ -902,7 +902,7 @@ if (/^[a-zA-Z]+$/.test(currentWord)) {
     console.log('confirmed repeated word with "t" and hyphen');
     combinedPhrases.push(`${currentWord}-${nextWord.split('-')[1]}`);
     k++; // Skip the repeated word after hyphen
-  }
+  } 
 
 
   // Default case: just add the current word
@@ -1963,10 +1963,10 @@ console.log('New value: ', correctedArrayNew);
       overlay.style.display = 'block';
 
       if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
-        overlaycorrected.style.paddingTop = '30px';
+        overlaycorrected.style.paddingTop = '80px';
       }
       if (getComputedStyle(overlay).paddingTop === '11px') {
-        overlay.style.paddingTop = '30px';
+        overlay.style.paddingTop = '80px';
       }
 
     } 
@@ -2059,38 +2059,34 @@ function updateHighlights() {
   correctedHighlightedText = emptyText;
   correctedHighlightedTwoText = emptyText;
 
+  let highlightedText = seeOriginal ? originalText : fullText; // Initialize with the full or original text
+
   suggestionsFromAPI.forEach(correction => {
     const errorText = correction.errorText;
     const suggestionText = correction.suggestions[0]; // Assuming we apply the first suggestion for the corrected text
 
     // Escape special characters and allow capturing trailing spaces
     const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    
+
     try {
       // Include spaces after the error text with `\\s*`
       const regex = new RegExp(escapedErrorText + '(\\s*)', 'gi'); // Match the word followed by any spaces
 
-      if (seeOriginal) {
-        highlightedText = originalText;
-      } else {
-        highlightedText = fullText;
-      }
-
       // Highlight the error along with the spaces by wrapping everything in the span
-      const highlighted = highlightedText.replace(regex, (match, spaces) => {
-        return `<span class="highlight">${errorText}${spaces}${errorText}</span>`;
+      highlightedText = highlightedText.replace(regex, (match, spaces) => {
+        return `<span class="highlight">${errorText}</span>` + spaces;
       });
 
-      overlay.innerHTML = highlighted.replace(/\n/g, '<br>'); // Preserve line breaks
-
+      console.log('ERRORS: ', errorText);
     } catch (e) {
       console.error(`Error creating regex for "${errorText}":`, e);
     }
-
   });
 
-  // Reflect the highlights in the overlays
+  // After processing all suggestions, update the overlay content
+  overlay.innerHTML = highlightedText.replace(/\n/g, '<br>'); // Preserve line breaks
 }
+
 
 
 
