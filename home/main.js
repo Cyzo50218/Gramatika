@@ -259,6 +259,9 @@ textarea.style.display = 'block';
 checkContainer.style.display = 'none';
 textsee.style.display = 'none';
 
+if (getComputedStyle(overlay).paddingTop === '30px') {
+  overlaycorrected.style.paddingTop = '11px';
+}
 
 correctedbox.style.display = 'block';
 displaywebsite.style.display = 'flex';
