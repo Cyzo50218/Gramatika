@@ -930,16 +930,24 @@ for (let l = 0; l < combinedPhrases.length; l++) {
       l++; // Skip the next word as it's part of the current combination
 
     // Check if they differ only by last letter (current ends with 'u' and next ends with 'o')
-    }
-    /*else if (
+    } else if (
       currentWord.length === nextWord.length && // Ensure they are the same length
       currentWord.slice(0, -1).toLowerCase() === nextWord.slice(0, -1).toLowerCase() && // Check all but the last character
       currentWord.endsWith('u') && // Check if current word ends with 'u'
       nextWord.endsWith('o') // Check if next word ends with 'o'
     ) {
-      finalWords.push(`${currentWord}-${nextWord}`); // Combine with a hyphen
+      finalWords.push(`${currentWord} ${nextWord}`); // Combine with a space
       l++; // Skip the next word as it's part of the current combination
-    } */
+
+    // Check if the current word ends with 'u' and is followed by a hyphen and next word ends with 'o'
+    } else if (
+      currentWord.endsWith('u') && // Check if current word ends with 'u'
+      currentWord.includes('-') && // Check if it contains a hyphen
+      nextWord.endsWith('o') // Check if next word ends with 'o'
+    ) {
+      finalWords.push(`${currentWord} ${nextWord}`); // Combine with a space
+      l++; // Skip the next word as it's part of the current combination
+    } 
     else {
       // Push the current word if there's no match or it's the last word
       finalWords.push(currentWord);
@@ -949,6 +957,7 @@ for (let l = 0; l < combinedPhrases.length; l++) {
     finalWords.push(combinedPhrases[l]);
   }
 }
+
 
 
 return finalWords;
