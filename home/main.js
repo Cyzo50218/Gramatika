@@ -1370,7 +1370,9 @@ if(!bestSuggestion){
 clonedNewContainer.querySelectorAll('.suggestion').forEach(suggestionElem => {
   suggestionElem.addEventListener('click', function () {
     const selectedSuggestion = this.textContent;
-    const regex = new RegExp(errorsTextarea, 'gi');
+    const regex = new RegExp('\\b' + errorsTextarea + '\\b(\\s*)', 'gi'); 
+    
+  
 const regexTwo = new RegExp(`\\b${errorsTextarea}\\b`, 'i'); // Use word boundaries to match whole words
   let existingEntry = suggestionMap.find(entry => entry.selectedSuggestions && entry.selectedSuggestions.includes(selectedSuggestion));
 
@@ -2198,15 +2200,16 @@ function updateHighlights() {
     const suggestionText = correction.suggestions[0]; // Assuming we apply the first suggestion for the corrected text
 
     // Escape special characters and allow capturing trailing spaces
-    const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    
 
     try {
-      // Include spaces after the error text with `\\s*`
-      const regex = new RegExp(escapedErrorText + '(\\s*)', 'gi'); // Match the word followed by any spaces
+      const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+// Include spaces after the error text with `\\s*`, and ensure it's not preceded or followed by a word character
+const regex = new RegExp('\\b' + escapedErrorText + '\\b(\\s*)', 'gi'); // Match the word with boundaries and followed by any spaces
 
       // Highlight the error along with the spaces by wrapping everything in the span
-      highlightedText = highlightedText.replace(regex, (match, spaces) => {
-        return `<span class="highlight">${errorText}</span>` + spaces;
+      highlightedText = highlightedText.replace(regex, match=> {
+        return `<span class="highlight">${errorText}</span>`;
       });
 
       console.log('ERRORS: ', errorText);
