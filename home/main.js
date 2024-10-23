@@ -236,6 +236,7 @@ overlay_two.style.display = 'block';
 textarea.style.display = 'block';
 correctedbox.style.display = 'none';
 correctorcontainer.style.width = '90%';
+overlaycorrected.textContent = '';
 console.log('non');
 
 checkContainer.style.display = 'none';
@@ -251,7 +252,7 @@ if (getComputedStyle(overlay).paddingTop === '28px') {
 overlaycorrectedTwo.style.display = 'none';
 overlaycorrectedTwo.innerHTML = ''; 
 overlaycorrected.innerHTML = '';
-
+overlaycorrected.textContent = '';
 correctedtextmobile.value = '';
 textarea.value = '';
 textarea.removeAttribute('readonly');
@@ -261,10 +262,6 @@ textarea.style.display = 'block';
 
 checkContainer.style.display = 'none';
 textsee.style.display = 'none';
-
-if (getComputedStyle(overlay).paddingTop === '30px') {
-  overlaycorrected.style.paddingTop = '11px';
-}
 
 correctedbox.style.display = 'block';
 displaywebsite.style.display = 'flex';
