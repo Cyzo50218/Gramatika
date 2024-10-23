@@ -709,7 +709,14 @@ if (secondWord && baseFirstWord === secondWord) {
   console.log('Detected repeated words with prefix, combining');
   combinedWords.push(`${words[i]} ${words[i + 1]}`); // Combine the words with a space
   i += 2; // Move index forward to skip the second word
+}else if (i < words.length - 1 && 
+         /[bcdfghjklmnpqrstvxzi]$/.test(words[i]) && 
+         ["rin","raw", "roon", "rito"].includes(words[i + 1])) {
+  console.log('combined');
+  combinedWords.push(`${words[i]} ${words[i + 1]}`);
+  i += 2;
 }
+
 
 
     // Check for salutation patterns followed by one or two words
@@ -832,7 +839,16 @@ for (let i = 0; i < words.length; i++) {
       console.log('combined');
   combinedWords.push(`${words[i]} ${words[i + 1]}`); 
   i += 2;
-}else {
+}
+else if (i < words.length - 1 && 
+         /[bcdfghjklmnpqrstvxzi]$/.test(words[i]) && 
+         ["raw", "roon", "rito"].includes(words[i + 1])) {
+  console.log('combined');
+  combinedWords.push(`${words[i]} ${words[i + 1]}`);
+  i += 2;
+}
+
+else {
       combinedWords.push(words[i]);
       i++;
     }
@@ -1549,6 +1565,12 @@ if (secondWord && baseFirstWord === secondWord) {
   console.log('Detected repeated words with prefix, combining');
   combinedWords.push(`${words[i]} ${words[i + 1]}`); // Combine the words with a space
   i += 2; // Move index forward to skip the second word
+}else if (i < words.length - 1 && 
+         /[bcdfghjklmnpqrstvxzi]$/.test(words[i]) && 
+         ["rin","raw", "roon", "rito"].includes(words[i + 1])) {
+  console.log('combined');
+  combinedWords.push(`${words[i]} ${words[i + 1]}`);
+  i += 2;
 }
     // Check for salutation patterns followed by one or two words
     if (salutationPattern.test(words[j]) && j < words.length - 1) {
