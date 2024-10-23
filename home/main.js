@@ -231,8 +231,10 @@ const RefreshButton = document.querySelector('.refreshButton');
 
 RefreshButton.style.display = 'none';
 let changes = false;
+let questionDetected = false;
     document.querySelector('.refreshButton').addEventListener('click', function() {
       changes = false;
+      questionDetected = false;
       if (window.innerWidth <= 768) {
   correctedtextmobile.style.display = 'none';
          overlaycorrectedTwo.style.display = 'none';
@@ -655,6 +657,7 @@ const moreNames = [
     if (/^(Ano|Sino|Saan|Kailan|Bakit|Papaano|Paano)/.test(words[j])) {
         
 changes = true;
+questionDetected = true;
     }
     else if (j === 0 && /^[a-z]/.test(words[j])) {
       errorArray = [];
@@ -678,18 +681,20 @@ console.log(firstletter);
         
         firstletter.push(words[j]); // Add to the array after changing
     }
-
-    // If we're at the end of the array, add a "?" to the last word if it doesn't end with punctuation
+if(questionDetected){
+      // If we're at the end of the array, add a "?" to the last word if it doesn't end with punctuation
     if (j === words.length - 1 && !/[.?!]$/.test(words[j])) {
       questionErrorArray = [];
-correctedLastFirstQuestion = [];
+      correctedLastFirstQuestion = [];
 
       questionErrorArray.push(words[j]);
-        console.log('QUESTIONED MARK ADDED')
-       changes = true;
-        correctedLastFirstQuestion.push(words[j] + '?'); // 
-        words[j] += '?'; // Add question mark to the last word
+      console.log('QUESTIONED MARK ADDED')
+      changes = true;
+      correctedLastFirstQuestion.push(words[j] + '?'); // 
+      words[j] += '?'; // Add question mark to the last word
     }
+}
+
     
     
 
