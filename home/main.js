@@ -736,47 +736,7 @@ if (secondWord && baseFirstWord === secondWord) {
       }
     }
     
-    const rinRawRoonRito = ["rin", "raw", "roon", "rito"];
     
-
-while (j < words.length - 1 && namePattern.test(combinedEntry + ' ' + words[j + 1] && namePattern.test(combinedEntry + ' ' + rinRawRoonRito))) {
-  // Check if the next word is in the surpriseWords array
-  if (surpriseWords.includes(words[j])) {
-    console.log('Surprise word detected, skipping combination');
-    break; // Exit the inner loop if a surprise word is detected
-  }
-  
-  if (salutationWords.includes(words[j])) {
-      break; // Exit the inner loop if a surprise word is detected
-  }
-
-
-  console.log('Combining two words');
-  j++;
-  combinedEntry += ' ' + words[j];
-}
-
-    // Exception: Do not add parentheses if the combinedEntry matches a famous person
-    if (j > i) {
-      if ( moreNames.includes(combinedEntry)) {
-        combinedWords.push('"' + combinedEntry + '"'); // Add without parentheses
-        console.log('detectone')
-      } else if(famousPersons.includes(combinedEntry)){
-   combinedWords.push("(" + combinedEntry + ")"); // Add without parentheses
-   console.log('detecttwo')
-        }else if(newsName.includes(combinedEntry)){
-          combinedWords.push('"' + combinedEntry + '"');
-          console.log('detectthree')
-          }else if(surpriseWords.includes(combinedEntry)){
-            combinedWords.push(combinedEntry);
-          }else {
-            console.log('detectfour', combinedEntry)
-        combinedWords.push(combinedEntry); // Add with parentheses for other names
-        
-      }
-      i = j + 1;
-      continue;
-    }
 
 
     // **Updated Logic**: Handle time patterns
@@ -839,14 +799,6 @@ for (let i = 0; i < words.length; i++) {
   i += 3; // Skip the next two words (the "pa/pag" and the word starting with a vowel)
 }
 
-if (words[i + 1] && 
-  (words[i + 1].toLowerCase() === "roon" || words[i + 1].toLowerCase() === "rin") && 
-  /[bcdfghjklmnpqrstvxzi]$/.test(words[i])) {
-  
-  // Combine the words with "roon" or "rin" preceded by a word ending with a consonant
-  combinedWords.push(words[i] + " " + words[i + 1]);
-  i += 2; // Skip the next word (the "roon" or "rin")
-}
 
     // New Logic: Combine "Na ang", "Na na", but not "Na ng"
     if (i < words.length - 1 && words[i].toLowerCase() === 'na' && words[i + 1].toLowerCase() === 'ang') {
@@ -1622,38 +1574,6 @@ if (secondWord && baseFirstWord === secondWord) {
       }
     }
 
-
-const combineWords = ["rin", "raw", "roon", "rito"];
-
-while (j < words.length - 1 && namePattern.test(combinedEntry)) {
-  // Check if the next word is one of the combine words (rin, raw, roon, rito)
-  if (combineWords.includes(words[j + 1].toLowerCase())) {
-    console.log('Combining two words');
-    j++;
-    combinedEntry += ' ' + words[j]; // Combine the word with the next word with a space
-  } else {
-    break; // Exit if the next word is not in the combineWords list
-  }
-}
-
-    // Exception: Do not add parentheses if the combinedEntry matches a famous person
-    if (j > i) {
-      if ( moreNames.includes(combinedEntry)) {
-        combinedWords.push('"' + combinedEntry + '"'); // Add without parentheses
-        console.log('detectone')
-      } else if(famousPersons.includes(combinedEntry)){
-   combinedWords.push("(" + combinedEntry + ")"); // Add without parentheses
-   console.log('detecttwo')
-        }else if(newsName.includes(combinedEntry)){
-          combinedWords.push('"' + combinedEntry + '"');
-          console.log('detectthree')
-          }else if(surpriseWords.includes(combinedEntry)){
-            combinedWords.push(combinedEntry);
-          }
-          
-      i = j + 1;
-      continue;
-    }
 
 
     // **Updated Logic**: Handle time patterns
