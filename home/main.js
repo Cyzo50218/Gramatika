@@ -141,9 +141,18 @@ document.querySelector('.editText').addEventListener('input', function() {
     const textresultlayouts = document.querySelector('.resultdes'); 
     const textresultcontainer = document.getElementById('resultContainer');
     textresultcontainer.style.display = 'none';
+    
+    
     const textarea = document.querySelector('.editText');
     const overlay = document.querySelector('.overlay');
     const overlay_two = document.getElementById('ovarlayid_two');
+    
+    textarea.addEventListener('scroll', () => {
+
+  overlay.scrollTop = textarea.scrollTop;
+  overlay_two.scrollTop = textarea.scrollTop;
+});
+
     const overlaycorrected = document.getElementById('ovarlaycorrectedid');
     const overlaycorrectedTwo = document.getElementById('ovarlaycorrectedtwoid');
     textresult.style.display = 'none';
