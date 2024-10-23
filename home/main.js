@@ -735,8 +735,11 @@ if (secondWord && baseFirstWord === secondWord) {
         continue;
       }
     }
+    
+    const rinRawRoonRito = ["rin", "raw", "roon", "rito"];
+    
 
-while (j < words.length - 1 && namePattern.test(combinedEntry + ' ' + words[j + 1])) {
+while (j < words.length - 1 && namePattern.test(combinedEntry + ' ' + words[j + 1] && namePattern.test(combinedEntry + ' ' + rinRawRoonRito))) {
   // Check if the next word is in the surpriseWords array
   if (surpriseWords.includes(words[j])) {
     console.log('Surprise word detected, skipping combination');
@@ -767,9 +770,9 @@ while (j < words.length - 1 && namePattern.test(combinedEntry + ' ' + words[j + 
           }else if(surpriseWords.includes(combinedEntry)){
             combinedWords.push(combinedEntry);
           }else {
-            
-        combinedWords.push("\u200B" + combinedEntry + "\u200B"); // Add with parentheses for other names
-        console.log('detectfour')
+            console.log('detectfour', combinedEntry)
+        combinedWords.push(combinedEntry); // Add with parentheses for other names
+        
       }
       i = j + 1;
       continue;
@@ -836,6 +839,14 @@ for (let i = 0; i < words.length; i++) {
   i += 3; // Skip the next two words (the "pa/pag" and the word starting with a vowel)
 }
 
+if (words[i + 1] && 
+  (words[i + 1].toLowerCase() === "roon" || words[i + 1].toLowerCase() === "rin") && 
+  /[bcdfghjklmnpqrstvxzi]$/.test(words[i])) {
+  
+  // Combine the words with "roon" or "rin" preceded by a word ending with a consonant
+  combinedWords.push(words[i] + " " + words[i + 1]);
+  i += 2; // Skip the next word (the "roon" or "rin")
+}
 
     // New Logic: Combine "Na ang", "Na na", but not "Na ng"
     if (i < words.length - 1 && words[i].toLowerCase() === 'na' && words[i + 1].toLowerCase() === 'ang') {
@@ -946,6 +957,7 @@ if (/^[a-zA-Z]+$/.test(currentWord)) {
     combinedPhrases.push(`${currentWord}-${nextWord.split('-')[1]}`);
     k++; // Skip the repeated word after hyphen
   } 
+  
 
 
   // Default case: just add the current word
@@ -1422,7 +1434,7 @@ function combineWordsMobile(text) {
   let i = 0;
 
   // Existing patterns for names and salutations
-  const namePattern = /^[A-Z][a-z]+(?:\s?[A-Z][a-z]+)+$/;
+  const namePattern = /[bcdfghjklmnpqrstvxzi]$/i;
   
   const salutationPattern = /^(Dr.|Bb.|G\..|Gng.|Mr.|Mrs.|Ms.|Engr.|Atty.)\.$/;
 const newsNamePattern = /^(Manila Times|Philippine Daily Inquirer|The Star|Rappler|ABS-CBN News|GMA News|Philippine Star|SunStar|BusinessMirror|Daily Tribune|Inquirer\.net|Philippine News Agency|The Manila Bulletin|Tempo|News5|Bulatlat|Mindanao Times|Philippine Information Agency|Hataw|Pinoy Times)$/;
@@ -1610,21 +1622,18 @@ if (secondWord && baseFirstWord === secondWord) {
       }
     }
 
-while (j < words.length - 1 && namePattern.test(combinedEntry + ' ' + words[j + 1])) {
-  // Check if the next word is in the surpriseWords array
-  if (surpriseWords.includes(words[j])) {
-    console.log('Surprise word detected, skipping combination');
-    break; // Exit the inner loop if a surprise word is detected
-  }
-  
-  if (salutationWords.includes(words[j])) {
-      break; // Exit the inner loop if a surprise word is detected
-  }
 
+const combineWords = ["rin", "raw", "roon", "rito"];
 
-  console.log('Combining two words');
-  j++;
-  combinedEntry += ' ' + words[j];
+while (j < words.length - 1 && namePattern.test(combinedEntry)) {
+  // Check if the next word is one of the combine words (rin, raw, roon, rito)
+  if (combineWords.includes(words[j + 1].toLowerCase())) {
+    console.log('Combining two words');
+    j++;
+    combinedEntry += ' ' + words[j]; // Combine the word with the next word with a space
+  } else {
+    break; // Exit if the next word is not in the combineWords list
+  }
 }
 
     // Exception: Do not add parentheses if the combinedEntry matches a famous person
@@ -1640,11 +1649,8 @@ while (j < words.length - 1 && namePattern.test(combinedEntry + ' ' + words[j + 
           console.log('detectthree')
           }else if(surpriseWords.includes(combinedEntry)){
             combinedWords.push(combinedEntry);
-          }else {
-            
-        combinedWords.push("\u200B" + combinedEntry + "\u200B"); // Add with parentheses for other names
-        console.log('detectfour')
-      }
+          }
+          
       i = j + 1;
       continue;
     }
