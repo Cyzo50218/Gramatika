@@ -1154,7 +1154,7 @@ overlay_two.style.display = 'none';
 textarea.style.display = 'none';
 
 overlaycorrectedTwo.style.fontSize = '14px';
-overlay.style.fontSize = '14px';
+
 textsee.style.display = 'block';
 
 if (getComputedStyle(overlay).paddingTop === '8px') {
@@ -1190,7 +1190,7 @@ displaywebsite.style.paddingBottom = '10px';
 
 textseeTwo.style.display = 'block';
 
-    overlay.style.fontSize = '20px';
+    
     overlay_two.fontSize = '20px';
 textarea.style.display = 'none';
 textOriginalText.style.display = 'block';
@@ -1220,7 +1220,7 @@ overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
 overlay_two.innerHTML = highlightedText.replace(/\n/g, '<br>');
 
     overlaycorrected.style.fontSize = '20px';
-    overlay.style.fontSize = '20px';
+    
     overlay_two.style.fontSize = '20px';
     textsee.style.display = 'none';
 
@@ -1282,7 +1282,7 @@ if(changes){
   
 }else{
   correctedtextmobile.value = originalTextCopied;
-  overlay.style.fontSize = '14px';
+  
   overlay_two.style.fontSize = '14px';
 textsee.style.display = 'block';
 
@@ -1305,7 +1305,7 @@ console.log('Replaced', )
 }else {
   
   if(changes){
-overlay.style.fontSize = '20px';
+
 textarea.style.display = 'none';
 textOriginalText.style.display = 'block';
 textOriginal.style.display = 'block';
@@ -1315,7 +1315,7 @@ textOriginal.style.display = 'block';
 
 textOriginal.value = originalTextCopied;
 
-overlay.style.fontSize = '20px';
+
 textarea.style.display = 'none';
 textOriginalText.style.display = 'block';
 textOriginal.style.display = 'none';
@@ -1944,7 +1944,7 @@ console.log('Suggestions and errors: ', [suggestionMap]);
       textarea.style.display = 'none';
 
 overlaycorrectedTwo.style.fontSize = '14px';
-      overlay.style.fontSize = '14px';
+      
       textsee.style.display = 'block';
 
       if (getComputedStyle(overlay).paddingTop === '8px') {
@@ -2086,7 +2086,7 @@ console.log('New value: ', correctedArrayNew);
 
       overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
       overlaycorrected.style.fontSize = '20px';
-      overlay.style.fontSize = '20px';
+      
       textsee.style.display = 'none';
 
       correctedbox.style.display = 'block';
