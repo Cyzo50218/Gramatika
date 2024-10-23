@@ -477,7 +477,9 @@ let arrayErrorText = [];
 let captured = true;
 
 let firstletter = [];
+let correctedLastFirstQuestion = [];
 let errorArray = [];
+let questionErrorArray = [];
 let highlightsErrors;
 document.querySelector('.correctButton').addEventListener('click', async function () {
   if (textarea.value.trim() === "") {
@@ -648,24 +650,48 @@ const moreNames = [
   while (i < words.length) {
     let j = i;
     let combinedEntry = words[j];
-    
-    if (j === 0 && /^[a-z]/.test(words[j])) {
+
+    // Check if the first word is a question word and the next word starts with a lowercase letter
+    if (/^(Ano|Sino|Saan|Kailan|Bakit|Papaano|Paano)/.test(words[j])) {
+        
+changes = true;
+    }
+    else if (j === 0 && /^[a-z]/.test(words[j])) {
       errorArray = [];
-      firstletter = [];
-      
-  errorArray.push(words[j]); // Add to error array before changing
-  words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
-  changes = true;
-  firstletter.push(words[j]); // Add to the array after changing
-}
+firstletter = [];
 
-// Check if the previous word ends with a period and the current word starts with a lowercase letter
-if (j > 0 && words[j - 1].endsWith('.') && /^[a-z]/.test(words[j])) {
-  errorArray.push(words[j]); // Add to error array before changing
-  words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
-  firstletter.push(words[j]); // Add to the array after changing
-}
+      errorArray.push(words[j]);
+words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
+firstletter.push(words[j]); // Add to the array after changing
 
+changes = true;
+
+console.log(firstletter);
+    }
+    
+    // Check if the previous word ends with a period and the current word starts with a lowercase letter
+    else if (j > 0 && words[j - 1].endsWith('.') && /^[a-z]/.test(words[j])) {
+        errorArray.push(words[j]); // Add to error array before changing
+        words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
+        
+        changes = true;
+        
+        firstletter.push(words[j]); // Add to the array after changing
+    }
+
+    // If we're at the end of the array, add a "?" to the last word if it doesn't end with punctuation
+    if (j === words.length - 1 && !/[.?!]$/.test(words[j])) {
+      questionErrorArray = [];
+correctedLastFirstQuestion = [];
+
+      questionErrorArray.push(words[j]);
+        console.log('QUESTIONED MARK ADDED')
+       changes = true;
+        correctedLastFirstQuestion.push(words[j] + '?'); // 
+        words[j] += '?'; // Add question mark to the last word
+    }
+    
+    
 
 const firstWord = words[j].toLowerCase();
 const secondWord = words[j + 1]?.toLowerCase(); // Ensure we don't access undefined
@@ -976,6 +1002,7 @@ return finalWords;
       let newTextValue = originalArrayTextOutside.join(' ');
       console.log('Parenthisis test: ', originalArrayTextOutside);
       
+    
       
        suggestionsFromAPI = await getSuggestionsFromAPI(newTextValue);
        
@@ -984,51 +1011,58 @@ return finalWords;
 RefreshButton.style.visibility = 'visible';
 RefreshButton.style.display = 'block';
 
-      if (!suggestionsFromAPI || suggestionsFromAPI.length === 0) {
-        throw new Error("No suggestions received from the API.");
-      }
+      
            // Clear old highlights and cloned containers
       checkContainer.innerHTML = '';
 
       
-  if(changes){
-    
-            const regexS = new RegExp(`\\b${firstletter.join('|')}\\b`, 'g'); // Regex to match any word from firstLetterArray
-const regexErrors = new RegExp(`\\b${errorArray.join('|')}\\b`, 'g'); // Regex to match any word from errorArray
+    if (changes) {
 
-const clonedNewContainerTwo = document.createElement('div');
-clonedNewContainerTwo.classList.add('clonedContainer');
-
-const errorUppercases = [...new Set(errorArray)];
-const uppercaseSuggestions = [...new Set(firstletter)];
-
-const suggestionsHTMLTWO = uppercaseSuggestions.map(token => `<span class="suggestion">${token}</span>`).join(' ');
-
-
-// Display each word in its own container 
-// Clear the previous contents in checkContainer
 checkContainer.innerHTML = '';
 
-// Ensure both arrays have the same length, or handle accordingly
-const maxLength = Math.max(errorUppercases.length, uppercaseSuggestions.length);
+const regexQuestionStartAndEnd = new RegExp(`\\b${correctedLastFirstQuestion.join('|')}\\b`, 'g'); // Regex to match any word from firstLetterArray
+      
+      const regexS = new RegExp(`\\b${firstletter.join('|')}\\b`, 'g'); // Regex to match any word from firstLetterArray
+      const regexErrors = new RegExp(`\\b${errorArray.join('|')}\\b`, 'g'); // Regex to match any word from errorArray
 
-// Iterate over both arrays together
-for (let i = 0; i < maxLength; i++) {
-  // Get the current error and suggestion (handle undefined if arrays are not of equal length)
-  const error = errorUppercases[i] || ''; // Empty string if there's no error for this index
-  highlightsErrors = error;
-  
-  
-  console.log('TOKEN PART: ', error)
-  
-  const suggestion =`<span class="suggestion" ">${uppercaseSuggestions[i]}</span>`;
-  
-  // Create a container for the current error and suggestion
-  const container = document.createElement('div');
-  container.classList.add('clonedContainer'); // Add the necessary class for styling
+      const clonedNewContainerTwo = document.createElement('div');
+      clonedNewContainerTwo.classList.add('clonedContainer');
 
-  // Add the error and suggestion to the container, with their own descriptions
-  container.innerHTML = `
+      const errorUppercases = [...new Set(errorArray)];
+      const uppercaseSuggestions = [...new Set(firstletter)];
+      const errorEndingQuestions = [...new Set(questionErrorArray)];
+      const endingSuggestionQuestions = [...new Set(correctedLastFirstQuestion)];
+      
+      const suggestionsHTMLTWO = uppercaseSuggestions.map(token => `<span class="suggestion">${token}</span>`).join(' ');
+
+
+      // Display each word in its own container 
+      // Clear the previous contents in checkContainer
+      
+
+      // Ensure both arrays have the same length, or handle accordingly
+      const maxLength = Math.max(errorUppercases.length, uppercaseSuggestions.length);
+      
+const maxLengthTwo = Math.max( errorEndingQuestions.length, endingSuggestionQuestions.length );
+      // Iterate over both arrays together
+      for (let i = 0; i < maxLength; i++) {
+        // Get the current error and suggestion (handle undefined if arrays are not of equal length)
+        
+        const error = errorUppercases[i] || ''; // Empty string if there's no error for this index
+        highlightsErrors = error;
+
+
+        console.log('TOKEN PART: ', error)
+
+        const suggestion = `<span class="suggestion" ">${uppercaseSuggestions[i]}</span>`;
+        
+
+        // Create a container for the current error and suggestion
+        const container = document.createElement('div');
+        container.classList.add('clonedContainer'); // Add the necessary class for styling
+
+        // Add the error and suggestion to the container, with their own descriptions
+        container.innerHTML = `
     <div class="errorText">
       ${error ? error : 'No Error'} <!-- Display 'No Error' if empty -->
     </div>
@@ -1039,13 +1073,53 @@ for (let i = 0; i < maxLength; i++) {
       ${'Sinusuri na nagsisimula ang pangungusap sa malaking letra'}
     </div>
   `;
+  
+         
 
-container.style.width = '80%';
-  // Append the container to checkContainer
-  checkContainer.appendChild(container);
-}
+        container.style.width = '80%';
+        
+        checkContainer.style.display = 'block';
+        // Append the container to checkContainer
+        checkContainer.appendChild(container);
+        
+      }
+      
+      for (let i = 0; i < maxLengthTwo; i++) {
+        
+        // Get the current error and suggestion (handle undefined if arrays are not of equal length)
+        const errorQuestion = errorEndingQuestions[i] || '';
+        
 
-  }
+        console.log('TOKEN PART: ', errorQuestion)
+
+        
+        const suggestionsQuestion = `<span class="suggestion" ">${endingSuggestionQuestions[i]}</span>`;
+  
+          const containerTwo = document.createElement('div');
+        containerTwo.classList.add('clonedContainer'); // Add the necessary class for styling
+        
+  containerTwo.innerHTML = `
+    <div class="errorText">
+      ${errorQuestion ? errorQuestion : 'No Error'} <!-- Display 'No Error' if empty -->
+    </div>
+    <div class="suggestions">
+      ${suggestionsQuestion} <!-- Display 'No Suggestion' if empty -->
+    </div>
+    <div class="ruleDescription">
+      ${'Questions'}
+    </div>
+  `;
+
+        
+        containerTwo.style.width = '80%';
+        checkContainer.style.display = 'block';
+  
+        checkContainer.appendChild(containerTwo);
+        console.log('appeared BOX')
+      
+      }
+
+    }
   
 
   
