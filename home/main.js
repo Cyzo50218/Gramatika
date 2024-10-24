@@ -138,20 +138,41 @@ document.querySelector('.editText').addEventListener('input', function() {
     
     const container4 = document.querySelector('.container4'); 
     const textresult = document.getElementById('result'); 
-    const textresultlayouts = document.querySelector('.resultdes'); 
     const textresultcontainer = document.getElementById('resultContainer');
+    const textresultlayouts = document.querySelector('.resultdes'); 
+
     textresultcontainer.style.display = 'none';
     
-    
-    const textarea = document.querySelector('.editText');
-    const overlay = document.querySelector('.overlay');
-    const overlay_two = document.getElementById('ovarlayid_two');
-    
-    textarea.addEventListener('scroll', () => {
+    const textareabox = document.querySelector('.editTextContainer');
+const textarea = document.querySelector('.editText');
+ const textarearesultbox = document.querySelector('.editTextContainerCorrect');
+const overlay = document.querySelector('.overlay');
+const overlay_two = document.getElementById('ovarlayid_two');
 
+textarea.addEventListener('input', adjustHeight);
+textresult.addEventListener('input', adjustHeight);
+
+function adjustHeight() {
+  // Remove any existing fixed height to allow it to shrink if needed
+  textarea.style.height = 'auto';
+  textareabox.style.height = 'auto';
+  textarearesultbox.style.height = 'auto';
+
+  // Calculate the new height of the textarea based on its scroll height
+  let newHeight = Math.max(textarea.scrollHeight, 300);
+
+  // Set the new height for the textarea and containers
+  textarea.style.height = `${newHeight}px`;
+  textareabox.style.height = `${newHeight}px`;
+  textarearesultbox.style.height = `${newHeight}px`;
+  
+  // Sync the overlay scroll positions
   overlay.scrollTop = textarea.scrollTop;
   overlay_two.scrollTop = textarea.scrollTop;
-});
+}
+
+// Trigger the height adjustment when content is loaded
+window.addEventListener('load', adjustHeight);
 
     const overlaycorrected = document.getElementById('ovarlaycorrectedid');
     const overlaycorrectedTwo = document.getElementById('ovarlaycorrectedtwoid');
@@ -654,7 +675,7 @@ const moreNames = [
     let combinedEntry = words[j];
 
     // Check if the first word is a question word and the next word starts with a lowercase letter
-    if (/^(Ano|Sino|Saan|Kailan|Bakit|Papaano|Paano)/.test(words[j])) {
+    if (/^(Ano|ano|sino|Sino|saan|Saan|Kailan|kailan|bakit|Bakit|papaano|Papaano|paano|Paano)/.test(words[j])) {
         
 changes = true;
 questionDetected = true;
@@ -1091,7 +1112,7 @@ const maxLengthTwo = Math.max( errorEndingQuestions.length, endingSuggestionQues
       ${suggestionsQuestion} <!-- Display 'No Suggestion' if empty -->
     </div>
     <div class="ruleDescription">
-      ${'Questions'}
+      ${'Ginagamit ang tandang pananong "?" para sa mga pangungusap o pahayag na nagtatanong na karaniwang nagsisimula sa mga salitang pananong na saan, kailan, sino, ano, bakit, paano'}
     </div>
   `;
 
@@ -2168,12 +2189,12 @@ function scrollToTarget() {
 
 
 
-const originalBox = document.querySelector('.editTextContainer');
+
 function scrollToTargetBackUp() {
    
     
-        originalBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        originalBox.focus();
+        textareabox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        textareabox.focus();
     
 }
 
