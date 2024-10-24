@@ -675,15 +675,17 @@ const moreNames = [
     let combinedEntry = words[j];
 
     // Check if the first word is a question word and the next word starts with a lowercase letter
-    if (/^(Ano|ano|sino|Sino|saan|Saan|Kailan|kailan|bakit|Bakit|papaano|Papaano|paano|Paano)/.test(words[j])) {
+    if (j === 0 && /^(Ano|Sino|Saan|Kailan|kailan|Bakit|Papaano|Paano)/.test(words[j])) {
+      
+       console.log('QUESTION WORD DETECTED')
         
 changes = true;
 questionDetected = true;
     }
-    else if (j === 0 && /^[a-z]/.test(words[j])) {
+    else if (j === 0 && /^[a-z]/.test(words[j]) && /^(ano|sino|saan|kailan|bakit|papaano|paano)/.test(words[j])) {
       errorArray = [];
 firstletter = [];
-
+questionDetected = true;
       errorArray.push(words[j]);
 words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
 firstletter.push(words[j]); // Add to the array after changing
