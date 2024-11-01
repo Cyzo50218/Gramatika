@@ -531,7 +531,7 @@ textOriginalText.value = fullText;
       const timeExists = true;
       
 function combineWords(text) {
-  const words = text.split(' ');
+  let words = text.split(' ');
   const combinedWords = [];
   let i = 0;
 
@@ -1248,20 +1248,9 @@ const secondWords = [
     let j = i;
     let combinedEntry = words[j];
     
-    const combinedSpaces = firstWords.map((first, index) => `${first} ${secondWords[index]}`);
 
 
-
-for (let j = 0; j < firstWords.length; j++) {
-  if (i < words.length - 1 &&
-    words[i].toLowerCase() === firstWords[j] &&
-    words[i + 1].toLowerCase() === secondWords[j]) {
-    combinedWords.push(combinedSpaces[j]); // Using combinedSpaces instead of 'na na'
-    i += 2;
-
-  }
-}
-    
+// The combinedWords array now contains the processed words
 
     // Check if the first word is a question word and the next word starts with a lowercase letter
     if (j === 0 && /^(Ano|Sino|Sino-sino|Kani-kanino|Kanino|Kailan|Saan|Saan-saan|Bakit|Paano|Ilan|Alin|Magkano|Gaano|Ano-ano|Papaano)/.test(words[j])) {
@@ -1323,6 +1312,35 @@ if(questionDetected){
  
 
 
+const firstWordsUppercase = firstWords.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+
+let found = false;
+
+for (let j = 0; j < firstWords.length; j++) {
+  // Check for lowercase first and second words
+  if (i < words.length - 1 &&
+    words[i] === firstWords[j] &&
+    words[i + 1] === secondWords[j]) {
+
+    words[i] = `${firstWords[j]} ${secondWords[j]}`;
+    words.splice(i + 1, 1); // Remove the second word 
+
+    found = true;
+    console.log('foundhere');
+    break; // Exit the inner loop to re-check the current index
+    // Check for uppercase first and second words
+  } else if (i < words.length - 1 &&
+    words[i] === firstWordsUppercase[j] &&
+    words[i + 1] === secondWords[j]) {
+
+    words[i] = `${firstWordsUppercase[j]} ${secondWords[j]}`;
+    words.splice(i + 1, 1); // Remove the second word 
+
+    found = true;
+    console.log('foundheretwo');
+    break; // Exit the inner loop to re-check the current index
+  }
+}
 
 const firstWord = words[j].toLowerCase();
 const secondWord = words[j + 1]?.toLowerCase(); // Ensure we don't access undefined
@@ -2746,19 +2764,7 @@ const secondWords = [
     let j = i;
     let combinedEntry = words[j];
     
-    const combinedSpaces = firstWords.map((first, index) => `${first} ${secondWords[index]}`);
-
-
-
-for (let j = 0; j < firstWords.length; j++) {
-  if (i < words.length - 1 &&
-    words[i].toLowerCase() === firstWords[j] &&
-    words[i + 1].toLowerCase() === secondWords[j]) {
-    combinedWords.push(combinedSpaces[j]); // Using combinedSpaces instead of 'na na'
-    i += 2;
-
-  }
-}
+    
 
 if (j === 0 && /^[a-z]/.test(words[j])) {
   
@@ -2772,6 +2778,36 @@ if (j > 0 && words[j - 1].endsWith('.') && /^[a-z]/.test(words[j])) {
   
   words[j] = words[j].charAt(0).toUpperCase() + words[j].slice(1);
   firstletter.push(words[j]); // Add to the array after changing
+}
+
+const firstWordsUppercase = firstWords.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+
+let found = false;
+
+for (let j = 0; j < firstWords.length; j++) {
+  // Check for lowercase first and second words
+  if (i < words.length - 1 &&
+    words[i] === firstWords[j] &&
+    words[i + 1] === secondWords[j]) {
+
+    words[i] = `${firstWords[j]} ${secondWords[j]}`;
+    words.splice(i + 1, 1); // Remove the second word 
+
+    found = true;
+    console.log('foundhere');
+    break; // Exit the inner loop to re-check the current index
+    // Check for uppercase first and second words
+  } else if (i < words.length - 1 &&
+    words[i] === firstWordsUppercase[j] &&
+    words[i + 1] === secondWords[j]) {
+
+    words[i] = `${firstWordsUppercase[j]} ${secondWords[j]}`;
+    words.splice(i + 1, 1); // Remove the second word 
+
+    found = true;
+    console.log('foundheretwo');
+    break; // Exit the inner loop to re-check the current index
+  }
 }
 
 const firstWord = words[j].toLowerCase();
