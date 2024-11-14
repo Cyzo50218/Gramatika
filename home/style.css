@@ -665,9 +665,16 @@ section {
             background-color: #FC5858;
             opacity: 0.40;
         }
-          .highlightCorrected {
+  
+  .highlightCorrected {
+    
+    position: absolute;
+    font-size:14px;
+    margin-left: 5px;
+    text-align: justify;
+text-justify: inter-word;
     background-color: #6AEC82;
-    color: transparent;
+    color:transparent;
     opacity: 0.40;
   }
         .container4 {
@@ -702,7 +709,6 @@ section {
 .editText3{
   width: 100%;
 height: 100%;
-
 border: none;
 outline: none;
 background: none;
@@ -711,10 +717,9 @@ display: none;
 opacity: 1;
 color: black;
 resize: none;
-box-sizing: border-box;
 padding: 10px;
 margin-bottom: 20px;
-text-align: start; /* Ensures placeholder text starts at the top */
+text-align: left; /* Ensures placeholder text starts at the top */
 }
 
 .editText2{
@@ -729,7 +734,6 @@ display: none;
 opacity: 1;
 color: black;
 resize: none;
-box-sizing: border-box;
 padding: 10px;
 
 text-align: start; /* Ensures placeholder text starts at the top */
@@ -737,7 +741,7 @@ text-align: start; /* Ensures placeholder text starts at the top */
 .editText {
     width: 100%;
             height: 100%;
-            
+      
             border: none;
             outline: none;
             background: none;
@@ -768,8 +772,11 @@ text-align: start; /* Ensures placeholder text starts at the top */
     position: relative;
     width: 100%;
     height: 300px;
+    text-align: justify;
+text-justify: inter-word;
     margin-bottom: 10px;
     border: 1px solid darkblue;
+    text-align: start;
     border-radius: 4px;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
     overflow: hidden;
@@ -813,7 +820,8 @@ text-align: start; /* Ensures placeholder text starts at the top */
 }
 
 .editTextContainer2{
-   
+   text-align: justify;
+text-justify: inter-word;
     position: relative;
     width: 100%;
     height: 300px;
@@ -920,13 +928,12 @@ display: none; /* Chrome, Safari, and Opera */
     height: 100%;
     pointer-events: none;
     
-   
-    font-size: 14px;
+    font-size: 30px;
     padding-left: 10px;
     padding-top: 30px;
     color: transparent;
     box-sizing: border-box;
-    text-align: left; /* Ensure text starts from the left */
+    text-align: start; /* Ensure text starts from the left */
     transition: 0.5s fade-in;
    
 }
@@ -1166,6 +1173,7 @@ flex-wrap: wrap;
 height: 100%;
 border: none;
 outline: none;
+
 background: none;
 position: relative;
 opacity: 1;
@@ -1187,6 +1195,7 @@ text-align: start; /* Ensures placeholder text starts at the top */
             opacity: 1;
             color: black;
             resize: none;
+            
             box-sizing: border-box;
             padding: 10px;
             
@@ -1412,8 +1421,10 @@ body {
     pointer-events: none;
     font-size: 14px;
     padding-left: 7px;
-    padding-top: 8px;
+    padding-top: 27px;
+    padding-right: 8px;
     color: transparent;
+    
     box-sizing: border-box;
     text-align: left; /* Ensure text starts from the left */
     transition: 0.50s fade-in;
@@ -1444,11 +1455,13 @@ body {
     top: 0;
     left: 0;
     width: 100%;
+   
     height: 100%;
     pointer-events: none;
     font-size: 14px;
-    padding-left: 6px;
-    padding-top: 8px;
+    padding-left: 7px;
+    padding-right: 10px;
+    padding-top: 30px;
     color: transparent;
     box-sizing: border-box;
     text-align: left; /* Ensure text starts from the left */
@@ -1607,12 +1620,15 @@ display: inline-flex; /* Enable flexbox properties */
     }
     
     .editText {
+
       border: 1px solid transparent;
       width: 100%;
       height: 100%;
       font-size: 14px;
     }
     .editText2{
+      text-align: justify;
+text-justify: inter-word;
   border: 1px solid transparent;
   width: 100%;
   height: 100%;
@@ -1621,7 +1637,8 @@ display: inline-flex; /* Enable flexbox properties */
   font-size: 13px;
 }
 .editText3{
-  
+  text-align: justify;
+text-justify: inter-word;
   width: 100%;
   text-align: left;
   padding-left: 7px;

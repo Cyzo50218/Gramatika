@@ -3194,9 +3194,10 @@ let correctedArrayNew;
 console.log('New value: ', correctedArrayNew);
       
 console.log('Suggestions and errors: ', [suggestionMap]);
-      correctedHighlightedTwoText = correctedHighlightedTwoText.replace(regex, match => {
-        return `<span class="highlightCorrected">${errorsTextarea}</span>`;
-      });
+      correctedHighlightedTwoText = correctedHighlightedTwoText.replace(errorsTextarea, match => {
+        return `<span style="text-decoration-line: line-through; text-decoration-thickness: 20px; text-decoration-color: rgba(106, 236, 130, 0.4);">${selectedSuggestion}</span>`;
+});
+     
 
       overlaycorrectedTwo.innerHTML = correctedHighlightedTwoText.replace(/\n/g, '<br>');
       correctedtextmobile.style.display = 'block';
@@ -3205,7 +3206,7 @@ console.log('Suggestions and errors: ', [suggestionMap]);
       overlay_two.style.display = 'none';
       textarea.style.display = 'none';
 
-overlaycorrectedTwo.style.fontSize = '14px';
+overlaycorrectedTwo.style.fontSize = '1x';
       
       textsee.style.display = 'block';
 
@@ -3449,8 +3450,8 @@ if (/Mobi|Android/i.test(navigator.userAgent)) {
 function updateHighlights() {
   const fullText = textarea.value;
   
-  highlightsErrors
-  errorArray
+  highlightsErrors;
+  errorArray;
 
   correctedHighlightedText = emptyText;
   correctedHighlightedTwoText = emptyText;
@@ -3462,16 +3463,15 @@ function updateHighlights() {
     const suggestionText = correction.suggestions[0]; // Assuming we apply the first suggestion for the corrected text
 
     // Escape special characters and allow capturing trailing spaces
-    
-
     try {
       const escapedErrorText = errorText.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-// Include spaces after the error text with `\\s*`, and ensure it's not preceded or followed by a word character
-const regex = new RegExp('\\b' + escapedErrorText + '\\b(\\s*)', 'gi'); // Match the word with boundaries and followed by any spaces
+      
+      // Match the word with boundaries and followed by any spaces
+      const regex = new RegExp('\\b' + escapedErrorText + '\\b(\\s*)', 'gi'); 
 
-      // Highlight the error along with the spaces by wrapping everything in the span
-      highlightedText = highlightedText.replace(regex, match=> {
-        return `<span class="highlight">${errorText}</span>`;
+      // Apply text decoration instead of wrapping in a classed span
+      highlightedText = highlightedText.replace(errorText, match => {
+        return `<span style="text-decoration-line: line-through; text-decoration-thickness: 20px; text-decoration-color: rgba(212, 78, 78, 0.4);">${match}</span>`;
       });
 
       console.log('ERRORS: ', errorText);
@@ -3483,6 +3483,7 @@ const regex = new RegExp('\\b' + escapedErrorText + '\\b(\\s*)', 'gi'); // Match
   // After processing all suggestions, update the overlay content
   overlay.innerHTML = highlightedText.replace(/\n/g, '<br>'); // Preserve line breaks
 }
+
 
 
 
@@ -3622,5 +3623,4 @@ function makeCorrectedTextMobileSelectable() {
     // Function to handle text selection and copy on long press
 
 });
-
 
