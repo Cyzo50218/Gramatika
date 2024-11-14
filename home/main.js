@@ -2193,6 +2193,7 @@ const moreNames = [
   const firstWords = [
     'abalang',
     'ibat',
+    'isat',
     'abang',
     'abong',
     'abusadong',
@@ -2482,6 +2483,7 @@ const moreNames = [
 const secondWords = [
     'abala',
     'ibang',
+    'isang',
     'aba',
     'abo',
     'abusado',
