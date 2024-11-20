@@ -3342,9 +3342,12 @@ console.log('New value: ', correctedArrayNew);
       textarea.style.display = 'none';
       textoriginal2.style.display = 'block';
 
-      correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
-        return `<span class="highlightCorrected">${errorsTextarea}</span>`;
-      });
+      correctedHighlightedText = correctedHighlightedText.replace(errorsTextarea, match => {
+        return `<span style="text-decoration-line: line-through; text-decoration-thickness: 20px; text-decoration-color: rgba(106, 236, 130, 0.4);">${selectedSuggestion}</span>`;
+});
+     
+      
+     
       textOriginal.style.display = 'block';
 
       overlaycorrected.innerHTML = correctedHighlightedText.replace(/\n/g, '<br>');
