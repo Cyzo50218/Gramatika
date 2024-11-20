@@ -3201,6 +3201,7 @@ console.log('Suggestions and errors: ', [suggestionMap]);
 
       overlaycorrectedTwo.innerHTML = correctedHighlightedTwoText.replace(/\n/g, '<br>');
       correctedtextmobile.style.display = 'block';
+      correctedtextmobile.readOnly = true;
       overlaycorrectedTwo.style.display = 'block';
       overlay.style.display = 'none';
       overlay_two.style.display = 'none';
@@ -3342,7 +3343,7 @@ console.log('New value: ', correctedArrayNew);
       textarea.style.display = 'none';
       textoriginal2.style.display = 'block';
 
-      correctedHighlightedText = correctedHighlightedText.replace(errorsTextarea, match => {
+      correctedHighlightedText = correctedHighlightedText.replace(regex, match => {
         return `<span style="text-decoration-line: line-through; text-decoration-thickness: 20px; text-decoration-color: rgba(106, 236, 130, 0.4);">${selectedSuggestion}</span>`;
 });
      
@@ -3355,9 +3356,7 @@ console.log('New value: ', correctedArrayNew);
       
       textsee.style.display = 'none';
 
-      correctedbox.style.display = 'block';
-      overlay.style.display = 'block';
-      overlay_two.style.display = 'block';
+      
 
       if (getComputedStyle(overlaycorrected).paddingTop === '11px') {
         overlaycorrected.style.paddingTop = '80px';
@@ -3594,17 +3593,25 @@ function handleTextSeeUnpressed() {
   updateHighlights();
 }
 
+makeCorrectedTextMobileSelectable()
 
 function makeCorrectedTextMobileSelectable() {
   // Set the textarea to readonly
   correctedtextmobile.readOnly = true;
-
+textOriginal.readOnly = true;
   // Add a click event listener
   correctedtextmobile.addEventListener('click', () => {
     // Handle the click event
     console.log('Text selected or clicked');
     // Add your logic here if needed
   });
+  
+  textOriginal.addEventListener('click', () => {
+    // Handle the click event
+    console.log('Text selected or clicked');
+    // Add your logic here if needed
+  });
+  
 }
 
 
