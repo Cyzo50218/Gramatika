@@ -3626,4 +3626,3 @@ function makeCorrectedTextMobileSelectable() {
     // Function to handle text selection and copy on long press
 
 });
-
